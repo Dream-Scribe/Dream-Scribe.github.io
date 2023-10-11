@@ -122,7 +122,7 @@
 				cxt = canvas.getContext('2d');
 				var sakuraList = new SakuraList();
 				// 花瓣数量
-				for(var i = 0; i < 10; i++) {
+				for(var i = 0; i < 15; i++) {
 					var sakura, randomX, randomY, randomS, randomR, randomFnx, randomFny;
 					randomX = getRandom('x');
 					randomY = getRandom('y');
