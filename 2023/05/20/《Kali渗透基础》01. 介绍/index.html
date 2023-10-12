@@ -1,0 +1,375 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="渗透测试介绍、Kali 介绍、Kali 初步设置、Kali 终端快捷键、其他。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Kali渗透基础》01. 介绍">
+<meta property="og:url" content="http://example.com/2023/05/20/%E3%80%8AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80%E3%80%8B01.%20%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="渗透测试介绍、Kali 介绍、Kali 初步设置、Kali 终端快捷键、其他。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/568c06d3e6b04b44b04c6a3cc62881a7.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/38c8515395364e5a97df0938db6df486.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/c49e84ee246b45b9a8bcd39c9912f1b3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/2d0c7ea12dca41318efb4273d64229c0.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/a57d7cead53d41be8a0ece359ff464e5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/cf1241af6c834e28873e580d82c08f47.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/6917ec6d4cdc40dabaa314908558d174.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/ff653a614f2e4cc191b49e98385a8849.png">
+<meta property="article:published_time" content="2023-05-20T02:25:15.000Z">
+<meta property="article:modified_time" content="2023-10-12T02:23:46.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/568c06d3e6b04b44b04c6a3cc62881a7.png"><title>《Kali渗透基础》01. 介绍 | 镜坛</title><link ref="canonical" href="http://example.com/2023/05/20/%E3%80%8AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80%E3%80%8B01.%20%E4%BB%8B%E7%BB%8D/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《Kali渗透基础》01. 介绍</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-05-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-10-12</span></span></div></header><div class="post-body"><p>@<a href="kali%E6%B8%97%E9%80%8F">TOC</a></p>
+<hr>
+<blockquote>
+<p>本系列侧重方法论，各工具只是实现目标的载体。<br>命令与工具只做简单介绍，其使用另见《安全工具录》。</p>
+</blockquote>
+<blockquote>
+<p>本文以 kali-linux-2022.3-vmware-amd64 为例。</p>
+</blockquote>
+
+        <h1 id="1：渗透测试"   >
+          <a href="#1：渗透测试" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：渗透测试" class="headerlink" title="1：渗透测试"></a>1：渗透测试</h1>
+      
+        <h2 id="1-1：安全问题的根源"   >
+          <a href="#1-1：安全问题的根源" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-1：安全问题的根源" class="headerlink" title="1.1：安全问题的根源"></a>1.1：安全问题的根源</h2>
+      <ul>
+<li>分层思想的优劣</li>
+<li>分层思想对计算机技术人员的影响</li>
+<li>只追求功能实现</li>
+<li>最大的安全威胁是人</li>
+</ul>
+
+        <h2 id="1-2：安全目标"   >
+          <a href="#1-2：安全目标" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-2：安全目标" class="headerlink" title="1.2：安全目标"></a>1.2：安全目标</h2>
+      <ul>
+<li>先于攻击者发现和防⽌漏洞出现。</li>
+<li>攻击型安全：以黑客攻击手段发现漏洞。</li>
+<li>防护型安全：把攻击面降到最低。投入巨大，周期很长。</li>
+</ul>
+
+        <h2 id="1-3：渗透测试"   >
+          <a href="#1-3：渗透测试" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-3：渗透测试" class="headerlink" title="1.3：渗透测试"></a>1.3：渗透测试</h2>
+      <p><strong>要点</strong>：</p>
+<ul>
+<li>尝试挫败安全防御机制，发现系统安全弱点</li>
+<li>从攻击者的角度思考，测量安全防护有效性</li>
+<li>证明安全问题的存在，而非破坏</li>
+<li>道德约束</li>
+<li>法律</li>
+</ul>
+<p><strong>渗透测试项目</strong>：</p>
+<ul>
+<li>渗透测试范围</li>
+<li>获得授权</li>
+<li>渗透测试方法<ul>
+<li>是否允许社会工程学</li>
+<li>是否允许拒绝服务攻击</li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="1-4：标准"   >
+          <a href="#1-4：标准" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-4：标准" class="headerlink" title="1.4：标准"></a>1.4：标准</h2>
+      <p>Penetration Testing Execution Standard（PETS，渗透测试标准）：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://www.pentest-standard.org/" >http://www.pentest-standard.org</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>可以大致分为以下阶段：</p>
+<ul>
+<li>前期交互阶段（Pre-engagement Interactions）</li>
+<li>情报收集阶段（Intelligence Gathering）</li>
+<li>威胁建模阶段（Threat Modeling）</li>
+<li>漏洞分析阶段（Vulnerability Analysis）</li>
+<li>渗透攻击阶段（Exploitation）</li>
+<li>后渗透测试阶段（Post Exploitation）</li>
+<li>渗透测试报告（Reporting）</li>
+</ul>
+
+        <h1 id="2：Kali"   >
+          <a href="#2：Kali" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：Kali" class="headerlink" title="2：Kali"></a>2：Kali</h1>
+      <p>Kali 官网：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.kali.org/" >https://www.kali.org</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Kali（kali，音译为迦梨或迦利，字面意思是 “ 黑色的 ”）是印度教中一个重要的女神，她是湿婆神妃帕尔瓦蒂产生的化身，印度神话中最为黑暗和暴的黑色地母。她皮肤黝黑，青面獠牙，额头和湿婆神一样有第三只眼睛，四只手臂分持武器，戴着蛇和骷髅的项链，舌头上滴着血。有她的传说总是与杀戮和鲜血根连，史上曾经用过活人献祭，是印度教派中最为隐晦和神秘的一派。<br>迦梨一词也可解释为时间，故中文翻译为时母。在后期的信仰体系中，时母被认为与时间和变化有关，象征着强大和新生。<br>在面对前所未有的强大的阿修罗时陷入困境，这时候她的面孔因为愤怒而发黑，从她脸上的黑气中诞生了可怕的迦梨。今日印度的都市加尔各答，名字的意思就是“迦梨的沐浴场”。</p>
+</blockquote>
+
+        <h2 id="2-1：介绍"   >
+          <a href="#2-1：介绍" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1：介绍" class="headerlink" title="2.1：介绍"></a>2.1：介绍</h2>
+      <ul>
+<li>基于 Debian 的 Linux 发行版本</li>
+<li>前身是 BackTrack，2013 年 3 月发布</li>
+<li>用于渗透测试和安全审计</li>
+<li>包含上百种安全工具</li>
+<li>FHS 标准目录结构</li>
+<li>定制内核</li>
+<li>支持 ARM 和手机平台</li>
+<li>开源免费</li>
+</ul>
+
+        <h2 id="2-2：策略"   >
+          <a href="#2-2：策略" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2：策略" class="headerlink" title="2.2：策略"></a>2.2：策略</h2>
+      <ul>
+<li>root 用户策略</li>
+<li>网络服务策略</li>
+<li>更新升级策略</li>
+</ul>
+
+        <h2 id="2-3：安装"   >
+          <a href="#2-3：安装" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3：安装" class="headerlink" title="2.3：安装"></a>2.3：安装</h2>
+      <p>这里只大致介绍安装方式。具体安装过程不再赘述。</p>
+<p>Kali 官网：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.kali.org/" >https://www.kali.org</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>Kali 有三种安装方法。</p>
+<p><strong>硬盘安装</strong></p>
+<ul>
+<li>下载安装镜像</li>
+<li>验证 hash 值</li>
+<li>制作启动光盘或 U 盘</li>
+<li>设置 BIOS 启动顺序</li>
+<li>启动安装</li>
+</ul>
+<blockquote>
+<p>其中，持久加密 USB 安装，安全性较高，安装好后光盘（U盘）就相当于是 Kali 系统，可携带。</p>
+</blockquote>
+<blockquote>
+<p>Linux Unified Key Setup（LUKS）是在 Linux 系统上使用的一种加密技术，可以对整个硬盘、分区或者其他块设备进行加密。</p>
+</blockquote>
+<p><strong>虚拟机安装</strong></p>
+<p>常用方式。可以直接下载已安装好的文件导入。也可下载镜像自己手动安装。</p>
+<p><strong>Docker 安装</strong></p>
+<p>据说也提供 Docker 安装。安装好如果部署在服务器，访问即可使用。</p>
+
+        <h1 id="3：Kali-初步设置"   >
+          <a href="#3：Kali-初步设置" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：Kali-初步设置" class="headerlink" title="3：Kali 初步设置"></a>3：Kali 初步设置</h1>
+      <p><strong>更改 root 密码</strong>：<br><code>sudo passwd root</code></p>
+<p><strong>切换到 root 账户</strong>：<br><code>su root</code></p>
+<blockquote>
+<p>也可以直接重新登入 root 账户</p>
+</blockquote>
+<p><strong>查看 ip 地址</strong>：<br><code>ip addr</code></p>
+<p><strong>查看 22 端口是否开放</strong>：<br><code>netstat -an | grep 22</code></p>
+
+        <h2 id="3-1：远程连接"   >
+          <a href="#3-1：远程连接" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1：远程连接" class="headerlink" title="3.1：远程连接"></a>3.1：远程连接</h2>
+      <p>这里使用 Xshell7。</p>
+
+        <h3 id="3-1-1：允许远程连接"   >
+          <a href="#3-1-1：允许远程连接" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-1：允许远程连接" class="headerlink" title="3.1.1：允许远程连接"></a>3.1.1：允许远程连接</h3>
+      <p>编辑 <font style="background:#f8f840">&#x2F;etc&#x2F;ssh&#x2F;sshd_config</font> 文件：<br><code>vim /etc/ssh/sshd_config</code></p>
+<p>按 <kbd>/</kbd><br>输入 <code>PermitRootLogin</code> 进行搜索<br>按 <kbd>Enter</kbd>（回车键）<br>找到 <strong>#PermitRootLogin prohibit-password</strong></p>
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/568c06d3e6b04b44b04c6a3cc62881a7.png" alt="请添加图片描述"></p>
+<p>找到以后按回车键。然后按 <kbd>I</kbd> 进入编辑模式，<br>增加一行 <code>PermitRootLogin yes</code>。</p>
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/38c8515395364e5a97df0938db6df486.png" alt="请添加图片描述"></p>
+<p>按 <kbd>Esc</kbd> 退出编辑模式，进入命令模式。</p>
+<p>输入 <code>/PasswordAuthentication</code> 搜索到 <strong>#PasswordAuthentication yes</strong>。</p>
+<p>进入编辑模式删掉 <strong>“ # ”</strong> 后退出编辑模式。</p>
+<p>输入<code>:wq</code>，保存修改。</p>
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/c49e84ee246b45b9a8bcd39c9912f1b3.png" alt="请添加图片描述"></p>
+
+        <h3 id="3-1-2：启动-SSH-服务"   >
+          <a href="#3-1-2：启动-SSH-服务" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-2：启动-SSH-服务" class="headerlink" title="3.1.2：启动 SSH 服务"></a>3.1.2：启动 SSH 服务</h3>
+      <p><strong>SSH 服务启动命令</strong>：<br><code>service ssh start</code></p>
+<p><strong>添加 SSH 开机自启动命令</strong>（自启动需重启生效）：<br><code>update-rc.d ssh enable</code></p>
+
+        <h3 id="3-1-3：Xshell-连接"   >
+          <a href="#3-1-3：Xshell-连接" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-3：Xshell-连接" class="headerlink" title="3.1.3：Xshell 连接"></a>3.1.3：Xshell 连接</h3>
+      <p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/2d0c7ea12dca41318efb4273d64229c0.png" alt="请添加图片描述"></p>
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/a57d7cead53d41be8a0ece359ff464e5.png" alt="请添加图片描述"></p>
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/cf1241af6c834e28873e580d82c08f47.png" alt="请添加图片描述"></p>
+
+        <h2 id="3-2：修改远程仓库"   >
+          <a href="#3-2：修改远程仓库" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2：修改远程仓库" class="headerlink" title="3.2：修改远程仓库"></a>3.2：修改远程仓库</h2>
+      <blockquote>
+<p>如果下载包时速度慢，可以修改远程仓库为国内镜像。</p>
+</blockquote>
+<p>查看当前 apt 远程仓库地址：<br><code>cat /etc/apt/sources.list</code></p>
+<p>修改 <font style="background:#f8f840">&#x2F;etc&#x2F;apt&#x2F;sources.list</font> 文件：<br><code>vim /etc/apt/sources.list</code></p>
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/6917ec6d4cdc40dabaa314908558d174.png" alt="请添加图片描述"></p>
+<p>进入编辑模式，将图示中的语句注释掉，并添加镜像仓库（两个语句）。以下随便挑选一个即可，这里选择阿里云镜像。</p>
+<p>阿里云镜像仓库：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.aliyun.com/kali kali-rolling main non-free contrib</span><br><span class="line">deb-src http://mirrors.aliyun.com/kali kali-rolling main non-free contrib</span><br></pre></td></tr></table></div></figure>
+
+<p>中科大镜像仓库：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deb http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib  </span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/kali kali-rolling main non-free contrib </span><br></pre></td></tr></table></div></figure>
+
+<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/01/assets/ff653a614f2e4cc191b49e98385a8849.png" alt="请添加图片描述"></p>
+<p>保存修改即可</p>
+<p>输入 <code>sudo apt-get update</code> 进行更新。</p>
+<p>完成。</p>
+<blockquote>
+<p>以安装 foremost 为例：<br><code>sudo apt-get install foremost</code></p>
+</blockquote>
+
+        <h1 id="4：Kali-终端快捷键"   >
+          <a href="#4：Kali-终端快捷键" class="heading-link"><i class="fas fa-link"></i></a><a href="#4：Kali-终端快捷键" class="headerlink" title="4：Kali 终端快捷键"></a>4：Kali 终端快捷键</h1>
+      
+        <h2 id="4-1：常用快捷键"   >
+          <a href="#4-1：常用快捷键" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1：常用快捷键" class="headerlink" title="4.1：常用快捷键"></a>4.1：常用快捷键</h2>
+      <p>复制：<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd></p>
+<p>粘贴：<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd></p>
+<p>补全：<kbd>Tab</kbd></p>
+<p>补全整行：<kbd>--></kbd></p>
+<p>清屏：<kbd>Ctrl</kbd> + <kbd>L</kbd></p>
+<p>停止当前任务：<kbd>Ctrl</kbd> + <kbd>C</kbd></p>
+
+        <h2 id="4-2：实用快捷键"   >
+          <a href="#4-2：实用快捷键" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2：实用快捷键" class="headerlink" title="4.2：实用快捷键"></a>4.2：实用快捷键</h2>
+      <p>移动光标到开头：<kbd>Ctrl</kbd> + <kbd>A</kbd></p>
+<p>移动光标到结尾：<kbd>Ctrl</kbd> + <kbd>E</kbd></p>
+<p>删除光标之后的内容（包括光标处）：<kbd>Ctrl</kbd> + <kbd>K</kbd></p>
+<p>删除光标之前的内容（不包括光标处）：<kbd>Ctrl</kbd> + <kbd>U</kbd></p>
+<p>撤销操作：<kbd>Ctrl</kbd> + <kbd>X</kbd> + <kbd>U</kbd></p>
+<p>光标向开头移动一个词：<kbd>Alt</kbd> + <kbd>B</kbd></p>
+<p>光标向结尾移动一个词：<kbd>Alt</kbd> + <kbd>F</kbd></p>
+
+        <h2 id="4-3：窗口操作"   >
+          <a href="#4-3：窗口操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3：窗口操作" class="headerlink" title="4.3：窗口操作"></a>4.3：窗口操作</h2>
+      <p>新建窗口：<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd></p>
+<p>新建终端页：<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>T</kbd></p>
+<p>关闭当前终端页：<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd></p>
+<p>切换终端页：<kbd>Alt</kbd> + <kbd>数字</kbd></p>
+<p>终端水平分屏：<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd></p>
+<p>终端垂直分屏：<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd></p>
+<p>分屏切换：<kbd>Alt</kbd> + <kbd>方向键</kbd></p>
+<p>消除当前分屏：<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>E</kbd></p>
+<p>全屏 &#x2F; 取消全屏：<kbd>F11</kbd></p>
+<p>字体放大：<kbd>Ctrl</kbd> + <kbd>+</kbd></p>
+<p>字体缩小：<kbd>Ctrl</kbd> + <kbd>-</kbd></p>
+<p>恢复原始大小：<kbd>Ctrl</kbd> + <kbd>0</kbd></p>
+
+        <h2 id="4-4：其他快捷键"   >
+          <a href="#4-4：其他快捷键" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4：其他快捷键" class="headerlink" title="4.4：其他快捷键"></a>4.4：其他快捷键</h2>
+      <p>光标向开头移动一个字符：<kbd>Ctrl</kbd> + <kbd>B</kbd></p>
+<p>光标向结尾移动一个字符：<kbd>Ctrl</kbd> + <kbd>F</kbd></p>
+<p>光标向开头移动一个词：<kbd>Alt</kbd> + <kbd>B</kbd></p>
+<p>光标向结尾移动一个词：<kbd>Alt</kbd> + <kbd>F</kbd></p>
+<p>删除光标之前的一个词：<kbd>Ctrl</kbd> + <kbd>W</kbd></p>
+<p>删除光标之后的一个词：<kbd>Alt</kbd> + <kbd>D</kbd></p>
+<p>把光标处之后的一个词转化为大写：<kbd>Alt</kbd> + <kbd>U</kbd></p>
+<p>把光标处之后的一个词转化为小写：<kbd>Alt</kbd> + <kbd>L</kbd></p>
+<p>把光标处之后的一个词转化为首字符大写：<kbd>Alt</kbd> + <kbd>C</kbd></p>
+
+        <h1 id="5：其他"   >
+          <a href="#5：其他" class="heading-link"><i class="fas fa-link"></i></a><a href="#5：其他" class="headerlink" title="5：其他"></a>5：其他</h1>
+      <ul>
+<li>这是关于渗透测试方法的系列</li>
+<li>这是关于 kali linux 基本使用的系列</li>
+<li>不要停留在了解的程度</li>
+<li>实践再实践是最好的老师</li>
+<li>这里只是起跑线而不是终点线</li>
+<li>Kali 很强大，但不是全部</li>
+</ul>
+<hr>
+<p><font color="#00BFFF">
+雪沫乳花浮午盏，蓼茸蒿笋试春盘。
+</font></p>
+<p align="right"><font color="#00BFFF">
+——《浣溪沙》（宋）苏轼
+</font></p>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://example.com">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://example.com/2023/05/20/%E3%80%8AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80%E3%80%8B01.%20%E4%BB%8B%E7%BB%8D/">http://example.com/2023/05/20/%E3%80%8AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80%E3%80%8B01.%20%E4%BB%8B%E7%BB%8D/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/10/06/Hello%20world/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">Hello My World</span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95"><span class="toc-text">
+          1：渗透测试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%EF%BC%9A%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98%E7%9A%84%E6%A0%B9%E6%BA%90"><span class="toc-text">
+          1.1：安全问题的根源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%EF%BC%9A%E5%AE%89%E5%85%A8%E7%9B%AE%E6%A0%87"><span class="toc-text">
+          1.2：安全目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3%EF%BC%9A%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95"><span class="toc-text">
+          1.3：渗透测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4%EF%BC%9A%E6%A0%87%E5%87%86"><span class="toc-text">
+          1.4：标准</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9AKali"><span class="toc-text">
+          2：Kali</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%EF%BC%9A%E4%BB%8B%E7%BB%8D"><span class="toc-text">
+          2.1：介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%EF%BC%9A%E7%AD%96%E7%95%A5"><span class="toc-text">
+          2.2：策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3%EF%BC%9A%E5%AE%89%E8%A3%85"><span class="toc-text">
+          2.3：安装</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9AKali-%E5%88%9D%E6%AD%A5%E8%AE%BE%E7%BD%AE"><span class="toc-text">
+          3：Kali 初步设置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1%EF%BC%9A%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5"><span class="toc-text">
+          3.1：远程连接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1%EF%BC%9A%E5%85%81%E8%AE%B8%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5"><span class="toc-text">
+          3.1.1：允许远程连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2%EF%BC%9A%E5%90%AF%E5%8A%A8-SSH-%E6%9C%8D%E5%8A%A1"><span class="toc-text">
+          3.1.2：启动 SSH 服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3%EF%BC%9AXshell-%E8%BF%9E%E6%8E%A5"><span class="toc-text">
+          3.1.3：Xshell 连接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%EF%BC%9A%E4%BF%AE%E6%94%B9%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="toc-text">
+          3.2：修改远程仓库</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EF%BC%9AKali-%E7%BB%88%E7%AB%AF%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-text">
+          4：Kali 终端快捷键</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1%EF%BC%9A%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-text">
+          4.1：常用快捷键</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2%EF%BC%9A%E5%AE%9E%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-text">
+          4.2：实用快捷键</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3%EF%BC%9A%E7%AA%97%E5%8F%A3%E6%93%8D%E4%BD%9C"><span class="toc-text">
+          4.3：窗口操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4%EF%BC%9A%E5%85%B6%E4%BB%96%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-text">
+          4.4：其他快捷键</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%EF%BC%9A%E5%85%B6%E4%BB%96"><span class="toc-text">
+          5：其他</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">2</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">2</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
