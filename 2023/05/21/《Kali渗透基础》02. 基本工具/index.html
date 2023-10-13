@@ -5,15 +5,15 @@
 <meta property="og:site_name" content="镜坛">
 <meta property="og:description" content="NetCat、NCat、WireShark、TCPdump 初步使用。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/assets/aa8d64cf414342f4b789bce9897f411e.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/assets/44e3d1189c49469e86aca837b6c49411.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/assets/c4807ffe5d2246cea211c153980ce67a.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/assets/fa6efcf72377465d8d2efdacd62e1877.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/aa8d64cf414342f4b789bce9897f411e.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/44e3d1189c49469e86aca837b6c49411.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/c4807ffe5d2246cea211c153980ce67a.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/fa6efcf72377465d8d2efdacd62e1877.png">
 <meta property="article:published_time" content="2023-05-21T14:31:59.000Z">
 <meta property="article:modified_time" content="2023-10-12T02:23:48.000Z">
 <meta property="article:author" content="镜坛主">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/assets/aa8d64cf414342f4b789bce9897f411e.png"><title>《Kali渗透基础》02. 基本工具 | 镜坛</title><link ref="canonical" href="http://example.com/2023/05/21/%E3%80%8AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80%E3%80%8B02.%20%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+<meta name="twitter:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/aa8d64cf414342f4b789bce9897f411e.png"><title>《Kali渗透基础》02. 基本工具 | 镜坛</title><link ref="canonical" href="http://example.com/2023/05/21/%E3%80%8AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80%E3%80%8B02.%20%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
 var CONFIG = {
   root: '/',
   algolia: undefined,
@@ -162,7 +162,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>先在一台主机上开启端口监听，再使用另一台主机连接。即可通信。</p>
 <p>一、ubuntu（1.1.1.20）：<br><code>nc -l -p 3333</code><br>二、kali（1.1.1.10）：<br><code>nc -nv 1.1.1.20 3333</code></p>
 <p><strong>结果</strong>：</p>
-<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/assets/aa8d64cf414342f4b789bce9897f411e.png" alt="在这里插入图片描述"></p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/aa8d64cf414342f4b789bce9897f411e.png" alt="在这里插入图片描述"></p>
 <ul>
 <li><strong>示例02</strong>：监听信息并保存。</li>
 </ul>
@@ -372,9 +372,9 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>过滤条件可用 “ or ” 和 “ and ” 连接。</p>
 </blockquote>
 <p>除了以上基础筛选过滤条件之外，TCPdump 还提供了<strong>高级筛选</strong>：</p>
-<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/assets/44e3d1189c49469e86aca837b6c49411.png" alt="在这里插入图片描述"></p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/44e3d1189c49469e86aca837b6c49411.png" alt="在这里插入图片描述"></p>
 <p>示例：</p>
-<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/assets/c4807ffe5d2246cea211c153980ce67a.png" alt="在这里插入图片描述"></p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/c4807ffe5d2246cea211c153980ce67a.png" alt="在这里插入图片描述"></p>
 <p><code>tcpdump -A -n &#39;tcp[13] = 24&#39; -r http.cap</code></p>
 
         <h3 id="1-4-2：示例"   >
@@ -385,7 +385,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p><strong>操作</strong>：</p>
 <p><code>tcpdump -i eth0</code></p>
 <p><strong>结果</strong>：</p>
-<p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/assets/fa6efcf72377465d8d2efdacd62e1877.png" alt="在这里插入图片描述"></p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9AKali%E6%B8%97%E9%80%8F%E5%9F%BA%E7%A1%80/02/fa6efcf72377465d8d2efdacd62e1877.png" alt="在这里插入图片描述"></p>
 <ul>
 <li><strong>示例02</strong>：抓取数据包所有内容，并保存在 <font style="background:#F8F840">test.pcap</font> 文件</li>
 </ul>
