@@ -71,7 +71,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#前言" class="heading-link"><i class="fas fa-link"></i></a><a href="#前言" class="headerlink" title="前言"></a>前言</h1>
       <p>对于新手，为了更加直观的看到 sql 注入语句，可以在以下文件添加两句：</p>
 <p><img src="https://raw.githubusercontent.com/Dream-Scribe/MyBlog/main/WriteUp%EF%BC%9ASecurity-Lab/%E3%80%8ASQLi-Labs%E3%80%8B01/assets/3fa99fc36b04429682ed785126ed2d85.png" alt="在这里插入图片描述"></p>
-<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> <span class="variable">$sql</span>;		<span class="comment"># 将构造的 sql 语句进行输出</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;	<span class="comment"># 换行输出</span></span><br></pre></td></tr></table></div></figure>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> <span class="variable">$sql</span>;      <span class="comment"># 将构造的 sql 语句进行输出</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;    <span class="comment"># 换行输出</span></span><br></pre></td></tr></table></div></figure>
 
 <p>这样就可以在页面实时看到 sql 语句，便于理解。</p>
 <p>题解中，只第一题添加了此语句。</p>
