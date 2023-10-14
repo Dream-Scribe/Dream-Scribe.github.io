@@ -1,0 +1,1096 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="运行级别、帮助指令、文件目录指令、查看指令、&gt;、&gt;&gt;、管道符【|】、时间日期指令、搜索查找指令、打包压缩指令。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Linux基础》03. 运行级别 · 实用指令">
+<meta property="og:url" content="http://example.com/2023/04/02/%E3%80%8ALinux%E5%9F%BA%E7%A1%80%E3%80%8B03.%20%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB%20%C2%B7%20%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="运行级别、帮助指令、文件目录指令、查看指令、&gt;、&gt;&gt;、管道符【|】、时间日期指令、搜索查找指令、打包压缩指令。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/03/75fd4dcf59604c8b90d18982791e644f.png">
+<meta property="article:published_time" content="2023-04-02T01:58:14.000Z">
+<meta property="article:modified_time" content="2023-10-14T02:36:46.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/03/75fd4dcf59604c8b90d18982791e644f.png"><title>《Linux基础》03. 运行级别 · 实用指令 | 镜坛</title><link ref="canonical" href="http://example.com/2023/04/02/%E3%80%8ALinux%E5%9F%BA%E7%A1%80%E3%80%8B03.%20%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB%20%C2%B7%20%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《Linux基础》03. 运行级别 · 实用指令</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-04-02</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-10-14</span></span></div></header><div class="post-body"><p>@<a href="Linux%E5%9F%BA%E7%A1%80">TOC</a></p>
+<hr>
+<blockquote>
+<p>本文以 CentOS 7.6 为例。</p>
+</blockquote>
+
+        <h1 id="1：运行级别"   >
+          <a href="#1：运行级别" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：运行级别" class="headerlink" title="1：运行级别"></a>1：运行级别</h1>
+      <p><strong>运行级别</strong>（Running Level），也可以称之为运行模式。</p>
+<p>Linux 系统有 7 个运行级别，用数字 0~6 表示：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">运行级别</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0</td>
+<td align="left">系统停机状态。其实就是关机。</td>
+</tr>
+<tr>
+<td align="left">1</td>
+<td align="left">单用户工作状态。为 root 权限，用于系统维护。</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">多用户状态，没有 NFS（Network File Syetem）。即没有网络服务的多用户状态。</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">完全的多用户状态，有 NFS。即有网络服务的多用户状态。</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">被保留的模式。没有被使用的模式。</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">X11 控制台，完整的图形化界面模式。就是图形界面模式。</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left">系统正常关闭并重启状态。其实就是重启。</td>
+</tr>
+</tbody></table></div>
+<p><strong>切换运行级别</strong>：<br><code>init &lt;运行级别&gt;</code></p>
+<blockquote>
+<p>init 指令需要超级管理员的权限，普通用户无法执行。</p>
+</blockquote>
+<p><strong>系统运行级别配置文件</strong>，存放在 <font style="background:#F8F840">&#x2F;etc&#x2F;inittab</font>。</p>
+<p>包括 centos7 在内的一些 Linux 发行版对配置文件进行了简化：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/03/75fd4dcf59604c8b90d18982791e644f.png" alt="在这里插入图片描述"></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">multi-user.target: analogous to runlevel 3</span><br><span class="line"></span><br><span class="line">graphical.target: analogous to runlevel 5</span><br><span class="line"></span><br><span class="line">To view current default target, run:</span><br><span class="line">systemctl get-default</span><br><span class="line"></span><br><span class="line">To set a default target, run:</span><br><span class="line">systemctl set-default TARGET.target</span><br></pre></td></tr></table></div></figure>
+
+<p>通过以上说明可以看出，multi-user.target 即运行级别 3。graphical.target 即运行级别 5。</p>
+<p><strong>查看当前运行级别</strong>：<br><code>systemctl get-default</code></p>
+<p><strong>设置默认运行级别为3</strong>：<br><code>systemctl set-default multi-user.target</code></p>
+<p><strong>设置默认运行级别为5</strong>：<br><code>systemctl set-default graphical.target</code></p>
+<blockquote>
+<p>注意：<br>不要将默认的运行级别设置成 1 和 6。</p>
+</blockquote>
+<blockquote>
+<p>问题：<br>假设 root 密码忘记了，如何找回密码？<br>大致方法：<br>启动系统，进入开机界面，然后进入编辑界面，再进入单用户模式来找回密码。</p>
+</blockquote>
+
+        <h1 id="2：帮助指令"   >
+          <a href="#2：帮助指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：帮助指令" class="headerlink" title="2：帮助指令"></a>2：帮助指令</h1>
+      <p>Linux 有两个常用帮助指令：<code>man</code>（获得帮助信息）、<code>help</code>（获得 shell 内置命令的帮助信息）。</p>
+
+        <h2 id="2-1：man"   >
+          <a href="#2-1：man" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1：man" class="headerlink" title="2.1：man"></a>2.1：man</h2>
+      <p><strong>功能描述</strong>：获得帮助信息。（manual）</p>
+<p><strong>基本语法</strong>：<br><code>man &lt;命令或配置文件&gt;</code></p>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看 <span class="built_in">ls</span> 命令的帮助信息</span></span><br><span class="line">man ls</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="2-2：help"   >
+          <a href="#2-2：help" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2：help" class="headerlink" title="2.2：help"></a>2.2：help</h2>
+      <p><strong>功能描述</strong>：获得 shell 内置命令的帮助信息。</p>
+<p><strong>基本语法</strong>：<br><code>help &lt;命令&gt;</code></p>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看 <span class="built_in">cd</span> 命令的帮助信息</span></span><br><span class="line">help cd</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="3：文件目录指令"   >
+          <a href="#3：文件目录指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：文件目录指令" class="headerlink" title="3：文件目录指令"></a>3：文件目录指令</h1>
+      <p>在 linux 下，命令选项可以组合使用，且以【.】开头的文件是隐藏文件。</p>
+
+        <h2 id="3-1：pwd"   >
+          <a href="#3-1：pwd" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1：pwd" class="headerlink" title="3.1：pwd"></a>3.1：pwd</h2>
+      <p><strong>功能描述</strong>：显示当前工作目录的绝对路径。（print work directory）</p>
+<p><strong>基本语法</strong>：<br><code>pwd</code></p>
+
+        <h2 id="3-2：ls"   >
+          <a href="#3-2：ls" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2：ls" class="headerlink" title="3.2：ls"></a>3.2：ls</h2>
+      <p><strong>功能描述</strong>：显示指定工作目录下的内容。（list directory contents）</p>
+<p><strong>基本语法</strong>：<br><code>ls [选项] [&lt;dirName&gt;]</code></p>
+<blockquote>
+<p>“ dirName ” 可为绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-a</code></td>
+<td align="left">显示所有文件及目录，包括隐藏文件。</td>
+</tr>
+<tr>
+<td align="left"><code>-l</code></td>
+<td align="left">以列表的方式显示信息。</td>
+</tr>
+<tr>
+<td align="left"><code>-t</code></td>
+<td align="left">按照修改时间排序，最新的文件在最前面。</td>
+</tr>
+<tr>
+<td align="left"><code>-lh</code></td>
+<td align="left">以便于阅读的方式显示当前目录中的文件和目录大小。（如果不使用此选项，大小显示为字节）</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看当前目录的所有文件并以列表形式列出</span></span><br><span class="line">ls -al</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看 /root/ 目录的所有文件并以列表形式列出</span></span><br><span class="line">ls -al /root</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="3-3：cd"   >
+          <a href="#3-3：cd" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-3：cd" class="headerlink" title="3.3：cd"></a>3.3：cd</h2>
+      <p><strong>功能描述</strong>：切换到指定目录。（change directory）</p>
+<p><strong>基本语法</strong>：<br><code>cd [&lt;dirName&gt;]</code></p>
+<blockquote>
+<p>“ dirName ” 可为绝对路径或相对路径。</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">回到自己的家目录</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">方式一：</span></span><br><span class="line">cd</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">方式二：</span></span><br><span class="line">cd ~</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">回到当前目录的上一级目录</span></span><br><span class="line">cd ..</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="3-4：mkdir"   >
+          <a href="#3-4：mkdir" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-4：mkdir" class="headerlink" title="3.4：mkdir"></a>3.4：mkdir</h2>
+      <p><strong>功能描述</strong>：创建目录。（make directory）</p>
+<p><strong>基本语法</strong>：<br><code>mkdir [选项] &lt;dirName&gt;</code></p>
+<blockquote>
+<p>“ dirName ” 可为多级目录，可使用绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-p</code></td>
+<td align="left">确保多级目录名称存在，不存在的就建一个。（创建多级目录必须使用）</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在 /home/tom/ 目录下创建 <span class="built_in">test</span> 目录</span></span><br><span class="line">mkdir /home/tom/test</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在 /home/ 目录下创建 bob 目录，并在 bob 目录下创建 <span class="built_in">test</span> 目录</span></span><br><span class="line">mkdir -p /home/bob/test</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="3-5：rmdir"   >
+          <a href="#3-5：rmdir" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-5：rmdir" class="headerlink" title="3.5：rmdir"></a>3.5：rmdir</h2>
+      <p><strong>功能描述</strong>：删除空的目录。（remove directory）</p>
+<p><strong>基本语法</strong>：<br><code>rmdir [选项] &lt;dirName&gt;</code></p>
+<blockquote>
+<p>“ dirName ” 可为多级目录，可使用绝对路径或相对路径。</p>
+</blockquote>
+<blockquote>
+<p>rmdir 删除的是空目录，如果目录下有内容则无法删除。<br>如果需要删除非空目录，需要使用 <code>rm -rf dirName</code> （谨慎使用）。</p>
+</blockquote>
+
+        <h2 id="3-6：touch"   >
+          <a href="#3-6：touch" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-6：touch" class="headerlink" title="3.6：touch"></a>3.6：touch</h2>
+      <p><strong>功能描述</strong>：创建新文件，也可用于修改文件或者目录的时间属性。</p>
+<p><strong>基本语法</strong>：<br><code>touch [选项] &lt;name&gt;</code></p>
+<blockquote>
+<p>“ name ” 可为绝对路径或相对路径。</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在当前目录创建 test.txt 文件</span></span><br><span class="line">touch test.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在 /home/ 目录下创建 test.txt 文件</span></span><br><span class="line">touch /home/test.txt</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="3-7：cp"   >
+          <a href="#3-7：cp" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-7：cp" class="headerlink" title="3.7：cp"></a>3.7：cp</h2>
+      <p><strong>功能描述</strong>：主要用于复制文件或目录。（copy file）</p>
+<p><strong>基本语法</strong>：<br><code>cp [选项] &lt;source&gt; &lt;dest&gt;</code></p>
+<blockquote>
+<p>“ source ” 为目录或文件，可使用绝对路径或相对路径。<br>“ dest ” 为目录，可使用绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-r</code></td>
+<td align="left">若 source 是一个目录文件，将复制该目录下所有的子目录和文件。（复制目录时必须使用）</td>
+</tr>
+<tr>
+<td align="left"><code>-f</code></td>
+<td align="left">覆盖已经存在的目标文件而不给出提示。</td>
+</tr>
+<tr>
+<td align="left"><code>-i</code></td>
+<td align="left">在覆盖目标文件之前给出提示，要求用户确认是否覆盖。</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 /home/bob/ 整个目录，拷贝到 /opt/</span></span><br><span class="line">cp -r /home/bob /opt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将当前目录 hello.txt 拷贝到 /home/bob/ 目录下</span></span><br><span class="line">cp hello.txt /home/bob</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="3-8：rm"   >
+          <a href="#3-8：rm" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-8：rm" class="headerlink" title="3.8：rm"></a>3.8：rm</h2>
+      <p><strong>功能描述</strong>：用于删除一个文件或者目录。（remove）</p>
+<p><strong>基本语法</strong>：<br><code>rm [选项] &lt;name&gt;</code></p>
+<blockquote>
+<p>“ name ” 为目录或文件，可使用绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-i</code></td>
+<td align="left">删除前逐一询问确认。</td>
+</tr>
+<tr>
+<td align="left"><code>-f</code></td>
+<td align="left">强制删除不提示。</td>
+</tr>
+<tr>
+<td align="left"><code>-r</code></td>
+<td align="left">将所有文件与目录递归删除。（删除目录时必须使用）</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 /home/ 目录下的 hello.txt 文件删除</span></span><br><span class="line">rm -f /home/hello.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除 /home/ 目录下的 bob/ 目录</span></span><br><span class="line">rm -rf /home/bob</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="3-9：mv"   >
+          <a href="#3-9：mv" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-9：mv" class="headerlink" title="3.9：mv"></a>3.9：mv</h2>
+      <p><strong>功能描述</strong>：将文件或目录移入其它位置，也可用于重命名文件或目录。（move file）</p>
+<p><strong>基本语法</strong>：<br><code>mv [选项] &lt;source&gt; &lt;dest&gt;</code></p>
+<blockquote>
+<p>“ source ”、“ dest ” 为文件或目录，可使用绝对路径或相对路径。</p>
+</blockquote>
+<blockquote>
+<p>当 “ dest ” 为目录，且 “ source ”、“ dest ” 路径不同时，为移动到 “ dest ” 目录。</p>
+</blockquote>
+<blockquote>
+<p>“ source ”、“ dest ” 均为文件，且路径相同，则为重命名。<br>“ source ”、“ dest ” 均为目录，且路径相同，则为重命名。<br>“ source ”、“ dest ” 均为文件，但路径不同，则为移动并重命名。<br>“ source ”、“ dest ” 均为目录，但路径不同，则为移动并重命名。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-b</code></td>
+<td align="left">当 dest 存在时，在执行覆盖前，会为其创建一个备份。</td>
+</tr>
+<tr>
+<td align="left"><code>-i</code></td>
+<td align="left">如果 source 与 dest 同名，会先询问是否覆盖 dest。</td>
+</tr>
+<tr>
+<td align="left"><code>-f</code></td>
+<td align="left">如果 source 与 dest 同名，不会询问，直接覆盖 dest。</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 /home/ 目录下 cat.txt 文件重新命名为 pig.txt</span></span><br><span class="line">mv /home/cat.txt /home/pig.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将当前目录下 info 目录改名为 logs。注意，如果 logs 目录在当前目录下存在，则该条命令会将 info 目录放入 logs 目录中</span></span><br><span class="line">mv info/ logs/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 /home/ 目录下 cat.txt 文件移动到 /home/test/ 目录下并重新命名为 pig.txt</span></span><br><span class="line">mv /home/cat.txt /home/test/pig.txt</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="3-10：ln"   >
+          <a href="#3-10：ln" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-10：ln" class="headerlink" title="3.10：ln"></a>3.10：ln</h2>
+      <p><strong>功能描述</strong>：为某一个文件或目录在另外一个位置建立一个同步的链接。（link files）</p>
+<blockquote>
+<p>链接可分为两种：硬链接（hard link）与软链接（符号链接，symbolic link）。<br>无论硬链接还是软连接，都可以看成是一个文件。</p>
+</blockquote>
+<blockquote>
+<p>硬链接的意思是一个文件可以有多个名称，存在于同一个目录。<br>以文件副本的形式存在，但不占用实际空间。<br>不允许给目录创建硬链接。</p>
+</blockquote>
+<blockquote>
+<p>软链接的方式则是产生一个特殊的文件指向另一个文件或目录的位置。可以跨目录。<br>以路径的形式存在，类似于 windows 里的快捷方式。<br>可以对目录进行链接。</p>
+</blockquote>
+<p><strong>基本语法</strong>：<br><code>ln [选项] &lt;source&gt; &lt;dest&gt;</code></p>
+<blockquote>
+<p>“ source ” 为目录或文件，可使用绝对路径或相对路径。<br>“ dest ” 为链接名（可视为文件），可使用绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-s</code></td>
+<td align="left">创建的是软链接。</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在 /home/ 目录下创建一个软连接 myroot，连接到 /root/ 目录</span></span><br><span class="line">ln -s /root /home/myroot</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除软连接 myroot</span></span><br><span class="line">rm /home/myroot</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="4：查看指令"   >
+          <a href="#4：查看指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#4：查看指令" class="headerlink" title="4：查看指令"></a>4：查看指令</h1>
+      
+        <h2 id="4-1：cat"   >
+          <a href="#4-1：cat" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1：cat" class="headerlink" title="4.1：cat"></a>4.1：cat</h2>
+      <p><strong>功能描述</strong>：用于连接文件并打印到标准输出设备上。即查看文件内容。（concatenate）</p>
+<p><strong>基本语法</strong>：<br><code>cat [选项] &lt;fileName&gt;</code></p>
+<blockquote>
+<p>“ fileName ” 可为绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-n</code> 或 <code>--number</code></td>
+<td align="left">由 1 开始对所有输出的行数编号。即显示行号。</td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p>cat 只能浏览文件，而不能修改文件。<br>为了浏览方便，一般会带上 “ <code>| more</code> ”。其中【|】为管道符号，“ <code>more</code> ” 命令与管道符号之后介绍。</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看 /etc/ 目录下的 profile 文件内容，并显示行号</span></span><br><span class="line">cat -n /etc/profile</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">为了浏览方便，也可以：</span></span><br><span class="line">cat -n /etc/profile | more</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="4-2：more"   >
+          <a href="#4-2：more" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2：more" class="headerlink" title="4.2：more"></a>4.2：more</h2>
+      <p><strong>功能描述</strong>：是一个基于 vi 编辑器的文本过滤器。类似于 cat，不过会以全屏幕按页的形式显示文件内容，更方便使用者逐页阅读。</p>
+<p><strong>基本语法</strong>：<br><code>more [选项] &lt;fileName&gt;</code></p>
+<blockquote>
+<p>“ fileName ” 可为绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>操作说明</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">操作</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><kbd>Space</kbd>（空格键）</td>
+<td align="left">向下滚动一页</td>
+</tr>
+<tr>
+<td align="left"><kbd>Enter</kbd>（回车键）</td>
+<td align="left">向下滚动 n 行，需要定义。默认为 1 行</td>
+</tr>
+<tr>
+<td align="left"><kbd>Q</kbd></td>
+<td align="left">退出 more，不再显示文件内容</td>
+</tr>
+<tr>
+<td align="left"><kbd>Ctrl</kbd> + <kbd>F</kbd></td>
+<td align="left">向下滚动一页</td>
+</tr>
+<tr>
+<td align="left"><kbd>Ctrl</kbd> + <kbd>B</kbd></td>
+<td align="left">向上滚动一页</td>
+</tr>
+<tr>
+<td align="left"><kbd>=</kbd></td>
+<td align="left">输出当前行的行号</td>
+</tr>
+<tr>
+<td align="left">输入冒号【<code>:</code>】，按 <kbd>F</kbd></td>
+<td align="left">输出文件名和当前行的行号</td>
+</tr>
+</tbody></table></div>
+
+        <h2 id="4-3：less"   >
+          <a href="#4-3：less" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3：less" class="headerlink" title="4.3：less"></a>4.3：less</h2>
+      <p><strong>功能描述</strong>：与 more 类似，用来分屏查看文件内容，支持各种显示终端。less指令在显示文件内容时，并不是一次将整个文件加载之后才显示，而是根据显示需要加载内容，对于显示大型文件具有较高的效率。</p>
+<p><strong>基本语法</strong>：<br><code>less [选项] &lt;fileName&gt;</code></p>
+<blockquote>
+<p>“ fileName ” 可为绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-e</code></td>
+<td align="left">当文件显示结束后，自动离开 less。</td>
+</tr>
+<tr>
+<td align="left"><code>-N</code></td>
+<td align="left">显示每行的行号</td>
+</tr>
+</tbody></table></div>
+<p><strong>操作说明</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">操作</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><kbd>Space</kbd></td>
+<td align="left">向下滚动一页</td>
+</tr>
+<tr>
+<td align="left"><kbd>Pagedown</kbd></td>
+<td align="left">向下滚动一页</td>
+</tr>
+<tr>
+<td align="left"><kbd>Pageup</kbd></td>
+<td align="left">向上滚动一页</td>
+</tr>
+<tr>
+<td align="left"><code>/关键字</code></td>
+<td align="left">向下查找 “ 关键字 ”，按 <kbd>N</kbd> 向下查找，按 <kbd>Shift</kbd> + <kbd>N</kbd> 向上查找</td>
+</tr>
+<tr>
+<td align="left"><code>?关键字</code></td>
+<td align="left">向上查找 “ 关键字 ”，按 <kbd>N</kbd> 向上查找，按 <kbd>Shift</kbd> + <kbd>N</kbd> 向下查找</td>
+</tr>
+<tr>
+<td align="left"><kbd>Q</kbd></td>
+<td align="left">退出 less，不再显示文件内容</td>
+</tr>
+</tbody></table></div>
+
+        <h2 id="4-4：head"   >
+          <a href="#4-4：head" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4：head" class="headerlink" title="4.4：head"></a>4.4：head</h2>
+      <p><strong>功能描述</strong>：用于显示文件的开头部分内容，默认情况下显示文件的前 10 行内容。</p>
+<p><strong>基本语法</strong>：<br><code>head [选项] &lt;fileName&gt;</code></p>
+<blockquote>
+<p>“ fileName ” 可为绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-n &lt;数字&gt;</code></td>
+<td align="left">指定显示文件开头的前几行内容。</td>
+</tr>
+</tbody></table></div>
+
+        <h2 id="4-5：tail"   >
+          <a href="#4-5：tail" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-5：tail" class="headerlink" title="4.5：tail"></a>4.5：tail</h2>
+      <p><strong>功能描述</strong>：用于显示文件的末尾部分内容，默认情况下显示文件的末 10 行内容。</p>
+<p><strong>基本语法</strong>：<br><code>tail [选项] &lt;fileName&gt;</code></p>
+<blockquote>
+<p>“ fileName ” 可为绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-n 数字</code></td>
+<td align="left">指定显示文件最后的几行内容</td>
+</tr>
+<tr>
+<td align="left"><code>-f</code></td>
+<td align="left">把文件最尾部的内容显示在屏幕上并不断刷新，只要文件更新就可以看到最新内容。</td>
+</tr>
+</tbody></table></div>
+
+        <h2 id="4-6：history、"   >
+          <a href="#4-6：history、" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-6：history、" class="headerlink" title="4.6：history、!"></a>4.6：history、!</h2>
+      <p><strong>功能描述</strong>：查看已经执行过的历史命令，配合【<code>!</code>】使用可以执行历史指令。默认显示所有历史命令。</p>
+<p><strong>基本语法</strong>：<br><code>history [选项]</code></p>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>数字</code></td>
+<td align="left">指定显示最近使用过几个指令。</td>
+</tr>
+<tr>
+<td align="left"><code>-c</code></td>
+<td align="left">清空当前历史记录（只是清空缓存中的历史记录，伪删除）</td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p>history 查询的每条历史命令前带有编号，因此可用以下命令来执行历史命令。</p>
+</blockquote>
+<p><strong>执行指定历史编号的命令</strong>：<br><code>!&lt;编号&gt;</code></p>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示最近使用过的 10 个指令。</span></span><br><span class="line">history 10</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">执行历史编号为 23 的指令</span></span><br><span class="line">!23</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">执行最后一次命令</span></span><br><span class="line">!!</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="5：-、-、管道符【-】"   >
+          <a href="#5：-、-、管道符【-】" class="heading-link"><i class="fas fa-link"></i></a><a href="#5：-、-、管道符【-】" class="headerlink" title="5：&gt;、&gt;&gt;、管道符【|】"></a>5：&gt;、&gt;&gt;、管道符【|】</h1>
+      
+        <h2 id="5-1："   >
+          <a href="#5-1：" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-1：" class="headerlink" title="5.1：&gt;"></a>5.1：&gt;</h2>
+      <p><strong>功能描述</strong>：将输出结果重定向。重定向到文件时，覆盖文件原有内容。</p>
+<p><strong>基本语法</strong>：<br><code>&lt;命令&gt; &gt; &lt;fileName&gt;</code></p>
+<blockquote>
+<p>“ fileName ” 为绝对路径或相对路径。<br>如果文件不存在则会创建。</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 /home/ 目录下的文件列表覆盖写入到 /home/info.txt 中</span></span><br><span class="line">ls -la /home &gt; /home/info.txt</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="5-2："   >
+          <a href="#5-2：" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2：" class="headerlink" title="5.2：&gt;&gt;"></a>5.2：&gt;&gt;</h2>
+      <p><strong>功能描述</strong>：将输出结果重定向。重定向到文件时，追加到文件末尾。</p>
+<p><strong>基本语法</strong>：<br><code>&lt;命令&gt; &gt;&gt; &lt;fileName&gt;</code></p>
+<blockquote>
+<p>“ fileName ” 为绝对路径或相对路径。<br>如果文件不存在则会创建。</p>
+</blockquote>
+
+        <h2 id="5-3：管道符【-】"   >
+          <a href="#5-3：管道符【-】" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-3：管道符【-】" class="headerlink" title="5.3：管道符【|】"></a>5.3：管道符【|】</h2>
+      <p><strong>功能描述</strong>：主要用于多重命令处理，将前面的输出结果作为后面的输入。</p>
+<blockquote>
+<p>一些命令可从标准输入中读取要处理的文本，即从标准输入中读取参数。（如 cat）<br>对于部分命令则不支持从标准输入中读取参数，只支持从命令行中读取参数。（如 rm）</p>
+</blockquote>
+<blockquote>
+<p>一般情况下，处理文本的命令（如 cat、more 等）均支持管道符。</p>
+</blockquote>
+<p><strong>基本语法</strong>：<br><code>&lt;命令&gt; | &lt;命令&gt;</code></p>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看 /etc/ 目录下的 profile 文件内容，并显示行号，按分页显示</span></span><br><span class="line">cat -n /etc/profile | more</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对 hello.sh 文件进行排序、去重</span></span><br><span class="line">cat hello.sh | sort | uniq</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="6：时间日期指令"   >
+          <a href="#6：时间日期指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#6：时间日期指令" class="headerlink" title="6：时间日期指令"></a>6：时间日期指令</h1>
+      
+        <h2 id="6-1：date"   >
+          <a href="#6-1：date" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-1：date" class="headerlink" title="6.1：date"></a>6.1：date</h2>
+      <p><strong>功能描述</strong>：可以用来显示或设定系统的日期与时间。默认情况显示当前时间。</p>
+<p><strong>基本语法</strong>：<br><code>date [选项]</code></p>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>+&#39;%Y&#39;</code></td>
+<td align="left">显示当前年份</td>
+</tr>
+<tr>
+<td align="left"><code>+&#39;%m&#39;</code></td>
+<td align="left">显示当前月份</td>
+</tr>
+<tr>
+<td align="left"><code>+&#39;%d&#39;</code></td>
+<td align="left">显示当前号数</td>
+</tr>
+<tr>
+<td align="left"><code>+&#39;%Y-%m-%d %H:%M:%S&#39;</code></td>
+<td align="left">显示年月日时分秒（【<code>-</code>】、【<code>:</code>】、【空格】为自定义分割符，便于查看）</td>
+</tr>
+<tr>
+<td align="left"><code>-s &lt;date string&gt;</code></td>
+<td align="left">根据字符串设置系统时间</td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p>在显示方面，使用字符串表示，配合 “ <code>%Y</code> ” 等占位符可以设定显示的格式。<br>只显示一个参数时，可不加引号。</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示当前年份</span></span><br><span class="line">date +%Y</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示年月日时分秒</span></span><br><span class="line">date +&#x27;%Y-%m-%d %H:%M:%S&#x27;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置系统当前时间为 2021-11-03 20:02:10</span></span><br><span class="line">date -s &#x27;2021-11-03 20:02:10&#x27;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="6-2：cal"   >
+          <a href="#6-2：cal" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2：cal" class="headerlink" title="6.2：cal"></a>6.2：cal</h2>
+      <p><strong>功能描述</strong>：查看日历。默认显示当月日历。（calendar）</p>
+<p><strong>基本语法</strong>：<br><code>cal [选项]</code></p>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>年份</code></td>
+<td align="left">显示某一年的日历</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示当前日历</span></span><br><span class="line">cal</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示 2023 年日历</span></span><br><span class="line">cal 2023</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="7：搜索查找指令"   >
+          <a href="#7：搜索查找指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#7：搜索查找指令" class="headerlink" title="7：搜索查找指令"></a>7：搜索查找指令</h1>
+      
+        <h2 id="7-1：find"   >
+          <a href="#7-1：find" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-1：find" class="headerlink" title="7.1：find"></a>7.1：find</h2>
+      <p><strong>功能描述</strong>：用于在指定目录下查找文件和目录。从指定目录向下递归地遍历查找。</p>
+<p><strong>基本语法</strong>：<br><code>find [dirName] [选项]</code></p>
+<blockquote>
+<p>“ dirName ” 可为绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-name &lt;关键字&gt;</code></td>
+<td align="left">查找文件名称等于关键字的文件。（如果要使用通配符模糊匹配，要加引号）</td>
+</tr>
+<tr>
+<td align="left"><code>-iname &lt;关键字&gt;</code></td>
+<td align="left">与 <code>-name</code> 类似，但不区分大小写。</td>
+</tr>
+<tr>
+<td align="left"><code>-user &lt;用户名&gt;</code></td>
+<td align="left">查找属于指定用户的所有文件。</td>
+</tr>
+<tr>
+<td align="left"><code>-atime &lt;数字&gt;</code></td>
+<td align="left">查找指定几天被读取过的文件。（数字前可带 +、- 号，“+” 代表几天前，“-” 代表几天内）</td>
+</tr>
+<tr>
+<td align="left"><code>-amin &lt;数字&gt;</code></td>
+<td align="left">查找指定几分钟被读取过的文件。（数字前可带 +、- 号，“+” 代表几分钟前，“-” 代表几分钟内）</td>
+</tr>
+<tr>
+<td align="left"><code>-mtime &lt;数字&gt;</code></td>
+<td align="left">查找指定几天被修改过的文件。（数字前可带 +、- 号，“+” 代表几天前，“-” 代表几天内）</td>
+</tr>
+<tr>
+<td align="left"><code>-mmin &lt;数字&gt;</code></td>
+<td align="left">查找指定几分钟被修改过的文件。（数字前可带 +、- 号，“+” 代表几分钟前，“-” 代表几分钟内）</td>
+</tr>
+<tr>
+<td align="left"><code>-size &lt;大小&gt;</code></td>
+<td align="left">查找指定大小的文件。（可带 +、- 号，“+” 代表大于，“-” 代表小于。需要带单位）</td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p>linux 下常用通配符：【<code>*</code>】</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查找 /home/ 目录下的 hello.txt 文件</span></span><br><span class="line">find /home -name hello.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查找当前目录下的所有 txt 文件</span></span><br><span class="line">find . -name &#x27;*.txt&#x27;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查找10分钟内被修改过的文件</span></span><br><span class="line">find . -mmin -10</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查找一天前被读取过的文件</span></span><br><span class="line">find . -atime +1</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查找整个 linux 系统下大于 200M 的文件</span></span><br><span class="line">find / -size +200M</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="7-2：locate"   >
+          <a href="#7-2：locate" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-2：locate" class="headerlink" title="7.2：locate"></a>7.2：locate</h2>
+      <p><strong>功能描述</strong>：用于查找符合条件的文档，可以快速定位文件路径。</p>
+<blockquote>
+<p>locate 指令利用事先建立的 locate 数据库（包含系统中所有文件名称及路径），实现快速定位指定文件。</p>
+</blockquote>
+<blockquote>
+<p>手动更新数据库：<code>updatedb</code></p>
+</blockquote>
+<blockquote>
+<p>locate 指令无需遍历整个文件系统，查询速度较快。为了保证查询结果的准确度，对于 locate 数据库，一般是系统自己维护，管理员也可以手动更新。</p>
+</blockquote>
+<p><strong>基本语法</strong>：<br><code>locate [选项] &lt;关键字&gt;</code></p>
+<blockquote>
+<p>“ 关键字 ” 可为绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-i</code> 或 <code>--ignore-case</code></td>
+<td align="left">忽略大小写。</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">快速定位 hello.txt 文件所在目录</span></span><br><span class="line">locate hello.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">搜索 etc 目录下所有以 sh 开头的文件</span></span><br><span class="line">locate /etc/sh</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="7-3：which"   >
+          <a href="#7-3：which" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-3：which" class="headerlink" title="7.3：which"></a>7.3：which</h2>
+      <p><strong>功能描述</strong>：会在环境变量 <code>$PATH</code> 设置的目录里查找符合条件的文件。可以查看某个指令在哪个目录下。</p>
+<p><strong>基本语法</strong>：<br><code>which &lt;关键字&gt;</code></p>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看 <span class="built_in">ls</span> 指令在哪个目录</span></span><br><span class="line">which ls</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="7-4：grep"   >
+          <a href="#7-4：grep" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-4：grep" class="headerlink" title="7.4：grep"></a>7.4：grep</h2>
+      <p><strong>功能描述</strong>：过滤查找，用于查找文件里符合条件的字符串或正则表达式。</p>
+<p><strong>基本语法</strong>：<br><code>grep [选项] &lt;关键字&gt; [&lt;name&gt;]</code></p>
+<blockquote>
+<p>“ 关键字 ” 使用通配符模糊匹配时要加引号</p>
+</blockquote>
+<blockquote>
+<p>“ name ” 为目录或文件，可使用绝对路径或相对路径。使用通配符模糊匹配不需要加引号</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-n</code></td>
+<td align="left">显示匹配行及行号。</td>
+</tr>
+<tr>
+<td align="left"><code>-i</code></td>
+<td align="left">忽略大小写进行匹配。</td>
+</tr>
+<tr>
+<td align="left"><code>-r</code></td>
+<td align="left">递归查找子目录中的文件。</td>
+</tr>
+<tr>
+<td align="left"><code>-v</code></td>
+<td align="left">反向查找。显示不包含关键字的信息。</td>
+</tr>
+<tr>
+<td align="left"><code>--</code></td>
+<td align="left">不再解释后续参数为选项，而是作为待搜索的文本。</td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p>可配合管道符【<code>|</code>】使用</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在 /home/ 目录下的 hello.txt 文件中查找 <span class="string">&quot;good&quot;</span> 所在行，并且显示行号</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">方式一：</span></span><br><span class="line">grep -n &#x27;good&#x27; /home/hello.txt</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">方式二：</span></span><br><span class="line">cat /home/hello.txt | grep -n &#x27;good&#x27;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在当前目录下所有 txt 文件查找 <span class="string">&quot;good&quot;</span> 所在行</span></span><br><span class="line">grep -n good *.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在 /home/ 目录下所有 txt 文件查找以 <span class="string">&quot;good&quot;</span> 开头的内容所在行</span></span><br><span class="line">grep -n &#x27;good*&#x27; /home/*.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查找 <span class="string">&quot;-n&quot;</span> 所在行，并且显示行号</span></span><br><span class="line">cat /home/hello.txt | grep -n -- &#x27;-n&#x27;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对 hello.sh 文件进行排序去重以后找出包含 better 的行</span></span><br><span class="line">cat hello.sh | sort | uniq | grep &#x27;better&#x27;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="8：打包压缩指令"   >
+          <a href="#8：打包压缩指令" class="heading-link"><i class="fas fa-link"></i></a><a href="#8：打包压缩指令" class="headerlink" title="8：打包压缩指令"></a>8：打包压缩指令</h1>
+      
+        <h2 id="8-1：gzip"   >
+          <a href="#8-1：gzip" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-1：gzip" class="headerlink" title="8.1：gzip"></a>8.1：gzip</h2>
+      <p><strong>功能描述</strong>：用于压缩文件，也可用于解压文件。默认为压缩文件。压缩后的文件后缀名为 “ .gz ”。</p>
+<p><strong>基本语法</strong>：<br><code>gzip [选项] &lt;fileName&gt;</code></p>
+<blockquote>
+<p>“ fileName ” 为绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-d</code> 或 <code>--decompress</code></td>
+<td align="left">解开压缩文件。</td>
+</tr>
+<tr>
+<td align="left"><code>-v</code> 或 <code>--verbose</code></td>
+<td align="left">显示指令执行过程（显示进度）。</td>
+</tr>
+<tr>
+<td align="left"><code>-l</code> 或 <code>--list</code></td>
+<td align="left">列出压缩文件的相关信息。</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 /home/ 下的 hello.txt 文件进行压缩，并显示进度</span></span><br><span class="line">gzip -v /home/hello.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 /home/ 下的 hello.txt.gz 文件进行解压缩，并显示进度</span></span><br><span class="line">gzip -dv /home/hello.txt.gz</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="8-2：gunzip"   >
+          <a href="#8-2：gunzip" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-2：gunzip" class="headerlink" title="8.2：gunzip"></a>8.2：gunzip</h2>
+      <p><strong>功能描述</strong>：用于解压 “ .gz ” 文件。</p>
+<blockquote>
+<p>事实上 gunzip 就是 gzip 的硬连接，因此不论是压缩或解压缩，都可通过 gzip 指令单独完成。</p>
+</blockquote>
+<p><strong>基本语法</strong>：<br><code>gunzip [选项] &lt;fileName&gt;</code></p>
+<blockquote>
+<p>“ fileName ” 为绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-v</code> 或 <code>--verbose</code></td>
+<td align="left">显示指令执行过程（显示进度）。</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 /home/ 下的 hello.txt.gz 文件进行解压缩</span></span><br><span class="line">gunzip /home/hello.txt.gz</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="8-3：zip"   >
+          <a href="#8-3：zip" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-3：zip" class="headerlink" title="8.3：zip"></a>8.3：zip</h2>
+      <p><strong>功能描述</strong>：用于压缩文件与目录。压缩后的文件后缀名为 “ .zip ”。</p>
+<p><strong>基本语法</strong>：<br><code>zip [选项] &lt;zipName&gt; &lt;name&gt;</code></p>
+<blockquote>
+<p>“ zipName ” 为 zip 文件，可使用绝对路径或相对路径。</p>
+</blockquote>
+<blockquote>
+<p>“ name ” 可使用绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-r</code></td>
+<td align="left">递归压缩，将指定目录下的所有文件和子目录一并压缩，即压缩目录。</td>
+</tr>
+<tr>
+<td align="left"><code>-v</code></td>
+<td align="left">显示指令执行过程或版本信息。</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 /home/test/ 目录压缩成 my.zip 且存放在 /bob/Desktop/ 目录下</span></span><br><span class="line">zip -r /bob/Desktop/my.zip /home/test</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="8-4：unzip"   >
+          <a href="#8-4：unzip" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-4：unzip" class="headerlink" title="8.4：unzip"></a>8.4：unzip</h2>
+      <p><strong>功能描述</strong>：用于解压 zip 文件。为 “ .zip ” 压缩文件的解压缩程序。</p>
+<p><strong>基本语法</strong>：<br><code>unzip [选项] &lt;fileName&gt;</code></p>
+<blockquote>
+<p>“ fileName ” 为绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-d &lt;dirName&gt;</code></td>
+<td align="left">指定文件解压后所要存储的目录。“ dirName ” 可为绝对路径或相对路径</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 myhome.zip 解压到 /opt/tmp/ 目录下</span></span><br><span class="line">unzip -d /opt/tmp /home/myhome.zip</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="8-5：tar"   >
+          <a href="#8-5：tar" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-5：tar" class="headerlink" title="8.5：tar"></a>8.5：tar</h2>
+      <p><strong>功能描述</strong>：用于备份文件，也可用于打包、压缩文件。打包后的文件后缀名为 “ .tar ”，打包并压缩后的文件后缀名为 “ .tar.gz ”。（tape archive）</p>
+<p><strong>基本语法</strong>：<br><code>tar [选项1] &lt;source&gt; [选项2]</code></p>
+<blockquote>
+<p>“ source ” 为目录或文件，可使用绝对路径或相对路径。</p>
+</blockquote>
+<p><strong>常用选项1</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-c</code></td>
+<td align="left">打包（生成 tar 文件）。</td>
+</tr>
+<tr>
+<td align="left"><code>-x</code></td>
+<td align="left">还原文件（解压缩与解包）。</td>
+</tr>
+<tr>
+<td align="left"><code>-z</code></td>
+<td align="left">通过 gzip 指令处理打包文件。</td>
+</tr>
+<tr>
+<td align="left"><code>-v</code></td>
+<td align="left">显示指令执行过程详细信息。</td>
+</tr>
+<tr>
+<td align="left"><code>-f [&lt;tName&gt;]</code></td>
+<td align="left">指定备份文件，用来压缩文件命名或指定解压文件。（tName 可为绝对路径或相对路径。）</td>
+</tr>
+</tbody></table></div>
+<p><strong>常用选项2</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-C &lt;dirName&gt;</code></td>
+<td align="left">解压到指定的目录下。（dirName 可为绝对路径或相对路径。）</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 /home/ 目录下的 pig.txt 和 cat.txt 压缩成 test.tar.gz，保存在 /root/Desktop/ 目录下</span></span><br><span class="line">tar -czvf /root/Desktop/test.tar.gz /home/pig.txt /home/cat.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 /home/ 文件夹压缩成 myhome.tar.gz</span></span><br><span class="line">tar -czvf myhome.tar.gz /home/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 myhome.tar.gz 解压到当前目录</span></span><br><span class="line">tar -xzvf myhome.tar.gz</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 /root/Desktop/ 目录下的 test.tar.gz 文件解压到 /home/tom/ 目录下</span></span><br><span class="line">tar -xzvf /root/Desktop/test.tar.gz -C /home/tom/</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 pig.txt 和 cat.txt 打包为 PC.tar （不压缩）</span></span><br><span class="line">tar -cvf PC.tar pig.txt cat.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 PC.tar 文件解包</span></span><br><span class="line">tar -xvf PC.tar</span><br></pre></td></tr></table></div></figure>
+
+<hr>
+<p><font color="#8B8989">
+白日登山望烽火，黄昏饮马傍交河。
+</font></p>
+<p align="right"><font color="#8B8989">
+——《古从军行》（唐）李颀
+</font></p>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://example.com">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://example.com/2023/04/02/%E3%80%8ALinux%E5%9F%BA%E7%A1%80%E3%80%8B03.%20%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB%20%C2%B7%20%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/">http://example.com/2023/04/02/%E3%80%8ALinux%E5%9F%BA%E7%A1%80%E3%80%8B03.%20%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB%20%C2%B7%20%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/04/03/%E3%80%8ALinux%E5%9F%BA%E7%A1%80%E3%80%8B04.%20%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%20%C2%B7%20%E7%94%A8%E6%88%B7%E7%BB%84%20%C2%B7%20%E7%9B%B8%E5%85%B3%E6%96%87%E4%BB%B6%20%C2%B7%20%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《Linux基础》04. 用户管理 · 用户组 · 相关文件 · 权限管理</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/03/28/%E3%80%8ALinux%E5%9F%BA%E7%A1%80%E3%80%8B02.%20%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%20%C2%B7%20vi%20&amp;%20vim%20%C2%B7%20%E5%85%B3%E6%9C%BA%20%C2%B7%20%E9%87%8D%E5%90%AF/"><span class="paginator-prev__text">《Linux基础》02. 目录结构 · vi &amp; vim · 关机 · 重启</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9A%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB"><span class="toc-text">
+          1：运行级别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9A%E5%B8%AE%E5%8A%A9%E6%8C%87%E4%BB%A4"><span class="toc-text">
+          2：帮助指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%EF%BC%9Aman"><span class="toc-text">
+          2.1：man</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%EF%BC%9Ahelp"><span class="toc-text">
+          2.2：help</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9A%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E6%8C%87%E4%BB%A4"><span class="toc-text">
+          3：文件目录指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1%EF%BC%9Apwd"><span class="toc-text">
+          3.1：pwd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%EF%BC%9Als"><span class="toc-text">
+          3.2：ls</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3%EF%BC%9Acd"><span class="toc-text">
+          3.3：cd</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4%EF%BC%9Amkdir"><span class="toc-text">
+          3.4：mkdir</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5%EF%BC%9Armdir"><span class="toc-text">
+          3.5：rmdir</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-6%EF%BC%9Atouch"><span class="toc-text">
+          3.6：touch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-7%EF%BC%9Acp"><span class="toc-text">
+          3.7：cp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-8%EF%BC%9Arm"><span class="toc-text">
+          3.8：rm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-9%EF%BC%9Amv"><span class="toc-text">
+          3.9：mv</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-10%EF%BC%9Aln"><span class="toc-text">
+          3.10：ln</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EF%BC%9A%E6%9F%A5%E7%9C%8B%E6%8C%87%E4%BB%A4"><span class="toc-text">
+          4：查看指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1%EF%BC%9Acat"><span class="toc-text">
+          4.1：cat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2%EF%BC%9Amore"><span class="toc-text">
+          4.2：more</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3%EF%BC%9Aless"><span class="toc-text">
+          4.3：less</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4%EF%BC%9Ahead"><span class="toc-text">
+          4.4：head</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5%EF%BC%9Atail"><span class="toc-text">
+          4.5：tail</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-6%EF%BC%9Ahistory%E3%80%81"><span class="toc-text">
+          4.6：history、!</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%EF%BC%9A-%E3%80%81-%E3%80%81%E7%AE%A1%E9%81%93%E7%AC%A6%E3%80%90-%E3%80%91"><span class="toc-text">
+          5：&gt;、&gt;&gt;、管道符【|】</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1%EF%BC%9A"><span class="toc-text">
+          5.1：&gt;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2%EF%BC%9A"><span class="toc-text">
+          5.2：&gt;&gt;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3%EF%BC%9A%E7%AE%A1%E9%81%93%E7%AC%A6%E3%80%90-%E3%80%91"><span class="toc-text">
+          5.3：管道符【|】</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6%EF%BC%9A%E6%97%B6%E9%97%B4%E6%97%A5%E6%9C%9F%E6%8C%87%E4%BB%A4"><span class="toc-text">
+          6：时间日期指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1%EF%BC%9Adate"><span class="toc-text">
+          6.1：date</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2%EF%BC%9Acal"><span class="toc-text">
+          6.2：cal</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7%EF%BC%9A%E6%90%9C%E7%B4%A2%E6%9F%A5%E6%89%BE%E6%8C%87%E4%BB%A4"><span class="toc-text">
+          7：搜索查找指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1%EF%BC%9Afind"><span class="toc-text">
+          7.1：find</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2%EF%BC%9Alocate"><span class="toc-text">
+          7.2：locate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-3%EF%BC%9Awhich"><span class="toc-text">
+          7.3：which</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-4%EF%BC%9Agrep"><span class="toc-text">
+          7.4：grep</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8%EF%BC%9A%E6%89%93%E5%8C%85%E5%8E%8B%E7%BC%A9%E6%8C%87%E4%BB%A4"><span class="toc-text">
+          8：打包压缩指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-1%EF%BC%9Agzip"><span class="toc-text">
+          8.1：gzip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-2%EF%BC%9Agunzip"><span class="toc-text">
+          8.2：gunzip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-3%EF%BC%9Azip"><span class="toc-text">
+          8.3：zip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-4%EF%BC%9Aunzip"><span class="toc-text">
+          8.4：unzip</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-5%EF%BC%9Atar"><span class="toc-text">
+          8.5：tar</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">10</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">4</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
