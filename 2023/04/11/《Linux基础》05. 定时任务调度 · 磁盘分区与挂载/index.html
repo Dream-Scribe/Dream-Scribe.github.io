@@ -1,0 +1,677 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="定时任务调度（crontab，at）、磁盘分区&amp;挂载（硬盘说明，磁盘目录情况查询，分区&amp;挂载）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Linux基础》05. 定时任务调度 · 磁盘分区与挂载">
+<meta property="og:url" content="http://example.com/2023/04/11/%E3%80%8ALinux%E5%9F%BA%E7%A1%80%E3%80%8B05.%20%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%20%C2%B7%20%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA%E4%B8%8E%E6%8C%82%E8%BD%BD/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="定时任务调度（crontab，at）、磁盘分区&amp;挂载（硬盘说明，磁盘目录情况查询，分区&amp;挂载）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/d0afbff5ba20410b8f6ece5290360dab.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/a0c4956c51ec4dd19d5611747382b9e8.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/e1471615f6b744be8151fea0b8a8dd4c.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/bb94928685eb421fac07159e61f05942.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/3f069542acf7409e8433d5d7943dcbce.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/1a16d2c0a7f0430ead1c92c39a1d7009.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/363095a503d04fcfa8af02285796b607.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/b13ffe10aab84095b611fa50aafbb39d.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/749d92a1526341baa23e878f4c5f1b5a.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/36d6acd854184219857a6acfb698b0a9.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/614aea5c5a4c483f84d99a98aaa73fce.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/7c48dcb29da0447dbeeaf9cadea98aef.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/a78e2162574c40f4950b2d3e32c8a9b7.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/016d28bf59034d7bbbda929ef0c71452.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/8f51b06aa0814db68f2fb69f5f2762ca.png">
+<meta property="article:published_time" content="2023-04-11T01:00:14.000Z">
+<meta property="article:modified_time" content="2023-10-15T02:14:46.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/d0afbff5ba20410b8f6ece5290360dab.png"><title>《Linux基础》05. 定时任务调度 · 磁盘分区与挂载 | 镜坛</title><link ref="canonical" href="http://example.com/2023/04/11/%E3%80%8ALinux%E5%9F%BA%E7%A1%80%E3%80%8B05.%20%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%20%C2%B7%20%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA%E4%B8%8E%E6%8C%82%E8%BD%BD/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《Linux基础》05. 定时任务调度 · 磁盘分区与挂载</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-04-11</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-10-15</span></span></div></header><div class="post-body"><p>@<a href="Linux%E5%9F%BA%E7%A1%80">TOC</a></p>
+<hr>
+<blockquote>
+<p>本文以 CentOS 7.6 为例。</p>
+</blockquote>
+
+        <h1 id="1：定时任务调度"   >
+          <a href="#1：定时任务调度" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：定时任务调度" class="headerlink" title="1：定时任务调度"></a>1：定时任务调度</h1>
+      <p><strong>任务调度</strong>是指系统在某个时间执行特定的命令或程序。</p>
+<p>任务调度分类：</p>
+<ul>
+<li>系统工作：有些重要的工作必须周而复始地执行。如病毒扫描等。</li>
+<li>用户工作：个别用户可能希望执行某些程序，比如对 mysql 数据库的备份。</li>
+</ul>
+
+        <h2 id="1-1：crontab"   >
+          <a href="#1-1：crontab" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-1：crontab" class="headerlink" title="1.1：crontab"></a>1.1：crontab</h2>
+      <p><strong>功能描述</strong>：用来设置定期执行任务。定时任务以类似文本的形式保存，称为时程表。</p>
+<p>任务调度配置文件：<font style="background:#F8F840">&#x2F;etc&#x2F;crontab</font></p>
+<p><strong>重启任务调度</strong>：<br><code>service crond restart</code></p>
+<p><strong>基本语法</strong>：<br><code>crontab [选项]</code></p>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-l</code></td>
+<td align="left">查询定时任务，列出时程表。</td>
+</tr>
+<tr>
+<td align="left"><code>-e</code></td>
+<td align="left">编辑个人定时任务，执行文本编辑器（默认为 vi 编辑器）来设定时程表。</td>
+</tr>
+<tr>
+<td align="left"><code>-r</code></td>
+<td align="left">删除当前用户所有定时任务，即清空时程表。</td>
+</tr>
+</tbody></table></div>
+<blockquote>
+<p>编辑时程表时，任务可为命令，也可为 shell 脚本。另外，涉及到路径，最好使用绝对路径。</p>
+</blockquote>
+<p><strong>时程表占位符说明</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">占位符</th>
+<th align="left">含义</th>
+<th align="left">范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">第一个【<code>*</code>】</td>
+<td align="left">分钟</td>
+<td align="left">0 ~ 59</td>
+</tr>
+<tr>
+<td align="left">第二个【<code>*</code>】</td>
+<td align="left">小时</td>
+<td align="left">0 ~ 23</td>
+</tr>
+<tr>
+<td align="left">第三个【<code>*</code>】</td>
+<td align="left">一个月中的第几天</td>
+<td align="left">1 ~ 31</td>
+</tr>
+<tr>
+<td align="left">第四个【<code>*</code>】</td>
+<td align="left">月份</td>
+<td align="left">1 ~ 12</td>
+</tr>
+<tr>
+<td align="left">第五个【<code>*</code>】</td>
+<td align="left">一周当中的星期几</td>
+<td align="left">0 ~ 6（0为星期天）</td>
+</tr>
+</tbody></table></div>
+<p><strong>特殊符号说明</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">特殊符号</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">【<code>*</code>】</td>
+<td align="left">代表任何时间。比如第一个 “ <code>*</code> ” 就代表每分钟都执行一次。</td>
+</tr>
+<tr>
+<td align="left">【<code>,</code>】</td>
+<td align="left">代表不连续的时间。如 “ <code>0 8,12,16 * * *</code> ” 就代表在每天的 8:00，12:00，16:00 都执行一次。</td>
+</tr>
+<tr>
+<td align="left">【<code>-</code>】</td>
+<td align="left">代表连续的时间范围。如 “ <code>30 5 * * 1-6</code> ” 就代表在周一到周六的凌晨 5:30 执行。</td>
+</tr>
+<tr>
+<td align="left">【<code>*/n</code>】</td>
+<td align="left">代表每隔多久执行一次。如 “ <code>*/10 * * * *</code> ” 就代表每隔 10 分钟执行一次。</td>
+</tr>
+</tbody></table></div>
+<p>时间执行示例：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">* * * * *         每分钟定时执行一次</span><br><span class="line">0 * * * *         每小时整点定时执行一次</span><br><span class="line">0 0 * * *         每天 0:00 定时执行一次</span><br><span class="line">*/1 * * * *       每分钟定时执行一次</span><br><span class="line">45 22 * * *       每天 22:45 执行</span><br><span class="line">0 17 * * 1        每周一 17:00 执行</span><br><span class="line">0 5 1,15 * *      每月 1 号和 15 号的 5:00 执行</span><br><span class="line">40 4 * * 1-5      每周一到周五的 4:00 执行</span><br><span class="line">*/10 4 * * *      每天的 4:00，每隔 10 分钟执行一次（5:00 过后不再执行）</span><br><span class="line">0 0 1,15 * 1      每月 1 号和 15 号，和每周一的 0:00 执行</span><br><span class="line"></span><br><span class="line">注意：星期几和几号最好不要同时出现，阅读时容易引起混乱</span><br></pre></td></tr></table></div></figure>
+
+<p>示例：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/d0afbff5ba20410b8f6ece5290360dab.png" alt="在这里插入图片描述"></p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">每隔 5 分钟，就将当前的日期信息，追加到 /tmp/mydate.txt 文件中</span><br><span class="line">*/</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设定时程表，编辑定时任务</span></span><br><span class="line">crontab -e</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">进入 vi 编辑器的形式，编辑定时任务指令</span></span><br><span class="line">*/5 * * * * date &gt;&gt; /tmp/mydate.txt</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">在 /home/ 目录下，创建 shell 脚本 my.sh，实现上一个示例.</span><br><span class="line">*/</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">准备脚本文件</span></span><br><span class="line">vim /home/my.sh</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">写入以下命令</span></span><br><span class="line">date &gt;&gt; /tmp/mydate.txt</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">给 my.sh 增加执行权限</span></span><br><span class="line">chmod u+x /home/my.sh</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设定时程表，编辑定时任务</span></span><br><span class="line">crontab -e</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">进入 vi 编辑器的形式，编辑定时任务指令</span></span><br><span class="line">*/5 * * * * /home/my.sh</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="1-2：at"   >
+          <a href="#1-2：at" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-2：at" class="headerlink" title="1.2：at"></a>1.2：at</h2>
+      <p><strong>功能描述</strong>：一次性定时计划任务。默认从标准输入读取要执行的命令。（并非所有 Linux 发行版都自带 at 命令）</p>
+<blockquote>
+<p>at 的守护进程 atd 会以后台模式运行，检查作业队列来运行。<br>默认情况下，atd 守护进程每 60 秒检查作业队列，有作业时，会检查作业运行时间，如果时间与当前时间匹配，则运行此作业。<br>在使用 at 命令的时候，一定要保证 atd 进程的启动 , 可以使用相关指令来查看。</p>
+</blockquote>
+<p><strong>检测 atd 是否在运行</strong>：<br><code>ps -ef | grep atd</code></p>
+<p><strong>查看未执行的任务</strong>：<br><code>atq</code></p>
+<blockquote>
+<p>查询到的第一列即为任务编号。</p>
+</blockquote>
+<p><strong>删除未执行的任务</strong>：<br><code>atrm &lt;编号&gt;</code></p>
+<p><strong>基本语法</strong>：<br><code>at [选项]</code></p>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>时间</code></td>
+<td align="left">以标准输入（命令行）来输入定时任务。需要按两遍 <kbd>Ctrl</kbd> + <kbd>D</kbd> 来结束输入。</td>
+</tr>
+<tr>
+<td align="left"><code>-I</code></td>
+<td align="left">atq 别名，相当于 atq 指令。</td>
+</tr>
+<tr>
+<td align="left"><code>-d</code></td>
+<td align="left">atrm 别名，相当于 atrm 指令。</td>
+</tr>
+<tr>
+<td align="left"><code>-v</code></td>
+<td align="left">显示任务将被执行的时间。</td>
+</tr>
+<tr>
+<td align="left"><code>-t &lt;时间参数&gt;</code></td>
+<td align="left">以时间参数的形式提交要运行的任务。</td>
+</tr>
+<tr>
+<td align="left"><code>-f &lt;文件&gt;</code></td>
+<td align="left">从指定文件读入任务而不是从标准输入读入。</td>
+</tr>
+</tbody></table></div>
+<p><strong>指定时间的方法</strong>：</p>
+<ul>
+<li>接受 <code>hh:mm</code>（小时:分钟）式的时间指定。假如该时间在当天已过去，那就放在第二天执行。例如：<code>at 04:00</code>。</li>
+<li>使用 <code>midnight</code>（深夜），<code>noon</code>（中午），<code>teatime</code>（饮茶时间，一般是下午 4 点）等比较模糊的词语来指定时间。</li>
+<li>采用 12 小时计时制，即在时间后面加上 <code>AM</code>（上午）或 <code>PM</code>（下午）来说明是上午还是下午。例如：<code>at 12pm</code>。</li>
+<li>使用相对计时法。指定格式为：<code>now + 数字 时间单位</code>，now 就是时间（默认当前，可自己设定），时间单位能够是 <code>minutes</code>（分钟）、<code>hours</code>（小时）、<code>days</code>（天）、<code>weeks</code>（星期）。例如：<code>at now + 5 minutes</code>、<code>at 5pm + 5 days</code>。</li>
+<li>直接使用 <code>today</code>（今天）、<code>tomorrow</code>（明天）来指定完成命令的时间。</li>
+<li>指定命令执行的具体日期，指定格式为 <code>month day</code>（月 日）或 <code>mm/dd/yy</code>（月&#x2F;日&#x2F;年）或<code>dd.mm.yy</code>（日.月.年），指定的日期必须跟在指定时间的后面。例如：<code>at 04:00 2021-03-1</code></li>
+</ul>
+<blockquote>
+<p>比较抽象。。。由于非常复杂且不常用，这里只举几个简单例子。</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">2 天后的下午 5 点执行 /bin/ls /home 命令</span><br><span class="line">*/</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">输入 at 指令并执行</span></span><br><span class="line">at 5pm + 2 days</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">输入要执行的指令。此时有 “ at&gt; ” 提示。完成后需按两次【ctrl】+【D】来结束</span></span><br><span class="line">/bin/ls /home</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">明天 17 点钟，输出时间到指定文件内。比如 /root/date100.log</span><br><span class="line">*/</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">输入 at 指令并执行</span></span><br><span class="line">at 5pm tomorrow</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">输入要执行的指令。此时有 “ at&gt; ” 提示。完成后需按两次【ctrl】+【D】来结束</span></span><br><span class="line">date &gt; /root/date100.log</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="2：磁盘分区-挂载"   >
+          <a href="#2：磁盘分区-挂载" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：磁盘分区-挂载" class="headerlink" title="2：磁盘分区&amp;挂载"></a>2：磁盘分区&amp;挂载</h1>
+      
+        <h2 id="2-1：原理介绍"   >
+          <a href="#2-1：原理介绍" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1：原理介绍" class="headerlink" title="2.1：原理介绍"></a>2.1：原理介绍</h2>
+      <p>Linux 无论磁盘有几个分区，分给哪一目录使用，归根结底就<strong>只有一个根目录，一个独立且唯一的文件结构</strong>，Linux 中每个分区都是整个文件系统的一部分。</p>
+<p>Linux 采用了一种叫 “ <strong>载入</strong> ” 的处理方法，它的整个文件系统中包含了一整套的文件和目录，且<strong>将一个分区和一个目录联系起来（挂载）</strong>。这时载入的<strong>一个分区的存储空间与一个目录（挂载点）对应</strong>。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/a0c4956c51ec4dd19d5611747382b9e8.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="2-2：硬盘说明"   >
+          <a href="#2-2：硬盘说明" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2：硬盘说明" class="headerlink" title="2.2：硬盘说明"></a>2.2：硬盘说明</h2>
+      <p>Linux 硬盘分 <strong>IDE</strong> 硬盘和 <strong>SCSI</strong> 硬盘。目前基本上是 SCSI 硬盘。</p>
+<ul>
+<li><strong>IDE 硬盘</strong></li>
+</ul>
+<p>对于 IDE 硬盘，驱动器标识符为  “ <code>hdx~</code> ”。</p>
+<p>其中 “ hd ” 表明分区所在设备的类型是 IDE 硬盘。<br>“ x ” 为盘号（a 为基本盘，b 为基本从属盘，c 为辅助主盘，d 为辅助从属盘）。<br>“ ~ ” 代表分区，前四个分区用数字 1 到 4 表示，它们是主分区或扩展分区，从 5 开始就是逻辑分区。</p>
+<blockquote>
+<p>例：<br>hda3 表示为第一个 IDE 硬盘上的第三个主分区或扩展分区<br>hdb2 表示为第二个 IDE 硬盘上的第二个主分区或扩展分区。</p>
+</blockquote>
+<ul>
+<li><strong>SCSI 硬盘</strong></li>
+</ul>
+<p>对于 SCSI 硬盘，标识符为 “ <code>sdx~</code> ”。</p>
+<p>用 “ sd ” 来表示分区所在设备的类型是 SCSI 硬盘。<br>其余则和 IDE 硬盘的表示方法一样。</p>
+
+        <h2 id="2-3：磁盘目录情况查询"   >
+          <a href="#2-3：磁盘目录情况查询" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3：磁盘目录情况查询" class="headerlink" title="2.3：磁盘目录情况查询"></a>2.3：磁盘目录情况查询</h2>
+      
+        <h3 id="2-3-1：lsblk"   >
+          <a href="#2-3-1：lsblk" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-1：lsblk" class="headerlink" title="2.3.1：lsblk"></a>2.3.1：lsblk</h3>
+      <p><strong>功能描述</strong>：查看设备挂载情况，列出所有可用块设备的信息。（list block）</p>
+<p><strong>基本语法</strong>：<br><code>lsblk [选项]</code></p>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-a</code></td>
+<td align="left">显示所有设备。（不加选项，默认为此选项）</td>
+</tr>
+<tr>
+<td align="left"><code>-f</code></td>
+<td align="left">显示文件系统信息。</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/e1471615f6b744be8151fea0b8a8dd4c.png" alt="在这里插入图片描述"></p>
+<p>参数说明：</p>
+<ul>
+<li>NAME：块设备名与分区情况。</li>
+<li>MAJ:MIN：表示主要和次要设备号。</li>
+<li>RM：表示设备是否为可移动设备。（1 为可移动设备）</li>
+<li>SIZE：设备的容量大小信息。</li>
+<li>RO：设备是否为只读。（0 代表不是只读的）</li>
+<li>TYPE：表示块设备是否是磁盘或磁盘上的一个分区。（如上图，sda 为磁盘。sda1、sda2、sda3 为 sda 分区。sr0 为只读存储 rom）</li>
+<li>MOUNTPOINT：挂载点。</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/bb94928685eb421fac07159e61f05942.png" alt="在这里插入图片描述"></p>
+<p>参数说明：</p>
+<ul>
+<li>NAME：块设备名与分区情况。</li>
+<li>FSTYPE：文件类型。</li>
+<li>UUID：分区 40 位唯一标识符。</li>
+<li>MOUNTPOINT：挂载点。</li>
+</ul>
+
+        <h3 id="2-3-2：df"   >
+          <a href="#2-3-2：df" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-2：df" class="headerlink" title="2.3.2：df"></a>2.3.2：df</h3>
+      <p><strong>功能描述</strong>：查询系统整体磁盘使用情况。（disk free）</p>
+<p><strong>基本语法</strong>：<br><code>df [选项] [&lt;path&gt;]</code></p>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-h</code></td>
+<td align="left">使用便于人类可读的格式列出信息。</td>
+</tr>
+<tr>
+<td align="left"><code>-H</code></td>
+<td align="left">与 -h 类似，但是以 1000 为换算单位而不是用 1024。</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/3f069542acf7409e8433d5d7943dcbce.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="2-3-3：du"   >
+          <a href="#2-3-3：du" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-3：du" class="headerlink" title="2.3.3：du"></a>2.3.3：du</h3>
+      <p><strong>功能描述</strong>：查询指定目录或文件的磁盘占用情况。（disk usage）</p>
+<p><strong>基本语法</strong>：<br><code>du [选项] [&lt;path&gt;]</code></p>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-h</code></td>
+<td align="left">使用便于人类可读的格式列出信息。</td>
+</tr>
+<tr>
+<td align="left"><code>-H</code></td>
+<td align="left">与 -h 类似，但是以 1000 为换算单位而不是用 1024。</td>
+</tr>
+<tr>
+<td align="left"><code>-s</code></td>
+<td align="left">仅显示占用大小汇总。</td>
+</tr>
+<tr>
+<td align="left"><code>-a</code></td>
+<td align="left">列出包含文件在内的大小</td>
+</tr>
+<tr>
+<td align="left"><code>-c</code></td>
+<td align="left">除了显示目录或文件的大小外，也显示占用大小的总和。</td>
+</tr>
+<tr>
+<td align="left"><code>--max-depth=&lt;num&gt;</code></td>
+<td align="left">统计的子目录深度，超过指定层数的目录后，予以忽略。</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/1a16d2c0a7f0430ead1c92c39a1d7009.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="2-3-4：tree"   >
+          <a href="#2-3-4：tree" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-4：tree" class="headerlink" title="2.3.4：tree"></a>2.3.4：tree</h3>
+      <p><strong>功能描述</strong>：以树状图列出目录的内容。（并非所有 Linux 发行版都自带）</p>
+<p><strong>基本语法</strong>：<br><code>tree [选项] &lt;目录&gt;</code></p>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-a</code></td>
+<td align="left">显示所有文件和目录。</td>
+</tr>
+<tr>
+<td align="left"><code>-C</code></td>
+<td align="left">在文件和目录清单加上色彩，便于区分各种类型。</td>
+</tr>
+<tr>
+<td align="left"><code>-s</code></td>
+<td align="left">列出文件或目录大小。</td>
+</tr>
+<tr>
+<td align="left"><code>-t</code></td>
+<td align="left">用文件和目录的更改时间排序。</td>
+</tr>
+</tbody></table></div>
+
+        <h3 id="2-3-5：其他查看指令示例"   >
+          <a href="#2-3-5：其他查看指令示例" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-5：其他查看指令示例" class="headerlink" title="2.3.5：其他查看指令示例"></a>2.3.5：其他查看指令示例</h3>
+      <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">统计 /opt/ 目录下文件的个数</span></span><br><span class="line">ls -l /opt | grep &quot;^-&quot; | wc -l</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">统计 /opt/ 目录下目录的个数</span></span><br><span class="line">ls -l /opt | grep &quot;^d&quot; | wc -l</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">统计 /opt/ 目录下文件的个数，包括子文件夹里的</span></span><br><span class="line">ls -lR /opt | grep &quot;^-&quot; | wc -l</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">统计 /opt/ 目录下目录的个数，包括子文件夹里的</span></span><br><span class="line">ls -lR /opt | grep &quot;^d&quot; | wc -l</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="2-4：分区-挂载"   >
+          <a href="#2-4：分区-挂载" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4：分区-挂载" class="headerlink" title="2.4：分区&amp;挂载"></a>2.4：分区&amp;挂载</h2>
+      
+        <h3 id="2-4-1：fdisk"   >
+          <a href="#2-4-1：fdisk" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4-1：fdisk" class="headerlink" title="2.4.1：fdisk"></a>2.4.1：fdisk</h3>
+      <p><strong>功能描述</strong>：一个创建和维护分区表的程序，即可用来分区。</p>
+<p><strong>基本语法</strong>：<br><code>fdisk [选项]</code></p>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>/dev/硬盘</code></td>
+<td align="left">以命令的方式进行硬盘分区处理。</td>
+</tr>
+<tr>
+<td align="left"><code>-l</code></td>
+<td align="left">查看分区情况。</td>
+</tr>
+</tbody></table></div>
+<p><strong>分区时选项说明</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">选项</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>m</code></td>
+<td align="left">显示菜单和帮助信息。</td>
+</tr>
+<tr>
+<td align="left"><code>p</code></td>
+<td align="left">显示磁盘分区。同 fdisk -l。</td>
+</tr>
+<tr>
+<td align="left"><code>n</code></td>
+<td align="left">新建分区。</td>
+</tr>
+<tr>
+<td align="left"><code>d</code></td>
+<td align="left">删除分区。</td>
+</tr>
+<tr>
+<td align="left"><code>q</code></td>
+<td align="left">退出不保存。</td>
+</tr>
+<tr>
+<td align="left"><code>w</code></td>
+<td align="left">保存修改并退出。</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">对 /sdb 分区</span></span><br><span class="line">fdisk /dev/sdb</span><br></pre></td></tr></table></div></figure>
+
+
+
+        <h3 id="2-4-2：mkfs"   >
+          <a href="#2-4-2：mkfs" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4-2：mkfs" class="headerlink" title="2.4.2：mkfs"></a>2.4.2：mkfs</h3>
+      <p><strong>功能描述</strong>：用于在特定的分区上建立 Linux 文件系统，即格式化。（make file system）</p>
+<p><strong>基本语法</strong>：<br><code>mkfs [选项] /dev/磁盘分区</code></p>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-t &lt;分区类型&gt;</code></td>
+<td align="left">将磁盘分区格式化为指定格式。</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 sdb1 分区格式化为 ext4 格式</span></span><br><span class="line">mkfs -t ext4 /dev/sdb1</span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="2-4-3：mount"   >
+          <a href="#2-4-3：mount" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4-3：mount" class="headerlink" title="2.4.3：mount"></a>2.4.3：mount</h3>
+      <p><strong>功能描述</strong>：用于挂载 Linux 系统外的文件。即将一个分区与一个目录联系起来。</p>
+<blockquote>
+<p>注：以命令行的方式操作，重启后会失效。如需永久生效，要在 <font style="background:#F8F840">&#x2F;etc&#x2F;fstab</font> 配置文件中编辑。</p>
+</blockquote>
+<p><strong>基本语法</strong>：<br><code>mount [选项] &lt;磁盘分区&gt; &lt;挂载目录&gt;</code></p>
+<p><strong>常用选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-o ro</code></td>
+<td align="left">以只读模式挂上。</td>
+</tr>
+<tr>
+<td align="left"><code>-o rw</code></td>
+<td align="left">以可读写模式挂上。（默认为此）</td>
+</tr>
+<tr>
+<td align="left"><code>-a</code></td>
+<td align="left">将 <font style="background:#F8F840">&#x2F;etc&#x2F;fstab</font> 中的定义立即生效。</td>
+</tr>
+</tbody></table></div>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 /dev/sdb1 以只读模式挂在 /newdisk/ 之下。</span></span><br><span class="line">mount -o ro /dev/sdb1 /newdisk</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="comment"># 将 /dev/sdb1 以可读写模式挂在 /newdisk/ 之下。</span></span></span><br><span class="line">mount /dev/sdb1 /newdisk</span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="2-4-4：umount"   >
+          <a href="#2-4-4：umount" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4-4：umount" class="headerlink" title="2.4.4：umount"></a>2.4.4：umount</h3>
+      <p><strong>功能描述</strong>：用于卸除文件系统。即移除挂载。（unmount）</p>
+<blockquote>
+<p>注：以命令行的方式操作，重启后会失效。如需永久生效，要在 <font style="background:#F8F840">&#x2F;etc&#x2F;fstab</font> 配置文件中编辑。</p>
+</blockquote>
+<p><strong>基本语法</strong>：<br><code>umount &lt;name&gt;</code></p>
+<blockquote>
+<p>“ name ” 可以用分区名称或挂载点。</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将上例中 sdb1 卸载。</span></span><br><span class="line">方式一、 umount /dev/sdb1</span><br><span class="line">方式二、 umount /newdisk</span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="2-4-5：相关配置文件"   >
+          <a href="#2-4-5：相关配置文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4-5：相关配置文件" class="headerlink" title="2.4.5：相关配置文件"></a>2.4.5：相关配置文件</h3>
+      <p>有关挂载的配置，保存在 <font style="background:#F8F840">&#x2F;etc&#x2F;fstab</font> 文件。</p>
+<p>可通过编辑此文件来改变挂载。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/363095a503d04fcfa8af02285796b607.png" alt="在这里插入图片描述"></p>
+<p>可用分区 UUID 或路径进行挂载。</p>
+<p>示例：<br>将 <font style="background:#F8F840">&#x2F;dev&#x2F;sdb1</font> 挂在 <font style="background:#F8F840">&#x2F;newdisk&#x2F;</font> 之下。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/b13ffe10aab84095b611fa50aafbb39d.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="2-5：挂载案例"   >
+          <a href="#2-5：挂载案例" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-5：挂载案例" class="headerlink" title="2.5：挂载案例"></a>2.5：挂载案例</h2>
+      <p>这里以增加一块硬盘为例（虚拟机进行），进行磁盘分区、挂载、卸载。</p>
+<p>总体步骤：</p>
+<ol>
+<li>添加硬盘。</li>
+<li>给硬盘分区。</li>
+<li>格式化。</li>
+<li>挂载。</li>
+</ol>
+
+        <h3 id="2-5-1：虚拟机添加硬盘"   >
+          <a href="#2-5-1：虚拟机添加硬盘" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-5-1：虚拟机添加硬盘" class="headerlink" title="2.5.1：虚拟机添加硬盘"></a>2.5.1：虚拟机添加硬盘</h3>
+      <p>在设备列表里添加硬盘，然后只需一直【下一步】，只有选择磁盘大小的地方需要修改，直到完成。然后重启系统才能识别。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/749d92a1526341baa23e878f4c5f1b5a.png" alt="在这里插入图片描述"></p>
+<p>可以看到硬盘为 sdb。还没有分区。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/36d6acd854184219857a6acfb698b0a9.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="2-5-2：硬盘分区"   >
+          <a href="#2-5-2：硬盘分区" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-5-2：硬盘分区" class="headerlink" title="2.5.2：硬盘分区"></a>2.5.2：硬盘分区</h3>
+      <p>给添加的硬盘分区。这里为了方便，只分一个区。</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/sdb</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/614aea5c5a4c483f84d99a98aaa73fce.png" alt="在这里插入图片描述"></p>
+<p>输入 <code>n</code>，新增分区；然后输入 <code>p</code>（分区类型为主分区）；两次【回车】默认分配剩余全部空间。最后输入 <code>w</code> ，写入分区并退出。分区完成。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/7c48dcb29da0447dbeeaf9cadea98aef.png" alt="在这里插入图片描述"></p>
+<p>可以看到有了一个分区。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/a78e2162574c40f4950b2d3e32c8a9b7.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="2-5-3：格式化"   >
+          <a href="#2-5-3：格式化" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-5-3：格式化" class="headerlink" title="2.5.3：格式化"></a>2.5.3：格式化</h3>
+      <p>新增分区需格式化后才能分配 UUID。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/016d28bf59034d7bbbda929ef0c71452.png" alt="在这里插入图片描述"></p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs -t ext4 /dev/sdb1</span><br></pre></td></tr></table></div></figure>
+
+<p>格式化后分配了 UUID。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/8f51b06aa0814db68f2fb69f5f2762ca.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="2-5-4：挂载"   >
+          <a href="#2-5-4：挂载" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-5-4：挂载" class="headerlink" title="2.5.4：挂载"></a>2.5.4：挂载</h3>
+      <p>将 &#x2F;dev&#x2F;sdb1 挂在 &#x2F;newdisk&#x2F; 之下。&#x2F;newdisk&#x2F; 即为挂载点，挂载点可随意更改。</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount /dev/sdb1 /newdisk</span><br></pre></td></tr></table></div></figure>
+
+<p>如需永久挂载，只需在 &#x2F;etc&#x2F;fstab 中配置。</p>
+<hr>
+<p><font color="#06F9BC">
+不祈多积，多文以为富。
+</font></p>
+<p align="right"><font color="#06F9BC">
+——《礼记 · 儒行》
+</font></p>
+
+
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://example.com">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://example.com/2023/04/11/%E3%80%8ALinux%E5%9F%BA%E7%A1%80%E3%80%8B05.%20%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%20%C2%B7%20%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA%E4%B8%8E%E6%8C%82%E8%BD%BD/">http://example.com/2023/04/11/%E3%80%8ALinux%E5%9F%BA%E7%A1%80%E3%80%8B05.%20%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%20%C2%B7%20%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA%E4%B8%8E%E6%8C%82%E8%BD%BD/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/04/15/%E3%80%8ALinux%E5%9F%BA%E7%A1%80%E3%80%8B06.%20%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%20%C2%B7%20%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%20%C2%B7%20%E6%9C%8D%E5%8A%A1%E7%AE%A1%E7%90%86/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《Linux基础》06. 网络配置 · 进程管理 · 服务管理</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/04/03/%E3%80%8ALinux%E5%9F%BA%E7%A1%80%E3%80%8B04.%20%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86%20%C2%B7%20%E7%94%A8%E6%88%B7%E7%BB%84%20%C2%B7%20%E7%9B%B8%E5%85%B3%E6%96%87%E4%BB%B6%20%C2%B7%20%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/"><span class="paginator-prev__text">《Linux基础》04. 用户管理 · 用户组 · 相关文件 · 权限管理</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9A%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6"><span class="toc-text">
+          1：定时任务调度</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%EF%BC%9Acrontab"><span class="toc-text">
+          1.1：crontab</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%EF%BC%9Aat"><span class="toc-text">
+          1.2：at</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9A%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA-%E6%8C%82%E8%BD%BD"><span class="toc-text">
+          2：磁盘分区&amp;挂载</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%EF%BC%9A%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D"><span class="toc-text">
+          2.1：原理介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%EF%BC%9A%E7%A1%AC%E7%9B%98%E8%AF%B4%E6%98%8E"><span class="toc-text">
+          2.2：硬盘说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3%EF%BC%9A%E7%A3%81%E7%9B%98%E7%9B%AE%E5%BD%95%E6%83%85%E5%86%B5%E6%9F%A5%E8%AF%A2"><span class="toc-text">
+          2.3：磁盘目录情况查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1%EF%BC%9Alsblk"><span class="toc-text">
+          2.3.1：lsblk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2%EF%BC%9Adf"><span class="toc-text">
+          2.3.2：df</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3%EF%BC%9Adu"><span class="toc-text">
+          2.3.3：du</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-4%EF%BC%9Atree"><span class="toc-text">
+          2.3.4：tree</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-5%EF%BC%9A%E5%85%B6%E4%BB%96%E6%9F%A5%E7%9C%8B%E6%8C%87%E4%BB%A4%E7%A4%BA%E4%BE%8B"><span class="toc-text">
+          2.3.5：其他查看指令示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4%EF%BC%9A%E5%88%86%E5%8C%BA-%E6%8C%82%E8%BD%BD"><span class="toc-text">
+          2.4：分区&amp;挂载</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1%EF%BC%9Afdisk"><span class="toc-text">
+          2.4.1：fdisk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2%EF%BC%9Amkfs"><span class="toc-text">
+          2.4.2：mkfs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-3%EF%BC%9Amount"><span class="toc-text">
+          2.4.3：mount</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-4%EF%BC%9Aumount"><span class="toc-text">
+          2.4.4：umount</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-5%EF%BC%9A%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">
+          2.4.5：相关配置文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5%EF%BC%9A%E6%8C%82%E8%BD%BD%E6%A1%88%E4%BE%8B"><span class="toc-text">
+          2.5：挂载案例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-1%EF%BC%9A%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%B7%BB%E5%8A%A0%E7%A1%AC%E7%9B%98"><span class="toc-text">
+          2.5.1：虚拟机添加硬盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-2%EF%BC%9A%E7%A1%AC%E7%9B%98%E5%88%86%E5%8C%BA"><span class="toc-text">
+          2.5.2：硬盘分区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-3%EF%BC%9A%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-text">
+          2.5.3：格式化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-4%EF%BC%9A%E6%8C%82%E8%BD%BD"><span class="toc-text">
+          2.5.4：挂载</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">12</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">4</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div><span>由 <a href="http://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a> 强力驱动</span><span class="footer__devider">|</span><span>主题 - <a href="https://github.com/liuyib/hexo-theme-stun/" title="Stun" target="_blank" rel="noopener">Stun</a></span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
