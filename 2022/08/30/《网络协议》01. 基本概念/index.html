@@ -1,0 +1,853 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="互联网、网络互连模型（OSI，TCP&#x2F;IP）、计算机通信基础、MAC 地址、ARP &amp; ICMP、IP &amp; 子网掩码、CIDR 表示方法、子网、超网、路由、网络 &amp; 互联网 &amp; 因特网、ISP、网络分类、上网方式、公网 &amp; 私网（NAT，端口映射）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《网络协议》01. 基本概念">
+<meta property="og:url" content="http://example.com/2022/08/30/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B01.%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="互联网、网络互连模型（OSI，TCP&#x2F;IP）、计算机通信基础、MAC 地址、ARP &amp; ICMP、IP &amp; 子网掩码、CIDR 表示方法、子网、超网、路由、网络 &amp; 互联网 &amp; 因特网、ISP、网络分类、上网方式、公网 &amp; 私网（NAT，端口映射）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/2a4546272fd34e099df155df4fc621b7.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/e486fc83c453430babd02208a6ef8f70.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/97c2d472409249fc995f04363ad840d9.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/99cfa6147fec43d890e872f5be94e85f.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/ea4d20a8be844fc48a12dfa46bdc7eea.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/bbd51ff590974214988de032c6f1ac5e.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/f109b8e998384cfab4fa695edf4b9b52.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/599b30d3cfc04aa894580f0eb44f1527.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/df89b5c15dbd4458b083bcaf5d8cbb3a.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/e73cd76074f44d9e8837bd974e80fe85.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/67f5e5b99d2a4b87be643ea6e5010447.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/4c9c4aaf54904c9cb54431bff22d1600.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/5d91f6e6f8ed425b8ce7d5e2a83f1f6a.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/014fbd1d6d0d4f1d93e926fcbd4b1175.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/53dd0711c7aa46ddaf0080ff2a579470.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/94c0e51f42bb45e1bc981bd80f4a68a9.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/30a4cb9bb7a94d5a8e9ba6397f14112e.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/affbc67978e7406ba89dd2ae40e5446a.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/c522c89ae1324300ae41dedc8fa0e438.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/d6f048482cdd453e95cc0ccfb3954759.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/d3edbb2d5cf64c9da21839f22f8f9e52.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/a86010318a7d49e09f5f920d31e8f3fe.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/5f47ac67efe248399fa20013ec955dfd.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/81964e0757914cdd8a215dea0f9f55e4.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/59dd7c357f4443069acb22c3f71f4344.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/4a106e28c78641a2beecacc2ce93f183.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/5e02f66984b14887989cfc2b0b24dd34.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/199e03c5f03044f2a1101f2b5c40e06a.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/bbe5cd0575e04c1c9c4efd2671c27e9f.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/21fac632356e4e25a2048657b31df277.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/499ea5584a8443cebe38ab0dcd9dd502.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/f143ed157082459d840bcf1beb239895.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/0a42420211794f259556caf9f24cb471.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/06a114296d1246389b4627840af94541.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/0c9ee369d1b6441493bab6afb17c2bb8.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/91e7f3d5ab5741ec80180984c85ef113.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/ff328401e9d0408eb4bd574ef65e8da3.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/2783203392514883b6b48da17b736a75.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/cd4cf3e27dc84cb6be971f713f3637cb.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/95c226dfea134d548c5a16235d5d1bec.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/4531ee98f59a47b7af077a1491a162c5.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/73a1b5d9297a4016bf49666dadde8a57.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/255a47ed543d4e3c9846305904cf0a43.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/5febc112945948debd943c0309e1f1e9.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/18927f7cd32644df8a3ff716653094ed.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/9124aa83dc204978a73d2c6085dfacf1.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/a371410c229c4c5d9d3a829ee8f82ad0.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/dabaf65174bd4f3ba38b106590cbfabe.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/122c8abbdf8c4654960e670cd33f1fb3.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/93d9648b9ccc47a088170b75c8665c07.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/a251937c430749c5a35b734730fcf77d.png">
+<meta property="article:published_time" content="2022-08-30T01:50:52.000Z">
+<meta property="article:modified_time" content="2023-11-05T07:28:52.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/2a4546272fd34e099df155df4fc621b7.png"><title>《网络协议》01. 基本概念 | 镜坛</title><link ref="canonical" href="http://example.com/2022/08/30/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B01.%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《网络协议》01. 基本概念</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-08-30</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-11-05</span></span></div></header><div class="post-body"><p>@<a href="%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE">TOC</a></p>
+<hr>
+<blockquote>
+<p>网络协议从入门到底层原理。</p>
+</blockquote>
+
+        <h1 id="1：互联网-协议"   >
+          <a href="#1：互联网-协议" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：互联网-协议" class="headerlink" title="1：互联网 &amp; 协议"></a>1：互联网 &amp; 协议</h1>
+      <p>互联网（internet）的出现，彻底改变了人们的生活方式，足不出户就可以购物、聊天、看电影、买车票、上班等。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/2a4546272fd34e099df155df4fc621b7.png" alt="在这里插入图片描述"></p>
+<p>数据是如何从一个设备传递到另一个设备的？</p>
+<ul>
+<li>这一切都是由网络协议来规定的。</li>
+<li>没有网络协议，就没有今天的互联网。</li>
+</ul>
+<p><strong>什么是协议</strong>？</p>
+<ul>
+<li>协议就是通用的标准。</li>
+<li>如果没有一个国际通用的标准，那么相互之间的交互就会很麻烦。</li>
+</ul>
+
+        <h2 id="1-1：跨平台原理"   >
+          <a href="#1-1：跨平台原理" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-1：跨平台原理" class="headerlink" title="1.1：跨平台原理"></a>1.1：跨平台原理</h2>
+      <p><strong>C&#x2F;C++ 跨平台原理</strong>：<br>使用平台相关的编译器生成对应平台的可执行文件。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/e486fc83c453430babd02208a6ef8f70.png" alt="在这里插入图片描述"></p>
+<p><strong>Java 跨平台的原理</strong>：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/97c2d472409249fc995f04363ad840d9.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>C&#x2F;C++ 编译之后可直接生成平台对应的<strong>可执行文件</strong>。<br>Java编译之后生成<strong>字节码文件</strong>。对于操作系统来说，不是可执行文件。</p>
+</blockquote>
+
+        <h2 id="1-2：客户端与服务器"   >
+          <a href="#1-2：客户端与服务器" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-2：客户端与服务器" class="headerlink" title="1.2：客户端与服务器"></a>1.2：客户端与服务器</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/99cfa6147fec43d890e872f5be94e85f.png" alt="在这里插入图片描述"></p>
+<p>其中，后端使用 Java 的一种结构如下：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/ea4d20a8be844fc48a12dfa46bdc7eea.png" alt="在这里插入图片描述"></p>
+<p>客户端向服务器请求：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://IP地址:端口号/项目</span><br><span class="line">例：</span><br><span class="line">http://10.10.125.41:8080/qq/login/...</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="2：网络互连模型"   >
+          <a href="#2：网络互连模型" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：网络互连模型" class="headerlink" title="2：网络互连模型"></a>2：网络互连模型</h1>
+      <ul>
+<li>国际标准：OSI 参考模型（7层）</li>
+<li>实际应用：TCP&#x2F;IP 协议（4层）</li>
+<li>学习研究：（5层）</li>
+</ul>
+<p>为了更好地促进互联网络的研究和发展，国际标准化组织 ISO 在 1985 年制定了网络互连模型 OSI 参考模型（Open System Interconnect Reference Model）。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/bbd51ff590974214988de032c6f1ac5e.png" alt="在这里插入图片描述"></p>
+<p><strong>网络请求过程</strong>：不管什么协议，都是经过下列的 <strong>包装 + 解包</strong> 过程。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/f109b8e998384cfab4fa695edf4b9b52.png" alt="在这里插入图片描述"></p>
+
+        <h1 id="3：计算机通信基础"   >
+          <a href="#3：计算机通信基础" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：计算机通信基础" class="headerlink" title="3：计算机通信基础"></a>3：计算机通信基础</h1>
+      <p>先不考虑无线连接的问题。</p>
+<ul>
+<li><strong>需要得知对方的 IP 地址。</strong></li>
+<li><strong>最终是根据 MAC 地址（网卡地址），输送数据到网卡，被网卡接收。</strong><ul>
+<li>如果网卡发现数据的目标 MAC 地址是自己，就会将数据传递给上一层进行处理。</li>
+<li>如果网卡发现数据的目标 MAC 地址不是自己，就会将数据丢弃，不会传递给上一层进行处理。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/599b30d3cfc04aa894580f0eb44f1527.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="3-1：网线直连"   >
+          <a href="#3-1：网线直连" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1：网线直连" class="headerlink" title="3.1：网线直连"></a>3.1：网线直连</h2>
+      <ul>
+<li>需要用交叉线（不是直通线）</li>
+<li>同一网段</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/df89b5c15dbd4458b083bcaf5d8cbb3a.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>ping 走的是 ICMP 协议。</li>
+<li>ARP 协议：已知 IP 地址，不知道 MAC 地址时，通过广播获取 MAC 地址。</li>
+</ul>
+<p>右边出现的 3 个 ARP 包，实际上是一次完整的发送请求、接收响应的过程。<br>ICMP 包同理。</p>
+
+        <h2 id="3-2：同轴电缆"   >
+          <a href="#3-2：同轴电缆" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2：同轴电缆" class="headerlink" title="3.2：同轴电缆"></a>3.2：同轴电缆</h2>
+      <p>同轴电缆（Coaxial），连接同一网段。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/e73cd76074f44d9e8837bd974e80fe85.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="3-3：集线器"   >
+          <a href="#3-3：集线器" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-3：集线器" class="headerlink" title="3.3：集线器"></a>3.3：集线器</h2>
+      <p>集线器（Hub），连接同一网段。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/67f5e5b99d2a4b87be643ea6e5010447.png" alt="在这里插入图片描述"></p>
+<p>集线器相比同轴电缆唯一的优点：连着集线器的某一个设备中间线路出问题，不会影响到连着集线器的其他设备的通信。</p>
+
+        <h2 id="3-4：网桥"   >
+          <a href="#3-4：网桥" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-4：网桥" class="headerlink" title="3.4：网桥"></a>3.4：网桥</h2>
+      <p>网桥（Bridge）。还是连接同一网段。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/4c9c4aaf54904c9cb54431bff22d1600.png" alt="在这里插入图片描述"></p>
+<p>能够通过自学习得知每个接口那侧的 MAC 地址，从而起到隔绝冲突域的作用。</p>
+
+        <h2 id="3-5：交换机"   >
+          <a href="#3-5：交换机" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-5：交换机" class="headerlink" title="3.5：交换机"></a>3.5：交换机</h2>
+      <p>交换机（Switch）。依旧是连接同一网段。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/5d91f6e6f8ed425b8ce7d5e2a83f1f6a.png" alt="在这里插入图片描述"></p>
+<p><strong>若全球所有设备都用交换机连接</strong>：</p>
+<ol>
+<li>他们必然处于同一网段，因此 IP 地址可能会不够用。</li>
+<li>第一次发送数据包仍然需要 ARP 广播，耗费大量时间。</li>
+<li>形成广播风暴，只要有一个设备发送 ARP 广播，全球设备都能收到。</li>
+</ol>
+
+        <h2 id="3-6：路由器"   >
+          <a href="#3-6：路由器" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-6：路由器" class="headerlink" title="3.6：路由器"></a>3.6：路由器</h2>
+      <p>路由器（Router）。路由器含有<strong>网关</strong>（Gateway），网关也有 IP 和 MAC 地址。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/014fbd1d6d0d4f1d93e926fcbd4b1175.png" alt="在这里插入图片描述"></p>
+<p> 主机在发数据之前，首先会判断目标主机的 IP 地址跟它是否在同一个网段：</p>
+<ol>
+<li>在同一个网段：ARP广播、通过交换机 &#x2F; 集线器传递数据</li>
+<li>不在同一个网段：通过路由器转发数据</li>
+</ol>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/53dd0711c7aa46ddaf0080ff2a579470.png" alt="在这里插入图片描述"></p>
+
+        <h1 id="4：MAC-地址"   >
+          <a href="#4：MAC-地址" class="heading-link"><i class="fas fa-link"></i></a><a href="#4：MAC-地址" class="headerlink" title="4：MAC 地址"></a>4：MAC 地址</h1>
+      <p>每个网卡都有一个 6 字节（48 bit）的 MAC 地址（Media Access Control Address）。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/94c0e51f42bb45e1bc981bd80f4a68a9.png" alt="在这里插入图片描述"></p>
+<p>MAC 地址全球唯一，固化在网卡的 ROM 中，由 IEEE802 标准规定。</p>
+<ul>
+<li><strong>前 3 字节</strong>：OUI（Organizationally Unique Identifier），组织唯一标识符。<br>由 IEEE 的注册管理机构分配给厂商</li>
+<li><strong>后 3 字节</strong>：网络接口标识符。<br>由厂商自行分配</li>
+</ul>
+<p>OUI 查询：可以根据 OUI 查询出对应的厂商。</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://standards-oui.ieee.org/oui.txt" >http://standards-oui.ieee.org/oui.txt</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://mac.bmcx.com/" >https://mac.bmcx.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h2 id="4-1：MAC-地址格式"   >
+          <a href="#4-1：MAC-地址格式" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1：MAC-地址格式" class="headerlink" title="4.1：MAC 地址格式"></a>4.1：MAC 地址格式</h2>
+      <ul>
+<li>Windows<br><code>40-55-82-0A-8C-6D</code></li>
+<li>Linux、Unix、Android、Mac、iOS<br><code>40:55:82:0A:8C:6D</code></li>
+<li>Packet Tracer<br><code>4055.820A.8C6D</code></li>
+</ul>
+<blockquote>
+<p>当 48 位全为 1 时（<code>FF-FF-FF-FF-FF-FF</code>），代表广播地址。</p>
+</blockquote>
+
+        <h2 id="4-2：MAC-地址操作"   >
+          <a href="#4-2：MAC-地址操作" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2：MAC-地址操作" class="headerlink" title="4.2：MAC 地址操作"></a>4.2：MAC 地址操作</h2>
+      <p><strong>查看 MAC 地址</strong>（Windows）：<br><code>ipconfig /all</code></p>
+<p><strong>修改 MAC 地址</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">更改适配器选项 -&gt; 属性 -&gt; 配置 -&gt; 高级 -&gt; 网络地址</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/30a4cb9bb7a94d5a8e9ba6397f14112e.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>这里修改 MAC 地址只是以这个值作为 MAC 地址上网，网卡的 MAC 地址无法修改。<br>有时可通过修改 MAC 地址蹭网。</p>
+</blockquote>
+<ul>
+<li>当不知道对方主机的 MAC 地址时，可以通过发送 ARP 广播获取对方的 MAC 地址。</li>
+<li>获取成功后，会缓存 IP 地址、MAC 地址的映射信息，俗称：ARP 缓存</li>
+</ul>
+<blockquote>
+<p>通过 ARP 广播获取的 MAC 地址，属于动态（dynamic）缓存。<br>存储时间比较短（默认是 2 分钟），过期就自动删除。</p>
+</blockquote>
+<p><strong>查看ARP缓存</strong>：<br><code>arp -a [&lt;IP&gt;]</code></p>
+<p><strong>删除ARP缓存</strong>：<br><code>arp -d [&lt;IP&gt;]</code></p>
+<p><strong>增加一条缓存信息</strong>（静态缓存）：<br><code>arp -s &lt;IP&gt; &lt;MAC 地址&gt;</code></p>
+
+        <h1 id="5：ARP-ICMP"   >
+          <a href="#5：ARP-ICMP" class="heading-link"><i class="fas fa-link"></i></a><a href="#5：ARP-ICMP" class="headerlink" title="5：ARP &amp; ICMP"></a>5：ARP &amp; ICMP</h1>
+      <p><strong>ARP</strong>（Address Resolution Protocol，地址解析协议）</p>
+<ul>
+<li>通过 IP 地址获取 MAC 地址</li>
+</ul>
+<p><strong>RARP</strong>（Reverse Address Resolution Protocol，逆地址解析协议）</p>
+<ul>
+<li>使用与 ARP 相同的报头结构</li>
+<li>作用与 ARP 相反，通过 MAC 地址获取 IP 地址</li>
+<li>后来被 BOOTP、DHCP 所取代</li>
+</ul>
+<p><strong>ICMP</strong>（Internet Control Message Protocol，互联网控制消息协议）</p>
+<ul>
+<li>IPv4 中的 ICMP 被称作 ICMPv4，IPv6 中的 ICMP 则被称作 ICMPv6</li>
+<li>通常用于返回错误信息。比如 TTL 值过期、目的不可达</li>
+<li>ICMP 的错误消息总是包括了源数据并返回给发送者</li>
+</ul>
+
+        <h1 id="6：IP-地址"   >
+          <a href="#6：IP-地址" class="heading-link"><i class="fas fa-link"></i></a><a href="#6：IP-地址" class="headerlink" title="6：IP 地址"></a>6：IP 地址</h1>
+      <p>IP 地址（Internet Protocol Address）：互联网上的每一个主机都有 IP 地址。</p>
+<ul>
+<li>最初是 IPv4 版本，32 bit（4字节），2019 年 11 月 25 日，全球的 IP 地址已经用完</li>
+<li>后面推出了 IPv6 版本，128 bit（16字节）</li>
+</ul>
+<p>这里先讨论 IPv4。</p>
+<p>IP 按字节分为 4 部分：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/affbc67978e7406ba89dd2ae40e5446a.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="6-1：IP-子网掩码"   >
+          <a href="#6-1：IP-子网掩码" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-1：IP-子网掩码" class="headerlink" title="6.1：IP &amp; 子网掩码"></a>6.1：IP &amp; 子网掩码</h2>
+      <p>IP 地址由两部分组成：</p>
+<ul>
+<li>网络标识（网络 ID）</li>
+<li>主机标识（主机 ID）</li>
+</ul>
+<blockquote>
+<p>网络 id 相同的主机处在同一网段。</p>
+</blockquote>
+<p>通过子网掩码（subnet mask）可以计算出网络 ID </p>
+<ul>
+<li>网络 ID &#x3D; 子网掩码 &amp; IP</li>
+</ul>
+<p>主机所在的网段 &#x3D; 子网掩码 &amp; IP地址</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/c522c89ae1324300ae41dedc8fa0e438.png" alt="在这里插入图片描述"></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">IP 地址：192.168.1.10</span><br><span class="line">子网掩码：255.255.255.0</span><br><span class="line"></span><br><span class="line">	1100 0000 . 1010 1000 . 0000 0001 . 0000 1010</span><br><span class="line">&amp;	1111 1111 . 1111 1111 . 1111 1111 . 0000 0000</span><br><span class="line">----------------------------------------------------</span><br><span class="line">	1100 0000 . 1010 1000 . 0000 0001 . 0000 0000</span><br><span class="line"></span><br><span class="line">网段：192.168.1.0  </span><br></pre></td></tr></table></div></figure>
+
+<p>例：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">IP 地址:   130.168.1.10</span><br><span class="line">子网掩码:  255.255.0.0</span><br><span class="line">网段:      130.168.0.0</span><br><span class="line"></span><br><span class="line">该网段最多有 256*256-2 个 IP 地址</span><br><span class="line">130.168.0.0 代表网段</span><br><span class="line">130.168.255.255 代表广播</span><br><span class="line">网段和广播无法分配 IP 地址</span><br></pre></td></tr></table></div></figure>
+
+<ul>
+<li>主机 ID 全为 0，表示主机所在的网段。</li>
+<li>主机 ID 全为 1，表示主机所在网段的全部主机（广播）。</li>
+</ul>
+<blockquote>
+<p>可以尝试用广播 ping 某个网段的全部主机。</p>
+</blockquote>
+
+        <h2 id="6-2：IP-地址分类"   >
+          <a href="#6-2：IP-地址分类" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2：IP-地址分类" class="headerlink" title="6.2：IP 地址分类"></a>6.2：IP 地址分类</h2>
+      <p>IP 地址分为 5 类。</p>
+<ul>
+<li><strong>A 类地址</strong>：默认子网掩码是 <code>255.0.0.0</code>，网络 ID 以 <code>0</code> 开头。</li>
+<li><strong>B 类地址</strong>：默认子网掩码是 <code>255.255.0.0</code>，网络 ID 以 <code>10</code> 开头。</li>
+<li><strong>C 类地址</strong>：默认子网掩码是 <code>255.255.255.0</code>，网络 ID 以 <code>110</code> 开头。</li>
+<li><strong>D 类地址</strong>：没有子网掩码，网络 ID 以 <code>1110</code> 开头。</li>
+<li><strong>E 类地址</strong>：保留为今后使用，以 <code>1111</code> 开头。</li>
+</ul>
+<blockquote>
+<p>只有 A&#x2F;B&#x2F;C 类地址用来分配给主机。</p>
+</blockquote>
+
+        <h3 id="6-2-1：A-类地址"   >
+          <a href="#6-2-1：A-类地址" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-1：A-类地址" class="headerlink" title="6.2.1：A 类地址"></a>6.2.1：A 类地址</h3>
+      <p>默认子网掩码是 <code>255.0.0.0</code>，网络 ID 以 <code>0</code> 开头。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/d6f048482cdd453e95cc0ccfb3954759.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>网络 ID：<ul>
+<li>0 不能用，127 作为保留网段。</li>
+<li>其中 127.0.0.1 是本地回环地址（Loopback），代表本机地址。</li>
+<li>第 1 部分可以分配的取值范围是：1 ~ 126。</li>
+</ul>
+</li>
+<li>主机 ID：<ul>
+<li>第 2、3、4 部分的取值范围是：0 ~ 255。</li>
+<li>每个 A 类网络能容纳的最大主机数是：<code>256 * 256 * 256 - 2 = 2^24 - 2 = 16777214</code>。</li>
+</ul>
+</li>
+</ul>
+
+        <h3 id="6-2-2：B-类地址"   >
+          <a href="#6-2-2：B-类地址" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-2：B-类地址" class="headerlink" title="6.2.2：B 类地址"></a>6.2.2：B 类地址</h3>
+      <p>默认子网掩码是 <code>255.255.0.0</code>，网络 ID 以 <code>10</code> 开头。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/d3edbb2d5cf64c9da21839f22f8f9e52.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>网络 ID：<ul>
+<li>第 1 部分的取值范围是：128 ~ 191</li>
+<li>第 2 部分的取值范围是：0 ~ 255</li>
+</ul>
+</li>
+<li>主机 ID：<ul>
+<li>第 3、4 部分的取值范围是：0 ~ 255</li>
+<li>每个 B 类网络能容纳的最大主机数是：<code>256 * 256 - 2 = 2^16 - 2 = 65534</code></li>
+</ul>
+</li>
+</ul>
+
+        <h3 id="6-2-3：C-类地址"   >
+          <a href="#6-2-3：C-类地址" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-3：C-类地址" class="headerlink" title="6.2.3：C 类地址"></a>6.2.3：C 类地址</h3>
+      <p>默认子网掩码是 <code>255.255.255.0</code>，网络 ID 以 <code>110</code> 开头。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/a86010318a7d49e09f5f920d31e8f3fe.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>网络 ID：<ul>
+<li>第 1 部分的取值范围是：192 ~ 223</li>
+<li>第 2、3 部分的取值范围是：0 ~ 255</li>
+</ul>
+</li>
+<li>主机 ID：<ul>
+<li>第 4 部分的取值范围是：0 ~ 255</li>
+<li>每个 C 类网络能容纳的最大主机数是：<code>256 - 2 = 254</code></li>
+</ul>
+</li>
+</ul>
+
+        <h3 id="6-2-4：D-类地址"   >
+          <a href="#6-2-4：D-类地址" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-4：D-类地址" class="headerlink" title="6.2.4：D 类地址"></a>6.2.4：D 类地址</h3>
+      <p>没有子网掩码，网络 ID 以 <code>1110</code> 开头。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/5f47ac67efe248399fa20013ec955dfd.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>用于多播（组播）地址。</li>
+<li>第一部分取值范围：224 ~ 239。</li>
+</ul>
+
+        <h3 id="6-2-5：E-类地址"   >
+          <a href="#6-2-5：E-类地址" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-5：E-类地址" class="headerlink" title="6.2.5：E 类地址"></a>6.2.5：E 类地址</h3>
+      <p>保留为今后使用，以 <code>1111</code> 开头。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/81964e0757914cdd8a215dea0f9f55e4.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>保留为今后使用。</li>
+<li>第一部分取值是：240 ~ 255。</li>
+</ul>
+
+        <h2 id="6-3：CIDR-表示方法"   >
+          <a href="#6-3：CIDR-表示方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-3：CIDR-表示方法" class="headerlink" title="6.3：CIDR 表示方法"></a>6.3：CIDR 表示方法</h2>
+      <p><strong>CIDR</strong>（Classless Inter-Domain Routing），无类别域间路由</p>
+<p>子网掩码的 CIDR 表示方法：</p>
+<ul>
+<li><code>192.168.1.100/24</code>，代表子网掩码有 24 个 1，也就是 255.255.255.0</li>
+<li><code>123.210.100.200/16</code>，代表子网掩码有 16 个 1，也就是 255.255.0.0</li>
+</ul>
+<p>计算工具：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.sojson.com/convert/subnetmask.html" >https://www.sojson.com/convert/subnetmask.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h1 id="7：子网"   >
+          <a href="#7：子网" class="heading-link"><i class="fas fa-link"></i></a><a href="#7：子网" class="headerlink" title="7：子网"></a>7：子网</h1>
+      <p><strong>子网划分</strong>：借用主机位作子网位，划分出多个子网。</p>
+<p><strong>子网划分可以分为</strong>：</p>
+<ul>
+<li><strong>等长子网划分</strong>：将一个网段等分成多个子网，每个子网的可用 IP 地址数量一样。</li>
+<li><strong>变长子网划分</strong>：每个子网的可用 IP 地址数量可以是不一样的。</li>
+</ul>
+<p><strong>子网划分的步骤</strong>：</p>
+<ol>
+<li>确定子网的子网掩码长度</li>
+<li>确定子网中第 1 个、最后 1 个主机可用的 IP 地址</li>
+</ol>
+<p><strong>为什么要进行子网划分</strong>？</p>
+<ul>
+<li>如果需要让 200 台主机在同一个网段内，可以分配一个 C 类网段，比如 192.168.1.0&#x2F;24。<ul>
+<li>共 254 个可用 IP 地址：192.168.1.1 ~ 192.168.1.254</li>
+<li>多出 54 个空闲的 IP 地址，这种情况并不算浪费资源</li>
+</ul>
+</li>
+<li>如果需要让 500 台主机在同一个网段内，那就分配一个 B 类网段，比如 191.100.0.0&#x2F;16。<ul>
+<li>共 65534 个可用 IP 地址：191.100.0.1 ~ 191.100.255.254</li>
+<li>多出 65034 个空闲的IP地址，这种情况属于极大的浪费资源</li>
+</ul>
+</li>
+<li>如何尽量避免浪费 IP 地址资源：合理进行子网划分。</li>
+</ul>
+
+        <h2 id="7-1：等长子网划分"   >
+          <a href="#7-1：等长子网划分" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-1：等长子网划分" class="headerlink" title="7.1：等长子网划分"></a>7.1：等长子网划分</h2>
+      
+        <h3 id="7-1-1：C-类子网划分"   >
+          <a href="#7-1-1：C-类子网划分" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-1-1：C-类子网划分" class="headerlink" title="7.1.1：C 类子网划分"></a>7.1.1：C 类子网划分</h3>
+      
+        <h4 id="7-1-1-1：等分成-2-个子网"   >
+          <a href="#7-1-1-1：等分成-2-个子网" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-1-1-1：等分成-2-个子网" class="headerlink" title="7.1.1.1：等分成 2 个子网"></a>7.1.1.1：等分成 2 个子网</h4>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/59dd7c357f4443069acb22c3f71f4344.png" alt="在这里插入图片描述"></p>
+
+        <h4 id="7-1-1-2：等分成-4-个子网"   >
+          <a href="#7-1-1-2：等分成-4-个子网" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-1-1-2：等分成-4-个子网" class="headerlink" title="7.1.1.2：等分成 4 个子网"></a>7.1.1.2：等分成 4 个子网</h4>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/4a106e28c78641a2beecacc2ce93f183.png" alt="在这里插入图片描述"></p>
+<p>等分成 4 个子网的广播地址：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/5e02f66984b14887989cfc2b0b24dd34.png" alt="在这里插入图片描述"></p>
+
+        <h4 id="7-1-1-3：等分成-8-个子网"   >
+          <a href="#7-1-1-3：等分成-8-个子网" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-1-1-3：等分成-8-个子网" class="headerlink" title="7.1.1.3：等分成 8 个子网"></a>7.1.1.3：等分成 8 个子网</h4>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/199e03c5f03044f2a1101f2b5c40e06a.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="7-1-2：B-类子网划分"   >
+          <a href="#7-1-2：B-类子网划分" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-1-2：B-类子网划分" class="headerlink" title="7.1.2：B 类子网划分"></a>7.1.2：B 类子网划分</h3>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/bbe5cd0575e04c1c9c4efd2671c27e9f.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="7-1-3：A-类子网划分"   >
+          <a href="#7-1-3：A-类子网划分" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-1-3：A-类子网划分" class="headerlink" title="7.1.3：A 类子网划分"></a>7.1.3：A 类子网划分</h3>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/21fac632356e4e25a2048657b31df277.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="7-2：变长子网划分"   >
+          <a href="#7-2：变长子网划分" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-2：变长子网划分" class="headerlink" title="7.2：变长子网划分"></a>7.2：变长子网划分</h2>
+      <p>如果一个子网地址块的长度是原网段的 <code>(1/2)^n</code>，那么</p>
+<ul>
+<li>子网的子网掩码，就是在原网段的子网掩码基础上增加 n 个 1。</li>
+<li>不等长的子网，子网掩码不同。</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/499ea5584a8443cebe38ab0dcd9dd502.png" alt="在这里插入图片描述"></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">假设上图是对 192.168.0.0/24 进行变长子网划分</span><br><span class="line"></span><br><span class="line"> - C 网段：子网掩码是 255.255.255.128/25</span><br><span class="line"> - B 网段：子网掩码是 255.255.255.192/26</span><br><span class="line"> - A 网段：子网掩码是 255.255.255.224/27</span><br><span class="line"> - D 网段：子网掩码是 255.255.255.252/30</span><br><span class="line"> - E 网段：子网掩码是 255.255.255.252/30</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="8：超网"   >
+          <a href="#8：超网" class="heading-link"><i class="fas fa-link"></i></a><a href="#8：超网" class="headerlink" title="8：超网"></a>8：超网</h1>
+      <p><strong>超网</strong>：跟子网反过来，它是将多个连续的网段合并成一个更大的网段。</p>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>原本有 200 台计算机使用 192.168.0.0&#x2F;24 网段，现在希望增加 200 台设备到同一个网段。<ul>
+<li>200 台在 192.168.0.0&#x2F;24 网段，200 台在 192.168.1.0&#x2F;24 网段</li>
+<li>合并 <code>192.168.0.0/24</code>、<code>192.168.1.0/24</code> 为一个网段：<code>192.168.0.0/23</code>（子网掩码往左移动1位）</li>
+</ul>
+</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/f143ed157082459d840bcf1beb239895.png" alt="在这里插入图片描述"></p>
+<p><strong>思考</strong>：对于上面的例子，192.168.0.255&#x2F;23 这个 IP 地址，可以分配给计算机使用吗？</p>
+<p>由下图知，主机位不全为 0 或 1，所以可以。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/0a42420211794f259556caf9f24cb471.png" alt="在这里插入图片描述"></p>
+<p>192.168.0.255&#x2F;24 与 192.168.1.255&#x2F;23 则不能分配给计算机。</p>
+
+        <h2 id="8-1：合并-4-个网段"   >
+          <a href="#8-1：合并-4-个网段" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-1：合并-4-个网段" class="headerlink" title="8.1：合并 4 个网段"></a>8.1：合并 4 个网段</h2>
+      <p>子网掩码向左移动 2 位，可以合并 4 个网段。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/06a114296d1246389b4627840af94541.png" alt="在这里插入图片描述"></p>
+<p>如上图，将 192.168.0.0&#x2F;24、192.168.1.0&#x2F;24、192.168.2.0&#x2F;24、192.168.3.0&#x2F;24 合并为 192.168.0.0&#x2F;22 网段。</p>
+<p><strong>思考</strong>：192.168.1.0&#x2F;24、192.168.2.0&#x2F;24 两个网段，能通过子网掩码向左移动 1 位进行合并吗?</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/0c9ee369d1b6441493bab6afb17c2bb8.png" alt="在这里插入图片描述"></p>
+<p>答：不能。</p>
+
+        <h2 id="8-2：合并网段的规律"   >
+          <a href="#8-2：合并网段的规律" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-2：合并网段的规律" class="headerlink" title="8.2：合并网段的规律"></a>8.2：合并网段的规律</h2>
+      <ul>
+<li><strong>假设 n 是 2 的 k 次幂（ k &gt;&#x3D; 1），子网掩码左移 k 位能够合并 n 个网段</strong></li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/91e7f3d5ab5741ec80180984c85ef113.png" alt="在这里插入图片描述"></p>
+<ul>
+<li><strong>假设 n 是 2 的 k 次幂（k &gt;&#x3D; 1），如果第一个网段的网络号能被 n 整除，那么由它开始连续的 n 个网段，能通过左移 k 位子网掩码进行合并。</strong></li>
+</ul>
+<p>例如：</p>
+<ul>
+<li>第一个网段的网络号以二进制 0 结尾，那么由它开始连续的 2 个网段，能通过左移 1 位子网掩码进行合并</li>
+<li>第一个网段的网络号以二进制 00 结尾，那么由它开始连续的 4 个网段，能通过左移 2 位子网掩码进行合并</li>
+<li>第一个网段的网络号以二进制 000 结尾，那么由它开始连续的 8 个网段，能通过左移 3 位子网掩码进行合并</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/ff328401e9d0408eb4bd574ef65e8da3.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="8-3：判断一个网段是子网还是超网"   >
+          <a href="#8-3：判断一个网段是子网还是超网" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-3：判断一个网段是子网还是超网" class="headerlink" title="8.3：判断一个网段是子网还是超网"></a>8.3：判断一个网段是子网还是超网</h2>
+      <ul>
+<li>首先看该网段的类型，是 A 类网络、B 类网络、C 类网络？<ul>
+<li>默认情况下</li>
+<li>A 类子网掩码的位数是 8（255.0.0.0）</li>
+<li>B 类子网掩码的位数是 16（255.255.0.0）</li>
+<li>C 类子网掩码的位数是 24（255.255.255.0）</li>
+</ul>
+</li>
+<li>如果该网段的子网掩码位数比默认子网掩码<strong>多</strong>，就是<strong>子网</strong>。</li>
+<li>如果该网段的子网掩码位数比默认子网掩码<strong>少</strong>，就是<strong>超网</strong>。</li>
+</ul>
+<p>例：</p>
+<p><strong>25.100.0.0&#x2F;16 是 A 类子网</strong>：<br>根据 25 判断出这是个 A 类网络，默认子网掩码 8 位。<br>由于该网段子网掩码 16 位，比默认多，所以是子网。</p>
+<p><strong>200.100.0.0&#x2F;16 是 C 类超网</strong>：<br>根据 200 判断出这是个 C 类网络，默认子网掩码 24 位。<br>由于该网段子网掩码 16 位，比默认少，所以是超网。</p>
+
+        <h1 id="9：路由"   >
+          <a href="#9：路由" class="heading-link"><i class="fas fa-link"></i></a><a href="#9：路由" class="headerlink" title="9：路由"></a>9：路由</h1>
+      <p><strong>在不同网段之间转发数据，需要有路由器的支持</strong>。</p>
+<p>默认情况下，路由器只知道跟它直连的网段，非直连的网段需要通过静态路由和动态路由告诉它。</p>
+<ul>
+<li><strong>静态路由</strong><ul>
+<li>管理员手动添加路由信息</li>
+<li>适用于小规模网络</li>
+</ul>
+</li>
+<li><strong>动态路由</strong><ul>
+<li>路由器通过路由选择协议（比如 RIP、OSPF）自动获取路由信息</li>
+<li>适用于大规模网络</li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="9-1：路由表示例一"   >
+          <a href="#9-1：路由表示例一" class="heading-link"><i class="fas fa-link"></i></a><a href="#9-1：路由表示例一" class="headerlink" title="9.1：路由表示例一"></a>9.1：路由表示例一</h2>
+      <p>让 4 台主机之间可以互相通信：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/2783203392514883b6b48da17b736a75.png" alt="在这里插入图片描述"></p>
+<p><strong>路由器 0 的路由表</strong>：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/cd4cf3e27dc84cb6be971f713f3637cb.png" alt="在这里插入图片描述"></p>
+<p><strong>路由器 1 的路由表</strong>：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/95c226dfea134d548c5a16235d5d1bec.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="9-2：路由表示例二"   >
+          <a href="#9-2：路由表示例二" class="heading-link"><i class="fas fa-link"></i></a><a href="#9-2：路由表示例二" class="headerlink" title="9.2：路由表示例二"></a>9.2：路由表示例二</h2>
+      <p>让 4 台主机之间可以互相通信：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/4531ee98f59a47b7af077a1491a162c5.png" alt="在这里插入图片描述"></p>
+<p><strong>路由表</strong>：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/73a1b5d9297a4016bf49666dadde8a57.png" alt="在这里插入图片描述"></p>
+
+        <h1 id="10：数据包的传输过程"   >
+          <a href="#10：数据包的传输过程" class="heading-link"><i class="fas fa-link"></i></a><a href="#10：数据包的传输过程" class="headerlink" title="10：数据包的传输过程"></a>10：数据包的传输过程</h1>
+      <p>这里仅仅是简述一下数据包的传输过程，之后介绍网络分层时，会再次详细讲解数据包的传输过程。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/255a47ed543d4e3c9846305904cf0a43.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>源 IP、目标 IP 没有变；源 MAC、目标 MAC 一直在变。</p>
+</blockquote>
+
+        <h2 id="10-1：第一个包的丢失"   >
+          <a href="#10-1：第一个包的丢失" class="heading-link"><i class="fas fa-link"></i></a><a href="#10-1：第一个包的丢失" class="headerlink" title="10.1：第一个包的丢失"></a>10.1：第一个包的丢失</h2>
+      <p>如图，从 192.168.1.10&#x2F;24 往 192.168.2.10&#x2F;24 虽然可以 ping 通，但是丢失了第一个数据包。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/5febc112945948debd943c0309e1f1e9.png" alt="在这里插入图片描述"></p>
+<p><strong>原因</strong>：计算机0 往路由器发送了 ARP 包，路由器收到后回复了 ARP 包，从而计算机0 就开始发送 ICMP 包，路由器0 收到 ICMP 包后准备发往计算机1，但是路由器还不知道计算机1 的 MAC 地址，所以要往计算机1 发送 ARP 包，因此就把 ICMP 包给丢了，所以第一次 ping 会超时。</p>
+
+        <h1 id="11：网络-互联网-因特网"   >
+          <a href="#11：网络-互联网-因特网" class="heading-link"><i class="fas fa-link"></i></a><a href="#11：网络-互联网-因特网" class="headerlink" title="11：网络 &amp; 互联网 &amp; 因特网"></a>11：网络 &amp; 互联网 &amp; 因特网</h1>
+      <ul>
+<li>网络（<code>Network</code>）</li>
+<li>互联网（<code>internet</code>）</li>
+<li>因特网（<code>Internet</code>）</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/18927f7cd32644df8a3ff716653094ed.png" alt="在这里插入图片描述"></p>
+<p>全世界最大的互联网：因特网（Internet），将全世界所有的计算机都连接在一起。</p>
+<ul>
+<li>一般使用大写 <code>I</code> 开头的 Internet 特指因特网。</li>
+<li>日常生活中说的：你的电脑上不了网。其实就是指：你的电脑没有连接到因特网。</li>
+</ul>
+
+        <h1 id="12：ISP"   >
+          <a href="#12：ISP" class="heading-link"><i class="fas fa-link"></i></a><a href="#12：ISP" class="headerlink" title="12：ISP"></a>12：ISP</h1>
+      <p><strong>ISP</strong>（Internet Service Provider），Internet 服务提供商，比如移动、电信、网通、铁通等。</p>
+<p>我们平时拉的宽带都是通过 ISP 连接到 Internet 的。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/9124aa83dc204978a73d2c6085dfacf1.png" alt="在这里插入图片描述"></p>
+<p>平时见到左边的下载列表，其实是给使用不同 ISP 的用户对应的选择。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/a371410c229c4c5d9d3a829ee8f82ad0.png" alt="在这里插入图片描述"></p>
+
+        <h1 id="13：网络分类"   >
+          <a href="#13：网络分类" class="heading-link"><i class="fas fa-link"></i></a><a href="#13：网络分类" class="headerlink" title="13：网络分类"></a>13：网络分类</h1>
+      <p>按照不同的分类方式，可以将网络分为以下几类：</p>
+<ul>
+<li>局域网（LAN）</li>
+<li>城域网（MAN）</li>
+<li>广域网（WAN）</li>
+<li>个人区域网（PAN）</li>
+<li>无线局域网（WLAN）</li>
+<li>全球局域网（GAN）</li>
+<li>虚拟局域网（VLAN）</li>
+</ul>
+<p>按照网络的范围进行分类，可以分为：局域网、城域网、广域网等</p>
+
+        <h2 id="13-1：局域网"   >
+          <a href="#13-1：局域网" class="heading-link"><i class="fas fa-link"></i></a><a href="#13-1：局域网" class="headerlink" title="13.1：局域网"></a>13.1：局域网</h2>
+      <p><strong>局域网</strong>（Local Area Network，LAN）</p>
+<ul>
+<li>一般是范围在几百米到十几公里内的计算机所构成的计算机网络</li>
+<li>常用于公司、家庭、学校、医院、机关、一幢大楼等</li>
+<li>局域网中使用最广泛的网络技术叫：以太网（Ethernet）</li>
+<li>在电脑、手机上经常见到的一个英文 WLAN（Wireless LAN），意思是无线局域网。</li>
+</ul>
+
+        <h2 id="13-2：城域网"   >
+          <a href="#13-2：城域网" class="heading-link"><i class="fas fa-link"></i></a><a href="#13-2：城域网" class="headerlink" title="13.2：城域网"></a>13.2：城域网</h2>
+      <p><strong>城域网</strong>（Metropolitan Area Network，MAN）</p>
+<ul>
+<li>一般范围是数十公里到数百公里，可以覆盖一个城市</li>
+</ul>
+
+        <h2 id="13-3：广域网"   >
+          <a href="#13-3：广域网" class="heading-link"><i class="fas fa-link"></i></a><a href="#13-3：广域网" class="headerlink" title="13.3：广域网"></a>13.3：广域网</h2>
+      <p><strong>广域网</strong>（Wide Area Network，WAN）</p>
+<ul>
+<li>一般范围是几百公里到几千公里，可以覆盖一个国家。通常都需要租用 ISP 的线路。</li>
+</ul>
+
+        <h1 id="14：上网方式"   >
+          <a href="#14：上网方式" class="heading-link"><i class="fas fa-link"></i></a><a href="#14：上网方式" class="headerlink" title="14：上网方式"></a>14：上网方式</h1>
+      
+        <h2 id="14-1：电话线入户"   >
+          <a href="#14-1：电话线入户" class="heading-link"><i class="fas fa-link"></i></a><a href="#14-1：电话线入户" class="headerlink" title="14.1：电话线入户"></a>14.1：电话线入户</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/dabaf65174bd4f3ba38b106590cbfabe.png" alt="在这里插入图片描述"></p>
+<p><strong>ADSL</strong>（Asymmetric Digital Subscriber Line），电话拨号上网。</p>
+<ul>
+<li>非对称数字用户线路，提供上、下行不对称的传输带宽</li>
+<li>猫（Modem），调制解调器，进行数字信号和模拟信号的转换</li>
+</ul>
+
+        <h2 id="14-2：光纤入户"   >
+          <a href="#14-2：光纤入户" class="heading-link"><i class="fas fa-link"></i></a><a href="#14-2：光纤入户" class="headerlink" title="14.2：光纤入户"></a>14.2：光纤入户</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/122c8abbdf8c4654960e670cd33f1fb3.png" alt="在这里插入图片描述"></p>
+<p>光猫（Optical Modem），光调制解调器，进行数字信号和光信号的转换。</p>
+
+        <h2 id="14-3：网线入户"   >
+          <a href="#14-3：网线入户" class="heading-link"><i class="fas fa-link"></i></a><a href="#14-3：网线入户" class="headerlink" title="14.3：网线入户"></a>14.3：网线入户</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/93d9648b9ccc47a088170b75c8665c07.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="14-4：家用无线路由器的逻辑结构"   >
+          <a href="#14-4：家用无线路由器的逻辑结构" class="heading-link"><i class="fas fa-link"></i></a><a href="#14-4：家用无线路由器的逻辑结构" class="headerlink" title="14.4：家用无线路由器的逻辑结构"></a>14.4：家用无线路由器的逻辑结构</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/01/a251937c430749c5a35b734730fcf77d.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="14-5：常见接口"   >
+          <a href="#14-5：常见接口" class="heading-link"><i class="fas fa-link"></i></a><a href="#14-5：常见接口" class="headerlink" title="14.5：常见接口"></a>14.5：常见接口</h2>
+      <ul>
+<li>FastEthernet：快速以太网接口（100M）</li>
+<li>GigabitEthernet：千兆以太网接口（1000M）</li>
+<li>Serial：串行接口</li>
+</ul>
+
+        <h1 id="15：公网-私网"   >
+          <a href="#15：公网-私网" class="heading-link"><i class="fas fa-link"></i></a><a href="#15：公网-私网" class="headerlink" title="15：公网 &amp; 私网"></a>15：公网 &amp; 私网</h1>
+      <p>IP 地址也分为：公网 IP、私网 IP（内网）。</p>
+<blockquote>
+<p>为什么要分公网、私网？<br>IP 地址不够用。<br>便于管理。</p>
+</blockquote>
+
+        <h2 id="15-1：公网-IP"   >
+          <a href="#15-1：公网-IP" class="heading-link"><i class="fas fa-link"></i></a><a href="#15-1：公网-IP" class="headerlink" title="15.1：公网 IP"></a>15.1：公网 IP</h2>
+      <p>公网 IP（Public）。</p>
+<ul>
+<li>Internet 上的路由器中只有到达公网的路由表，没有到达私网的路由表</li>
+<li>公网 IP 由因特网信息中心（Internet Network Information Cetner，Inter NIC）统一分配管理</li>
+<li>ISP 需要向 Inter NIC 申请公网 IP</li>
+</ul>
+
+        <h2 id="15-2：私网-IP"   >
+          <a href="#15-2：私网-IP" class="heading-link"><i class="fas fa-link"></i></a><a href="#15-2：私网-IP" class="headerlink" title="15.2：私网 IP"></a>15.2：私网 IP</h2>
+      <p>私网 IP（Private），主要用于局域网。</p>
+<p>下面是保留的私网网段：</p>
+<ul>
+<li>A 类：10.0.0.0&#x2F;8，1 个 A 类网络</li>
+<li>B 类：172.16.0.0&#x2F;16 ~ 172.31.0.0&#x2F;16，16 个 B 类网络</li>
+<li>C 类：192.168.0.0&#x2F;24 ~ 192.168.255.0&#x2F;24，256 个 C 类网络</li>
+</ul>
+
+        <h2 id="15-3：NAT"   >
+          <a href="#15-3：NAT" class="heading-link"><i class="fas fa-link"></i></a><a href="#15-3：NAT" class="headerlink" title="15.3：NAT"></a>15.3：NAT</h2>
+      <p><strong>NAT</strong>（Network Address Translation）。</p>
+<p>私网 IP 想访问 Internet 需要进行 NAT 转换，借助公网 IP 上网。这一步可以由路由器完成。</p>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>节约公网 IP 资源</li>
+<li>隐藏内部真实 IP</li>
+</ul>
+<p><strong>分类</strong>：</p>
+<ul>
+<li><strong>静态转换</strong><br>手动配置 NAT 映射表<br>一对一转换</li>
+<li><strong>动态转换</strong><br>定义外部地址池，动态随机转换<br>一对一转换</li>
+<li><strong>PAT</strong>（Port Address Translation），目前应用最广泛的 NAT 实现方式<br>多对一转换，最大程度节约公网 IP 资源<br>采用端口多路复用方式，通过端口号标识不同的数据流</li>
+</ul>
+
+        <h2 id="15-4：端口映射"   >
+          <a href="#15-4：端口映射" class="heading-link"><i class="fas fa-link"></i></a><a href="#15-4：端口映射" class="headerlink" title="15.4：端口映射"></a>15.4：端口映射</h2>
+      <blockquote>
+<p><strong>端口</strong>（0 ~ 65535）是每个软件的一个通讯进出口。</p>
+</blockquote>
+<p>类似于 NAT。</p>
+<p><strong>端口映射</strong>，就是将内网主机的一个端口映射到外网主机的一个端口。当用户访问外网 IP 的这个端口时，外网主机自动将请求映射到内网对应的机器上。</p>
+<hr>
+<p><font color="#00EE76">
+无奈夜长人不寐，数声和月到帘栊。
+</font></p>
+<p align="right"><font color="#00EE76">
+——《捣练子令 · 深院静》（五代）李煜
+</font></p>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://example.com">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://example.com/2022/08/30/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B01.%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">http://example.com/2022/08/30/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B01.%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2022/08/31/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B02.%20%E7%89%A9%E7%90%86%E5%B1%82%20%C2%B7%20%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%20%C2%B7%20%E7%BD%91%E7%BB%9C%E5%B1%82/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《网络协议》02. 物理层 · 数据链路层 · 网络层</span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91-%E5%8D%8F%E8%AE%AE"><span class="toc-text">
+          1：互联网 &amp; 协议</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%EF%BC%9A%E8%B7%A8%E5%B9%B3%E5%8F%B0%E5%8E%9F%E7%90%86"><span class="toc-text">
+          1.1：跨平台原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%EF%BC%9A%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B8%8E%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">
+          1.2：客户端与服务器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9A%E7%BD%91%E7%BB%9C%E4%BA%92%E8%BF%9E%E6%A8%A1%E5%9E%8B"><span class="toc-text">
+          2：网络互连模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E9%80%9A%E4%BF%A1%E5%9F%BA%E7%A1%80"><span class="toc-text">
+          3：计算机通信基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1%EF%BC%9A%E7%BD%91%E7%BA%BF%E7%9B%B4%E8%BF%9E"><span class="toc-text">
+          3.1：网线直连</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%EF%BC%9A%E5%90%8C%E8%BD%B4%E7%94%B5%E7%BC%86"><span class="toc-text">
+          3.2：同轴电缆</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3%EF%BC%9A%E9%9B%86%E7%BA%BF%E5%99%A8"><span class="toc-text">
+          3.3：集线器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4%EF%BC%9A%E7%BD%91%E6%A1%A5"><span class="toc-text">
+          3.4：网桥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5%EF%BC%9A%E4%BA%A4%E6%8D%A2%E6%9C%BA"><span class="toc-text">
+          3.5：交换机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-6%EF%BC%9A%E8%B7%AF%E7%94%B1%E5%99%A8"><span class="toc-text">
+          3.6：路由器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EF%BC%9AMAC-%E5%9C%B0%E5%9D%80"><span class="toc-text">
+          4：MAC 地址</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1%EF%BC%9AMAC-%E5%9C%B0%E5%9D%80%E6%A0%BC%E5%BC%8F"><span class="toc-text">
+          4.1：MAC 地址格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2%EF%BC%9AMAC-%E5%9C%B0%E5%9D%80%E6%93%8D%E4%BD%9C"><span class="toc-text">
+          4.2：MAC 地址操作</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%EF%BC%9AARP-ICMP"><span class="toc-text">
+          5：ARP &amp; ICMP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6%EF%BC%9AIP-%E5%9C%B0%E5%9D%80"><span class="toc-text">
+          6：IP 地址</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1%EF%BC%9AIP-%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="toc-text">
+          6.1：IP &amp; 子网掩码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2%EF%BC%9AIP-%E5%9C%B0%E5%9D%80%E5%88%86%E7%B1%BB"><span class="toc-text">
+          6.2：IP 地址分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-1%EF%BC%9AA-%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="toc-text">
+          6.2.1：A 类地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-2%EF%BC%9AB-%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="toc-text">
+          6.2.2：B 类地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-3%EF%BC%9AC-%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="toc-text">
+          6.2.3：C 类地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-4%EF%BC%9AD-%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="toc-text">
+          6.2.4：D 类地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-5%EF%BC%9AE-%E7%B1%BB%E5%9C%B0%E5%9D%80"><span class="toc-text">
+          6.2.5：E 类地址</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-3%EF%BC%9ACIDR-%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95"><span class="toc-text">
+          6.3：CIDR 表示方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7%EF%BC%9A%E5%AD%90%E7%BD%91"><span class="toc-text">
+          7：子网</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1%EF%BC%9A%E7%AD%89%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="toc-text">
+          7.1：等长子网划分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-1%EF%BC%9AC-%E7%B1%BB%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="toc-text">
+          7.1.1：C 类子网划分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-1-1%EF%BC%9A%E7%AD%89%E5%88%86%E6%88%90-2-%E4%B8%AA%E5%AD%90%E7%BD%91"><span class="toc-text">
+          7.1.1.1：等分成 2 个子网</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-1-2%EF%BC%9A%E7%AD%89%E5%88%86%E6%88%90-4-%E4%B8%AA%E5%AD%90%E7%BD%91"><span class="toc-text">
+          7.1.1.2：等分成 4 个子网</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-1-3%EF%BC%9A%E7%AD%89%E5%88%86%E6%88%90-8-%E4%B8%AA%E5%AD%90%E7%BD%91"><span class="toc-text">
+          7.1.1.3：等分成 8 个子网</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-2%EF%BC%9AB-%E7%B1%BB%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="toc-text">
+          7.1.2：B 类子网划分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-3%EF%BC%9AA-%E7%B1%BB%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="toc-text">
+          7.1.3：A 类子网划分</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2%EF%BC%9A%E5%8F%98%E9%95%BF%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86"><span class="toc-text">
+          7.2：变长子网划分</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8%EF%BC%9A%E8%B6%85%E7%BD%91"><span class="toc-text">
+          8：超网</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-1%EF%BC%9A%E5%90%88%E5%B9%B6-4-%E4%B8%AA%E7%BD%91%E6%AE%B5"><span class="toc-text">
+          8.1：合并 4 个网段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-2%EF%BC%9A%E5%90%88%E5%B9%B6%E7%BD%91%E6%AE%B5%E7%9A%84%E8%A7%84%E5%BE%8B"><span class="toc-text">
+          8.2：合并网段的规律</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-3%EF%BC%9A%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E7%BD%91%E6%AE%B5%E6%98%AF%E5%AD%90%E7%BD%91%E8%BF%98%E6%98%AF%E8%B6%85%E7%BD%91"><span class="toc-text">
+          8.3：判断一个网段是子网还是超网</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9%EF%BC%9A%E8%B7%AF%E7%94%B1"><span class="toc-text">
+          9：路由</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#9-1%EF%BC%9A%E8%B7%AF%E7%94%B1%E8%A1%A8%E7%A4%BA%E4%BE%8B%E4%B8%80"><span class="toc-text">
+          9.1：路由表示例一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-2%EF%BC%9A%E8%B7%AF%E7%94%B1%E8%A1%A8%E7%A4%BA%E4%BE%8B%E4%BA%8C"><span class="toc-text">
+          9.2：路由表示例二</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%8C%85%E7%9A%84%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B"><span class="toc-text">
+          10：数据包的传输过程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#10-1%EF%BC%9A%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%8C%85%E7%9A%84%E4%B8%A2%E5%A4%B1"><span class="toc-text">
+          10.1：第一个包的丢失</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11%EF%BC%9A%E7%BD%91%E7%BB%9C-%E4%BA%92%E8%81%94%E7%BD%91-%E5%9B%A0%E7%89%B9%E7%BD%91"><span class="toc-text">
+          11：网络 &amp; 互联网 &amp; 因特网</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12%EF%BC%9AISP"><span class="toc-text">
+          12：ISP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#13%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E7%B1%BB"><span class="toc-text">
+          13：网络分类</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#13-1%EF%BC%9A%E5%B1%80%E5%9F%9F%E7%BD%91"><span class="toc-text">
+          13.1：局域网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-2%EF%BC%9A%E5%9F%8E%E5%9F%9F%E7%BD%91"><span class="toc-text">
+          13.2：城域网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#13-3%EF%BC%9A%E5%B9%BF%E5%9F%9F%E7%BD%91"><span class="toc-text">
+          13.3：广域网</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#14%EF%BC%9A%E4%B8%8A%E7%BD%91%E6%96%B9%E5%BC%8F"><span class="toc-text">
+          14：上网方式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#14-1%EF%BC%9A%E7%94%B5%E8%AF%9D%E7%BA%BF%E5%85%A5%E6%88%B7"><span class="toc-text">
+          14.1：电话线入户</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-2%EF%BC%9A%E5%85%89%E7%BA%A4%E5%85%A5%E6%88%B7"><span class="toc-text">
+          14.2：光纤入户</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-3%EF%BC%9A%E7%BD%91%E7%BA%BF%E5%85%A5%E6%88%B7"><span class="toc-text">
+          14.3：网线入户</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-4%EF%BC%9A%E5%AE%B6%E7%94%A8%E6%97%A0%E7%BA%BF%E8%B7%AF%E7%94%B1%E5%99%A8%E7%9A%84%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84"><span class="toc-text">
+          14.4：家用无线路由器的逻辑结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#14-5%EF%BC%9A%E5%B8%B8%E8%A7%81%E6%8E%A5%E5%8F%A3"><span class="toc-text">
+          14.5：常见接口</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#15%EF%BC%9A%E5%85%AC%E7%BD%91-%E7%A7%81%E7%BD%91"><span class="toc-text">
+          15：公网 &amp; 私网</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#15-1%EF%BC%9A%E5%85%AC%E7%BD%91-IP"><span class="toc-text">
+          15.1：公网 IP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-2%EF%BC%9A%E7%A7%81%E7%BD%91-IP"><span class="toc-text">
+          15.2：私网 IP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-3%EF%BC%9ANAT"><span class="toc-text">
+          15.3：NAT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#15-4%EF%BC%9A%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84"><span class="toc-text">
+          15.4：端口映射</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">5</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

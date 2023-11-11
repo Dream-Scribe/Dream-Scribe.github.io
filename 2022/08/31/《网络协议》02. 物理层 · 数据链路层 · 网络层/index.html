@@ -1,0 +1,505 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="物理层（数据通信模型，信道）、数据链路层（封装成帧，透明传输，差错检验，CSMA&#x2F;CD 协议，Ethernet V2 帧，以太网，PPP 协议）、网络层。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《网络协议》02. 物理层 · 数据链路层 · 网络层">
+<meta property="og:url" content="http://example.com/2022/08/31/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B02.%20%E7%89%A9%E7%90%86%E5%B1%82%20%C2%B7%20%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%20%C2%B7%20%E7%BD%91%E7%BB%9C%E5%B1%82/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="物理层（数据通信模型，信道）、数据链路层（封装成帧，透明传输，差错检验，CSMA&#x2F;CD 协议，Ethernet V2 帧，以太网，PPP 协议）、网络层。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/4c3513f7510d4f5eb5f01da18c6ca750.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/f4edd14724624039b0f142c38c4d5456.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/af9a65a68050462da0d2fc36175c5e0f.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/a9d16848375b408c8b6b0a2a5db745a6.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/33fe34b5b304487b85b723d496cfd894.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/99bac8325f124dd7904ff21d8d2aa334.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/aa9fc284ea7c48aaa7a468c5739a32a0.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/fbc4fa23d84e4d378071c8f0f63e8e79.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/0abfa771e4d44479860aacd27aaa55ec.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/da4c55b501fb4d67871b756a2c4c1d51.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/90bae8ce467741819044d67f0fef293c.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/92a840e43b7b4b818dab144357c4290f.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/2072158c652a4e9d8e2a89413172b9f8.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/1b517df23fda448d8b347cc81e24134e.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/3b23b4a0d6234354aa5f766364b78e4c.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/6a92c8b9a0494c10a69184f797b90a02.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/45b28c1cc33f4ab7992e6c9ffe97c6b8.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/1a2ecbfca6524d3b9f74d6a4dd235b32.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/7e7eff0073554aa09fef388fce1ab066.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/d5e237eb573f45ccab2d0bc248dd916e.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/59d48a9ac2f94064afb6ef9de40e0630.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/8aa9834126624f5e80746dece5931941.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/2fe008f955a842e18b1dfebd3566b898.png">
+<meta property="article:published_time" content="2022-08-31T14:26:48.000Z">
+<meta property="article:modified_time" content="2023-11-07T22:58:52.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/4c3513f7510d4f5eb5f01da18c6ca750.png"><title>《网络协议》02. 物理层 · 数据链路层 · 网络层 | 镜坛</title><link ref="canonical" href="http://example.com/2022/08/31/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B02.%20%E7%89%A9%E7%90%86%E5%B1%82%20%C2%B7%20%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%20%C2%B7%20%E7%BD%91%E7%BB%9C%E5%B1%82/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《网络协议》02. 物理层 · 数据链路层 · 网络层</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-08-31</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-11-08</span></span></div></header><div class="post-body"><p>@<a href="%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE">TOC</a></p>
+<hr>
+<blockquote>
+<p>网络协议从入门到底层原理。</p>
+</blockquote>
+
+        <h1 id="1：网络互连模型"   >
+          <a href="#1：网络互连模型" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：网络互连模型" class="headerlink" title="1：网络互连模型"></a>1：网络互连模型</h1>
+      <p>为了更好地促进互联网络的研究和发展，国际标准化组织 ISO 在 1985 年制定了网络互连模型：OSI 参考模型（Open System Interconnect Reference Model）。</p>
+<ul>
+<li>国际标准：OSI 参考模型（7层）</li>
+<li>实际应用：TCP&#x2F;IP 协议（4层）</li>
+<li>学习研究：（5层）</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/4c3513f7510d4f5eb5f01da18c6ca750.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="1-1：请求过程"   >
+          <a href="#1-1：请求过程" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-1：请求过程" class="headerlink" title="1.1：请求过程"></a>1.1：请求过程</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/f4edd14724624039b0f142c38c4d5456.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="1-2：网络分层"   >
+          <a href="#1-2：网络分层" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-2：网络分层" class="headerlink" title="1.2：网络分层"></a>1.2：网络分层</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/af9a65a68050462da0d2fc36175c5e0f.png" alt="在这里插入图片描述"></p>
+
+        <h1 id="2：物理层"   >
+          <a href="#2：物理层" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：物理层" class="headerlink" title="2：物理层"></a>2：物理层</h1>
+      <p><strong>物理层</strong>（Physical）定义了接口标准、线缆标准、传输速率、传输方式等。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/a9d16848375b408c8b6b0a2a5db745a6.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="2-1：数字信号-模拟信号"   >
+          <a href="#2-1：数字信号-模拟信号" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1：数字信号-模拟信号" class="headerlink" title="2.1：数字信号 &amp; 模拟信号"></a>2.1：数字信号 &amp; 模拟信号</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/33fe34b5b304487b85b723d496cfd894.png" alt="在这里插入图片描述"></p>
+<ul>
+<li><strong>模拟信号</strong>（Analog Signal）<ul>
+<li>连续的信号，适合长距离传输</li>
+<li>抗干扰能力差，受到干扰时波形变形很难纠正</li>
+</ul>
+</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/99bac8325f124dd7904ff21d8d2aa334.png" alt="在这里插入图片描述"></p>
+<ul>
+<li><strong>数字信号</strong>（Digital Signal）<ul>
+<li>离散的信号，不适合长距离传输</li>
+<li>抗干扰能力强，受到干扰时波形失真可以修复</li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="2-2：数据通信模型"   >
+          <a href="#2-2：数据通信模型" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2：数据通信模型" class="headerlink" title="2.2：数据通信模型"></a>2.2：数据通信模型</h2>
+      <p><strong>局域网通信模型</strong>：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/aa9fc284ea7c48aaa7a468c5739a32a0.png" alt="在这里插入图片描述"></p>
+<p><strong>广域网通信模型</strong>：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/fbc4fa23d84e4d378071c8f0f63e8e79.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>网线一般不能超过 100 米；数字信号适用于短距离传输。</p>
+</blockquote>
+
+        <h2 id="2-3：信道"   >
+          <a href="#2-3：信道" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3：信道" class="headerlink" title="2.3：信道"></a>2.3：信道</h2>
+      <p><strong>信道</strong>（Channel）：信息传输的通道，一条传输介质上（比如网线）上可以有多条信道。</p>
+<ul>
+<li><strong>单工通信</strong><ul>
+<li>信号只能往一个方向传输，任何时候都不能改变信号的传输方向</li>
+<li>比如无线电广播、有线电视广播</li>
+</ul>
+</li>
+<li><strong>半双工通信</strong><ul>
+<li>信号可以双向传输，但必须是交替进行，同一时间只能往一个方向传输</li>
+<li>比如对讲机</li>
+</ul>
+</li>
+<li><strong>全双工通信</strong><ul>
+<li>信号可以同时双向传输</li>
+<li>比如手机（打电话，听说同时进行）</li>
+</ul>
+</li>
+</ul>
+
+        <h1 id="3：数据链路层"   >
+          <a href="#3：数据链路层" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：数据链路层" class="headerlink" title="3：数据链路层"></a>3：数据链路层</h1>
+      <p><strong>数据链路层</strong>（Data Link）。</p>
+<p><strong>链路</strong>：从 1 个节点到相邻节点的一段物理线路（有线或无线），中间没有其他交换节点。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/0abfa771e4d44479860aacd27aaa55ec.png" alt="在这里插入图片描述"></p>
+<p><strong>数据链路</strong>：在一条链路上传输数据时，需要有对应的通信协议来控制数据的传输。</p>
+<p>不同类型的数据链路，所用的通信协议可能是不同的。</p>
+<ul>
+<li>广播信道：CSMA&#x2F;CD 协议（比如同轴电缆、集线器等组成的网络）</li>
+<li>点对点信道：PPP 协议（比如 2 个路由器之间的信道）</li>
+</ul>
+<p><strong>数据链路层的 3 个基本问题</strong>：</p>
+<ul>
+<li>封装成帧</li>
+<li>透明传输</li>
+<li>差错检验</li>
+</ul>
+
+        <h2 id="3-1：封装成帧"   >
+          <a href="#3-1：封装成帧" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1：封装成帧" class="headerlink" title="3.1：封装成帧"></a>3.1：封装成帧</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/da4c55b501fb4d67871b756a2c4c1d51.png" alt="在这里插入图片描述"></p>
+<ul>
+<li><strong>帧</strong>（Frame）的<strong>数据部分</strong>：<ul>
+<li>就是网络层传递下来的数据包（IP 数据包，Packet）</li>
+</ul>
+</li>
+<li><strong>MTU</strong>（Maximum Transfer Unit，最大传输单元）：<ul>
+<li>每一种数据链路层协议都规定了所能够传送的帧的数据长度上限</li>
+<li>以太网的 MTU 为 1500 个字节</li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="3-2：透明传输"   >
+          <a href="#3-2：透明传输" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2：透明传输" class="headerlink" title="3.2：透明传输"></a>3.2：透明传输</h2>
+      <ul>
+<li>使用 <strong>SOH</strong>（Start Of Header）作为<strong>帧开始符</strong></li>
+<li>使用 <strong>EOT</strong>（End Of Transmission）作为<strong>帧结束符</strong></li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/90bae8ce467741819044d67f0fef293c.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>数据部分一旦出现 SOH、EOT，就需要进行转义。</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/92a840e43b7b4b818dab144357c4290f.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="3-3：差错检验"   >
+          <a href="#3-3：差错检验" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-3：差错检验" class="headerlink" title="3.3：差错检验"></a>3.3：差错检验</h2>
+      <p><strong>根据数据部分 + 首部计算得出 FCS</strong>。数据传输前和传输后都会计算 FCS 用来检验数据是否出错。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/2072158c652a4e9d8e2a89413172b9f8.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="3-4：CSMA-CD-协议"   >
+          <a href="#3-4：CSMA-CD-协议" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-4：CSMA-CD-协议" class="headerlink" title="3.4：CSMA&#x2F;CD 协议"></a>3.4：CSMA&#x2F;CD 协议</h2>
+      <p><strong>CSMA&#x2F;CD</strong>（Carrier Sense Multiple Access with Collision Detectio，载波侦听多路访问&#x2F;冲突检测）</p>
+<p><strong>以太网</strong>（Ethernet）：</p>
+<ul>
+<li>使用了 CSMA&#x2F;CD 的网络可以称为是以太网，它传输的是<strong>以太网帧</strong>。</li>
+<li>用交换机组建的网络，也可以叫做以太网。</li>
+</ul>
+<p>以太网帧的格式有：Ethernet V2 标准、IEEE 的 802.3 标准。</p>
+<p>使用最多的是：Ethernet V2 标准。</p>
+<blockquote>
+<p>为了能够检测正在发送的帧是否产生了冲突，以太网的帧至少要 64 字节。</p>
+</blockquote>
+<p>用交换机组建的网络，已经支持全双工通信，不需要再使用 CSMA&#x2F;CD，但它传输的帧依然是以太网帧。所以，<strong>用交换机组建的网络，依然可以叫做以太网</strong>。</p>
+
+        <h3 id="3-4-1：Ethernet-V2-帧"   >
+          <a href="#3-4-1：Ethernet-V2-帧" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-4-1：Ethernet-V2-帧" class="headerlink" title="3.4.1：Ethernet V2 帧"></a>3.4.1：Ethernet V2 帧</h3>
+      <p><strong>Ethernet V2 帧的格式</strong>：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/1b517df23fda448d8b347cc81e24134e.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>首部：<code>目标 MAC + 源 MAC + 网络类型</code></li>
+<li>以太网帧：<code>首部 + 数据 + FCS</code></li>
+<li>数据的长度至少：<code>64 - 6 - 6 - 2 - 4 = 46 字节</code></li>
+</ul>
+<p><strong>Ethernet V2 标准</strong>：</p>
+<ul>
+<li>当数据部分的长度小于 46 字节时，数据链路层会在数据的后面加入一些字节填充。</li>
+<li>接收端会将添加的字节去掉。</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/3b23b4a0d6234354aa5f766364b78e4c.png" alt="在这里插入图片描述"></p>
+<p>长度总结：</p>
+<ul>
+<li><strong>以太网帧的数据长度</strong>：46 ~ 1500 字节<ul>
+<li><code>46 字节 = 64 - 目标 MAC（6）- 源 MAC（6）- 类型（2）- FCS（4）</code></li>
+<li><code>以太网的 MTU 为 1500 个字节</code></li>
+</ul>
+</li>
+<li><strong>以太网帧的长度</strong>：64 ~ 1518 字节<ul>
+<li><code>为了能够检测正在发送的帧是否产生了冲突，以太网的帧至少要 64 字节</code></li>
+<li><code>1518 字节 = 目标 MAC（6）+ 源 MAC（6）+ 网络类型（2）+ FCS（4）+ MTU（1500）</code></li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="3-5：PPP-协议"   >
+          <a href="#3-5：PPP-协议" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-5：PPP-协议" class="headerlink" title="3.5：PPP 协议"></a>3.5：PPP 协议</h2>
+      <p><strong>PPP 协议</strong>（Point to Point Protocol）。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/6a92c8b9a0494c10a69184f797b90a02.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>帧开始符、帧结束符：<code>0x7E</code></li>
+<li>Address 字段：图中的值是 <code>0xFF</code>，形同虚设，点到点信道不需要源 MAC、目标 MAC</li>
+<li>Control 字段：图中的值是 <code>0x03</code>，目前没有什么作用</li>
+<li>Protocol 字段：内部用到的协议类型</li>
+</ul>
+<p><strong>字节填充</strong>：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/45b28c1cc33f4ab7992e6c9ffe97c6b8.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>将 <code>0x7E</code> 替换成 <code>0x7D5E</code></li>
+<li>将 <code>0x7D</code> 替换成 <code>0x7D5D</code></li>
+</ul>
+
+        <h2 id="3-6：网卡"   >
+          <a href="#3-6：网卡" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-6：网卡" class="headerlink" title="3.6：网卡"></a>3.6：网卡</h2>
+      <p><strong>网卡</strong>工作在<strong>数据链路层</strong>和<strong>物理层</strong>。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/1a2ecbfca6524d3b9f74d6a4dd235b32.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>网卡接收到一个帧，首先会进行差错校验，如果校验通过则接收，否则丢弃</li>
+<li>Wireshark 抓到的帧没有 FCS，因为它抓到的是差错校验通过的帧（帧尾的 FCS 会被硬件去掉）</li>
+<li>Wireshark 抓不到差错校验失败的帧</li>
+</ul>
+
+        <h1 id="4：网络层"   >
+          <a href="#4：网络层" class="heading-link"><i class="fas fa-link"></i></a><a href="#4：网络层" class="headerlink" title="4：网络层"></a>4：网络层</h1>
+      <p><strong>网络层</strong>（Network）。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/7e7eff0073554aa09fef388fce1ab066.png" alt="在这里插入图片描述"></p>
+<p><strong>网络层数据包</strong>（IP 数据包，Packet）由<strong>首部</strong>、<strong>数据</strong>两部分组成。</p>
+<p>数据部分：很多时候是传输层传递下来的数据段（Segment）。</p>
+
+        <h2 id="4-1：首部"   >
+          <a href="#4-1：首部" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1：首部" class="headerlink" title="4.1：首部"></a>4.1：首部</h2>
+      
+        <h3 id="4-1-1：版本"   >
+          <a href="#4-1-1：版本" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-1：版本" class="headerlink" title="4.1.1：版本"></a>4.1.1：版本</h3>
+      <p>版本（Version）</p>
+<ul>
+<li>占 4 位</li>
+<li><code>0b0100</code>：IPv4</li>
+<li><code>0b0110</code>：IPv6</li>
+</ul>
+
+        <h3 id="4-1-2：首部长度"   >
+          <a href="#4-1-2：首部长度" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-2：首部长度" class="headerlink" title="4.1.2：首部长度"></a>4.1.2：首部长度</h3>
+      <p>首部长度（Header Length）</p>
+<ul>
+<li>占 4 位，二进制乘以 4 才是最终长度</li>
+<li><code>0b0101</code>：20（最小值）</li>
+<li><code>0b1111</code>：60（最大值）</li>
+</ul>
+
+        <h3 id="4-1-3：区分服务"   >
+          <a href="#4-1-3：区分服务" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-3：区分服务" class="headerlink" title="4.1.3：区分服务"></a>4.1.3：区分服务</h3>
+      <p>区分服务（Differentiated Services Field）</p>
+<ul>
+<li>占 8 位</li>
+<li>可以用于提高网络的服务质量（QoS，Quality of Service）</li>
+</ul>
+
+        <h3 id="4-1-4：总长度"   >
+          <a href="#4-1-4：总长度" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-4：总长度" class="headerlink" title="4.1.4：总长度"></a>4.1.4：总长度</h3>
+      <p>总长度（Total Length）</p>
+<ul>
+<li>占 16 位</li>
+<li>首部 + 数据的长度之和，最大值是 65535</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/d5e237eb573f45ccab2d0bc248dd916e.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>由于帧的数据不能超过 1500 字节，所以过大的 IP 数据包需要分片（fragments）传输给数据链路层，每一片都有自己的网络层首部（IP 首部）</p>
+</blockquote>
+
+        <h3 id="4-1-5：标识"   >
+          <a href="#4-1-5：标识" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-5：标识" class="headerlink" title="4.1.5：标识"></a>4.1.5：标识</h3>
+      <p>标识（Identification）</p>
+<ul>
+<li>占 16 位</li>
+<li>数据包的 ID。当数据包过大进行分片时，同一个数据包的所有片的标识都是一样的</li>
+<li>有一个计数器专门管理数据包的ID，每发出一个数据包，ID就加1</li>
+</ul>
+
+        <h3 id="4-1-6：标志"   >
+          <a href="#4-1-6：标志" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-6：标志" class="headerlink" title="4.1.6：标志"></a>4.1.6：标志</h3>
+      <p>标志（Flags）</p>
+<ul>
+<li>占 3 位</li>
+<li>第 1 位（Reserved Bit）：保留</li>
+<li>第 2 位（Don’t Fragment）：1 代表不允许分片，0 代表允许分片</li>
+<li>第 3 位（More Fragments）：1 代表不是最后一片，0 代表是最后一片</li>
+</ul>
+
+        <h3 id="4-1-7：片偏移"   >
+          <a href="#4-1-7：片偏移" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-7：片偏移" class="headerlink" title="4.1.7：片偏移"></a>4.1.7：片偏移</h3>
+      <p>片偏移（Fragment Offset）</p>
+<ul>
+<li>占 13 位</li>
+<li>片偏移乘以 8：字节偏移</li>
+<li>每一片的长度一定是 8 的整数倍</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/59d48a9ac2f94064afb6ef9de40e0630.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="4-1-8：生存时间"   >
+          <a href="#4-1-8：生存时间" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-8：生存时间" class="headerlink" title="4.1.8：生存时间"></a>4.1.8：生存时间</h3>
+      <p>生存时间（Time To Live，TTL）</p>
+<ul>
+<li>占 8 位</li>
+<li>每个路由器在转发之前会将 TTL 减 1，一旦发现 TTL 减为 0，路由器会返回错误报告</li>
+<li>观察使用 <code>ping</code> 命令后的 TTL，能够推测出对方的操作系统、中间经过了多少个路由器</li>
+</ul>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">操作系统</th>
+<th align="left">默认 TTL</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Windows</td>
+<td align="left">128</td>
+</tr>
+<tr>
+<td align="left">Unix &#x2F; Linux</td>
+<td align="left">64 或 255</td>
+</tr>
+<tr>
+<td align="left">Mac OS</td>
+<td align="left">60 或 64</td>
+</tr>
+</tbody></table></div>
+
+        <h3 id="4-1-9：协议"   >
+          <a href="#4-1-9：协议" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-9：协议" class="headerlink" title="4.1.9：协议"></a>4.1.9：协议</h3>
+      <p>协议（Protocol）</p>
+<ul>
+<li>占 8 位</li>
+<li>表明所封装的数据是使用了什么协议</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/8aa9834126624f5e80746dece5931941.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="4-1-10：首部校验和"   >
+          <a href="#4-1-10：首部校验和" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-10：首部校验和" class="headerlink" title="4.1.10：首部校验和"></a>4.1.10：首部校验和</h3>
+      <p>首部校验和（Header Checksum）</p>
+<ul>
+<li>用于检查首部是否有错误</li>
+</ul>
+
+        <h1 id="5：实例"   >
+          <a href="#5：实例" class="heading-link"><i class="fas fa-link"></i></a><a href="#5：实例" class="headerlink" title="5：实例"></a>5：实例</h1>
+      
+        <h2 id="5-1：ping-的几个用法"   >
+          <a href="#5-1：ping-的几个用法" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-1：ping-的几个用法" class="headerlink" title="5.1：ping 的几个用法"></a>5.1：ping 的几个用法</h2>
+      <p>下面介绍几个 Windows 下 <code>ping</code> 命令的用法。</p>
+<p><strong>查看帮助</strong>：<br><code>ping /? </code></p>
+<p><strong>发送指定大小的数据包</strong>（单位：字节）：<br><code>ping &lt;target&gt; -l &lt;num&gt;</code><br>示例：<br><code>ping ke.qq.com -l 4000</code></p>
+<p><strong>不允许网络层分块</strong>：<br><code>ping &lt;target&gt; -f</code><br>示例：<br><code>ping www.baidu.com -l 2000 -f</code></p>
+<p><strong>设置 TTL 值</strong>：<br><code>ping &lt;target&gt; -i &lt;num&gt;</code></p>
+
+        <h2 id="5-2：追踪经过的路由器"   >
+          <a href="#5-2：追踪经过的路由器" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2：追踪经过的路由器" class="headerlink" title="5.2：追踪经过的路由器"></a>5.2：追踪经过的路由器</h2>
+      <p>可以通过 <code>ping &lt;target&gt; -i &lt;num&gt;</code> 改变 TTL 的值来追踪路由器。</p>
+<p>更方便的命令：<br><code>tracert &lt;target&gt;</code><br><code>pathping &lt;target&gt;</code></p>
+
+        <h2 id="5-3：Wireshark-完整网络层首部"   >
+          <a href="#5-3：Wireshark-完整网络层首部" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-3：Wireshark-完整网络层首部" class="headerlink" title="5.3：Wireshark 完整网络层首部"></a>5.3：Wireshark 完整网络层首部</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/02/2fe008f955a842e18b1dfebd3566b898.png" alt="在这里插入图片描述"></p>
+<hr>
+<p><font color="#FF69B4">
+山泉散漫绕阶流，万树桃花映小楼。
+</font></p>
+<p align="right"><font color="#FF69B4">
+——《离思五首》（唐）元稹
+</font></p>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://example.com">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://example.com/2022/08/31/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B02.%20%E7%89%A9%E7%90%86%E5%B1%82%20%C2%B7%20%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%20%C2%B7%20%E7%BD%91%E7%BB%9C%E5%B1%82/">http://example.com/2022/08/31/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B02.%20%E7%89%A9%E7%90%86%E5%B1%82%20%C2%B7%20%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%20%C2%B7%20%E7%BD%91%E7%BB%9C%E5%B1%82/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2022/09/04/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B03.%20%E4%BC%A0%E8%BE%93%E5%B1%82%EF%BC%88TCP%20&amp;%20UDP%EF%BC%89/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《网络协议》03. 传输层（TCP &amp; UDP）</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2022/08/30/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B01.%20%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/"><span class="paginator-prev__text">《网络协议》01. 基本概念</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9A%E7%BD%91%E7%BB%9C%E4%BA%92%E8%BF%9E%E6%A8%A1%E5%9E%8B"><span class="toc-text">
+          1：网络互连模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%EF%BC%9A%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B"><span class="toc-text">
+          1.1：请求过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E5%B1%82"><span class="toc-text">
+          1.2：网络分层</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9A%E7%89%A9%E7%90%86%E5%B1%82"><span class="toc-text">
+          2：物理层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%EF%BC%9A%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7-%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7"><span class="toc-text">
+          2.1：数字信号 &amp; 模拟信号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%EF%BC%9A%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B"><span class="toc-text">
+          2.2：数据通信模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3%EF%BC%9A%E4%BF%A1%E9%81%93"><span class="toc-text">
+          2.3：信道</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9A%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="toc-text">
+          3：数据链路层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1%EF%BC%9A%E5%B0%81%E8%A3%85%E6%88%90%E5%B8%A7"><span class="toc-text">
+          3.1：封装成帧</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%EF%BC%9A%E9%80%8F%E6%98%8E%E4%BC%A0%E8%BE%93"><span class="toc-text">
+          3.2：透明传输</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3%EF%BC%9A%E5%B7%AE%E9%94%99%E6%A3%80%E9%AA%8C"><span class="toc-text">
+          3.3：差错检验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4%EF%BC%9ACSMA-CD-%E5%8D%8F%E8%AE%AE"><span class="toc-text">
+          3.4：CSMA&#x2F;CD 协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-1%EF%BC%9AEthernet-V2-%E5%B8%A7"><span class="toc-text">
+          3.4.1：Ethernet V2 帧</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5%EF%BC%9APPP-%E5%8D%8F%E8%AE%AE"><span class="toc-text">
+          3.5：PPP 协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-6%EF%BC%9A%E7%BD%91%E5%8D%A1"><span class="toc-text">
+          3.6：网卡</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="toc-text">
+          4：网络层</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1%EF%BC%9A%E9%A6%96%E9%83%A8"><span class="toc-text">
+          4.1：首部</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-1%EF%BC%9A%E7%89%88%E6%9C%AC"><span class="toc-text">
+          4.1.1：版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-2%EF%BC%9A%E9%A6%96%E9%83%A8%E9%95%BF%E5%BA%A6"><span class="toc-text">
+          4.1.2：首部长度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-3%EF%BC%9A%E5%8C%BA%E5%88%86%E6%9C%8D%E5%8A%A1"><span class="toc-text">
+          4.1.3：区分服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-4%EF%BC%9A%E6%80%BB%E9%95%BF%E5%BA%A6"><span class="toc-text">
+          4.1.4：总长度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-5%EF%BC%9A%E6%A0%87%E8%AF%86"><span class="toc-text">
+          4.1.5：标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-6%EF%BC%9A%E6%A0%87%E5%BF%97"><span class="toc-text">
+          4.1.6：标志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-7%EF%BC%9A%E7%89%87%E5%81%8F%E7%A7%BB"><span class="toc-text">
+          4.1.7：片偏移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-8%EF%BC%9A%E7%94%9F%E5%AD%98%E6%97%B6%E9%97%B4"><span class="toc-text">
+          4.1.8：生存时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-9%EF%BC%9A%E5%8D%8F%E8%AE%AE"><span class="toc-text">
+          4.1.9：协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-10%EF%BC%9A%E9%A6%96%E9%83%A8%E6%A0%A1%E9%AA%8C%E5%92%8C"><span class="toc-text">
+          4.1.10：首部校验和</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%EF%BC%9A%E5%AE%9E%E4%BE%8B"><span class="toc-text">
+          5：实例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1%EF%BC%9Aping-%E7%9A%84%E5%87%A0%E4%B8%AA%E7%94%A8%E6%B3%95"><span class="toc-text">
+          5.1：ping 的几个用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2%EF%BC%9A%E8%BF%BD%E8%B8%AA%E7%BB%8F%E8%BF%87%E7%9A%84%E8%B7%AF%E7%94%B1%E5%99%A8"><span class="toc-text">
+          5.2：追踪经过的路由器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3%EF%BC%9AWireshark-%E5%AE%8C%E6%95%B4%E7%BD%91%E7%BB%9C%E5%B1%82%E9%A6%96%E9%83%A8"><span class="toc-text">
+          5.3：Wireshark 完整网络层首部</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">5</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
