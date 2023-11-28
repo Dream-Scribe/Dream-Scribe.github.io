@@ -66,7 +66,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="1-1：crontab"   >
           <a href="#1-1：crontab" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-1：crontab" class="headerlink" title="1.1：crontab"></a>1.1：crontab</h2>
       <p><strong>功能描述</strong>：用来设置定期执行任务。定时任务以类似文本的形式保存，称为时程表。</p>
-<p>任务调度配置文件：<font style="background:#F8F840">&#x2F;etc&#x2F;crontab</font></p>
+<p>任务调度配置文件：<font style="background:#70AD47">&#x2F;etc&#x2F;crontab</font></p>
 <p><strong>重启任务调度</strong>：<br><code>service crond restart</code></p>
 <p><strong>基本语法</strong>：<br><code>crontab [选项]</code></p>
 <p><strong>常用选项</strong>：</p>
@@ -480,7 +480,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#2-4-3：mount" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4-3：mount" class="headerlink" title="2.4.3：mount"></a>2.4.3：mount</h3>
       <p><strong>功能描述</strong>：用于挂载 Linux 系统外的文件。即将一个分区与一个目录联系起来。</p>
 <blockquote>
-<p>注：以命令行的方式操作，重启后会失效。如需永久生效，要在 <font style="background:#F8F840">&#x2F;etc&#x2F;fstab</font> 配置文件中编辑。</p>
+<p>注：以命令行的方式操作，重启后会失效。如需永久生效，要在 <font style="background:#70AD47">&#x2F;etc&#x2F;fstab</font> 配置文件中编辑。</p>
 </blockquote>
 <p><strong>基本语法</strong>：<br><code>mount [选项] &lt;磁盘分区&gt; &lt;挂载目录&gt;</code></p>
 <p><strong>常用选项</strong>：</p>
@@ -501,7 +501,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 </tr>
 <tr>
 <td align="left"><code>-a</code></td>
-<td align="left">将 <font style="background:#F8F840">&#x2F;etc&#x2F;fstab</font> 中的定义立即生效。</td>
+<td align="left">将 <font style="background:#70AD47">&#x2F;etc&#x2F;fstab</font> 中的定义立即生效。</td>
 </tr>
 </tbody></table></div>
 <p>示例：</p>
@@ -512,7 +512,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#2-4-4：umount" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4-4：umount" class="headerlink" title="2.4.4：umount"></a>2.4.4：umount</h3>
       <p><strong>功能描述</strong>：用于卸除文件系统。即移除挂载。（unmount）</p>
 <blockquote>
-<p>注：以命令行的方式操作，重启后会失效。如需永久生效，要在 <font style="background:#F8F840">&#x2F;etc&#x2F;fstab</font> 配置文件中编辑。</p>
+<p>注：以命令行的方式操作，重启后会失效。如需永久生效，要在 <font style="background:#70AD47">&#x2F;etc&#x2F;fstab</font> 配置文件中编辑。</p>
 </blockquote>
 <p><strong>基本语法</strong>：<br><code>umount &lt;name&gt;</code></p>
 <blockquote>
@@ -524,11 +524,11 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h3 id="2-4-5：相关配置文件"   >
           <a href="#2-4-5：相关配置文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4-5：相关配置文件" class="headerlink" title="2.4.5：相关配置文件"></a>2.4.5：相关配置文件</h3>
-      <p>有关挂载的配置，保存在 <font style="background:#F8F840">&#x2F;etc&#x2F;fstab</font> 文件。</p>
+      <p>有关挂载的配置，保存在 <font style="background:#70AD47">&#x2F;etc&#x2F;fstab</font> 文件。</p>
 <p>可通过编辑此文件来改变挂载。</p>
 <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/363095a503d04fcfa8af02285796b607.png" alt="在这里插入图片描述"></p>
 <p>可用分区 UUID 或路径进行挂载。</p>
-<p>示例：<br>将 <font style="background:#F8F840">&#x2F;dev&#x2F;sdb1</font> 挂在 <font style="background:#F8F840">&#x2F;newdisk&#x2F;</font> 之下。</p>
+<p>示例：<br>将 <font style="background:#70AD47">&#x2F;dev&#x2F;sdb1</font> 挂在 <font style="background:#70AD47">&#x2F;newdisk&#x2F;</font> 之下。</p>
 <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/05/b13ffe10aab84095b611fa50aafbb39d.png" alt="在这里插入图片描述"></p>
 
         <h2 id="2-5：挂载案例"   >
@@ -608,7 +608,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           2.5.1：虚拟机添加硬盘</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-2%EF%BC%9A%E7%A1%AC%E7%9B%98%E5%88%86%E5%8C%BA"><span class="toc-text">
           2.5.2：硬盘分区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-3%EF%BC%9A%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-text">
           2.5.3：格式化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-4%EF%BC%9A%E6%8C%82%E8%BD%BD"><span class="toc-text">
-          2.5.4：挂载</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">27</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">5</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+          2.5.4：挂载</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">28</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
   var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
   // 加载进度条的计时器
   var loadingTimer = null;

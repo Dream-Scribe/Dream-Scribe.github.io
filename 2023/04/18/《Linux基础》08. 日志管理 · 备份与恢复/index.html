@@ -47,7 +47,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="1-1：系统常用日志"   >
           <a href="#1-1：系统常用日志" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-1：系统常用日志" class="headerlink" title="1.1：系统常用日志"></a>1.1：系统常用日志</h2>
-      <p>大部分系统日志文件的保存位置：<font style="background:#F8F840">&#x2F;var&#x2F;log&#x2F;</font> 。</p>
+      <p>大部分系统日志文件的保存位置：<font style="background:#70AD47">&#x2F;var&#x2F;log&#x2F;</font> 。</p>
 <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9ALinux%E5%9F%BA%E7%A1%80/08/fb9b479ad8bb4eb0b35dc2d860e5bb35.png" alt="在这里插入图片描述"></p>
 <div class="table-container"><table>
 <thead>
@@ -108,7 +108,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h3 id="1-2-1：日志服务"   >
           <a href="#1-2-1：日志服务" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-2-1：日志服务" class="headerlink" title="1.2.1：日志服务"></a>1.2.1：日志服务</h3>
       <p><strong>rsyslogd</strong> <strong>服务</strong>作为后台进程，记录日志信息。</p>
-<p>rsyslogd 服务记录日志的行为，可在 <font style="background:#F8F840">&#x2F;etc&#x2F;rsyslog.conf</font> 文件中设置。</p>
+<p>rsyslogd 服务记录日志的行为，可在 <font style="background:#70AD47">&#x2F;etc&#x2F;rsyslog.conf</font> 文件中设置。</p>
 <blockquote>
 <p>CentOS 7.6 日志服务是 rsyslogd 服务，CentOS 6.x 日志服务是 syslogd 服务。<br>rsyslogd 功能更强大。rsyslogd 的使用、日志文件的格式，和 syslogd 服务兼容。</p>
 </blockquote>
@@ -125,7 +125,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h3 id="1-2-2：配置文件"   >
           <a href="#1-2-2：配置文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-2-2：配置文件" class="headerlink" title="1.2.2：配置文件"></a>1.2.2：配置文件</h3>
-      <p>日志服务配置文件为 <font style="background:#F8F840">&#x2F;etc&#x2F;rsyslog.conf</font> 。</p>
+      <p>日志服务配置文件为 <font style="background:#70AD47">&#x2F;etc&#x2F;rsyslog.conf</font> 。</p>
 <p>编辑文件时的格式为：</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*.*    存放日志文件</span><br><span class="line"></span><br><span class="line">其中第一个 * 代表日志类型，第二个 * 代表日志级别。</span><br></pre></td></tr></table></div></figure>
 
@@ -233,7 +233,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#1-2-3：自定义日志管理" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-2-3：自定义日志管理" class="headerlink" title="1.2.3：自定义日志管理"></a>1.2.3：自定义日志管理</h3>
       <p>了解以上原理后，可以自定义一个日志文件，将指定系统信息写入指定文件。</p>
 <p><strong>示例</strong>：添加 testtt.log 文件以记录所有系统信息。</p>
-<p>只需在 <font style="background:#F8F840">&#x2F;etc&#x2F;rsyslog.conf</font> 文件中添加以下语句即可：</p>
+<p>只需在 <font style="background:#70AD47">&#x2F;etc&#x2F;rsyslog.conf</font> 文件中添加以下语句即可：</p>
 <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">自定义日志文件</span></span><br><span class="line">*.*        /var/log/testtt.log</span><br></pre></td></tr></table></div></figure>
 
 
@@ -245,13 +245,13 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#1-3-1：轮替服务" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-3-1：轮替服务" class="headerlink" title="1.3.1：轮替服务"></a>1.3.1：轮替服务</h3>
       <p>为了进行日志轮替管理，使用 <strong>logrotate</strong> <strong>服务</strong>。</p>
 <blockquote>
-<p>日志轮替可以在指定的时间备份日志，<strong>依赖于系统定时任务</strong>。<br>在 <font style="background:#F8F840">&#x2F;etc&#x2F;cron.daily&#x2F;</font> 目录，存在 <font style="background:#F8F840">logrotate</font> 可执行文件。logrotate 服务就依赖这个文件。</p>
+<p>日志轮替可以在指定的时间备份日志，<strong>依赖于系统定时任务</strong>。<br>在 <font style="background:#70AD47">&#x2F;etc&#x2F;cron.daily&#x2F;</font> 目录，存在 <font style="background:#70AD47">logrotate</font> 可执行文件。logrotate 服务就依赖这个文件。</p>
 </blockquote>
-<p>可在 <font style="background:#F8F840">&#x2F;etc&#x2F;logrotate.conf</font> 文件中配置轮替规则。</p>
+<p>可在 <font style="background:#70AD47">&#x2F;etc&#x2F;logrotate.conf</font> 文件中配置轮替规则。</p>
 
         <h3 id="1-3-2：配置文件"   >
           <a href="#1-3-2：配置文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-3-2：配置文件" class="headerlink" title="1.3.2：配置文件"></a>1.3.2：配置文件</h3>
-      <p><font style="background:#F8F840">&#x2F;etc&#x2F;logrotate.conf</font> 为 logrotate 的全局配置文件。</p>
+      <p><font style="background:#70AD47">&#x2F;etc&#x2F;logrotate.conf</font> 为 logrotate 的全局配置文件。</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">除此以外，如果全局配置文件中存在以下语句</span><br><span class="line"></span><br><span class="line">include /etc/logrotate.d</span><br><span class="line"></span><br><span class="line">则也包含 /etc/logrotate.d/ 目录中所有的子配置文件。</span><br><span class="line">子配置文件优先级更高。</span><br><span class="line">为了便于管理也在此目录中为指定日志文件配置轮替规则。</span><br></pre></td></tr></table></div></figure>
 
 <p>参数说明：</p>
@@ -328,14 +328,14 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#1-3-3：自定义日志轮替" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-3-3：自定义日志轮替" class="headerlink" title="1.3.3：自定义日志轮替"></a>1.3.3：自定义日志轮替</h3>
       <p>把日志加入日志轮替，有两种方法。</p>
 <ul>
-<li>第一种方法是直接在 <font style="background:#F8F840">&#x2F;etc&#x2F;logrotate.conf</font> 配置文件中写入该日志的轮替策略。</li>
-<li>第二种方法是在 <font style="background:#F8F840">&#x2F;etc&#x2F;logrotate.d&#x2F;</font> 目录中新建立该日志的轮替文件，在该轮替文件中写入轮替策略</li>
+<li>第一种方法是直接在 <font style="background:#70AD47">&#x2F;etc&#x2F;logrotate.conf</font> 配置文件中写入该日志的轮替策略。</li>
+<li>第二种方法是在 <font style="background:#70AD47">&#x2F;etc&#x2F;logrotate.d&#x2F;</font> 目录中新建立该日志的轮替文件，在该轮替文件中写入轮替策略</li>
 </ul>
 <blockquote>
-<p>因为 <font style="background:#F8F840">&#x2F;etc&#x2F;logrotate.d&#x2F;</font> 目录中的文件都会被 “ include ” 到主配置文件中，所以能实现日志轮替。<br>推荐使用第二种方法，因为系统中需要轮替的日志非常多，如果全都写入主配置文件，不利于主配置文件的维护。</p>
+<p>因为 <font style="background:#70AD47">&#x2F;etc&#x2F;logrotate.d&#x2F;</font> 目录中的文件都会被 “ include ” 到主配置文件中，所以能实现日志轮替。<br>推荐使用第二种方法，因为系统中需要轮替的日志非常多，如果全都写入主配置文件，不利于主配置文件的维护。</p>
 </blockquote>
 <p>以 <strong>【1.2.3：自定义日志管理】</strong> 中 testtt.log 文件为例：</p>
-<p>在 <font style="background:#F8F840">&#x2F;etc&#x2F;logrotate.d&#x2F;</font> 下创建文件 testttlog 并编写如下内容即可：</p>
+<p>在 <font style="background:#70AD47">&#x2F;etc&#x2F;logrotate.d&#x2F;</font> 下创建文件 testttlog 并编写如下内容即可：</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/var/log/testtt.log</span><br><span class="line">&#123;</span><br><span class="line">	missingok</span><br><span class="line">	daily</span><br><span class="line">	copytruncate</span><br><span class="line">	rotate 7</span><br><span class="line">	notifempty</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
 
 
@@ -369,7 +369,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <blockquote>
 <p>备份分区时，可以支持增量备份。如果备份文件或者目录，不支持增量备份。</p>
 </blockquote>
-<p>可将备份记录存储到 <font style="background:#F8F840">&#x2F;etc&#x2F;dumpdates</font> 文件。</p>
+<p>可将备份记录存储到 <font style="background:#70AD47">&#x2F;etc&#x2F;dumpdates</font> 文件。</p>
 <p><strong>基本语法</strong>：<br><code>dump [选项] [-f] &lt;name&gt; &lt;file&gt;</code></p>
 <blockquote>
 <p>“ -f ” 指定文件备份的保存位置，可不加。<br>“ name ” 为备份文件。<br>“ file ” 为要备份的文件或目录。</p>
@@ -454,7 +454,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           1.4：内存日志</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9A%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="toc-text">
           2：备份与恢复</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%EF%BC%9Adump"><span class="toc-text">
           2.1：dump</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%EF%BC%9Arestore"><span class="toc-text">
-          2.2：restore</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">27</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">5</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+          2.2：restore</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">28</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
   var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
   // 加载进度条的计时器
   var loadingTimer = null;
