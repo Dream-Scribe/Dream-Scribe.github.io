@@ -1,0 +1,709 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="传输层、UDP、TCP（可靠传输，流量控制，拥塞控制，三次握手，四次挥手）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《网络协议》03. 传输层（TCP &amp; UDP）">
+<meta property="og:url" content="http://example.com/2022/09/04/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B03.%20%E4%BC%A0%E8%BE%93%E5%B1%82%EF%BC%88TCP%20&%20UDP%EF%BC%89/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="传输层、UDP、TCP（可靠传输，流量控制，拥塞控制，三次握手，四次挥手）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/4c3513f7510d4f5eb5f01da18c6ca750.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/f4edd14724624039b0f142c38c4d5456.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/af9a65a68050462da0d2fc36175c5e0f.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/16eb41c9ab6d4aceb33971de13cd123d.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/4bef99f1d141482c971328866420a710.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/071cd9f5cf9b4a998031d0e1fc1e469f.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/4ddce323caa44c98b985fc11d8b08fde.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/6effac46a0d94f80aa282e40a0ae8a64.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/716757014f6f4079bf3ed39e91b241fe.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/64abc5043e02403c96245279479c1b73.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/7e19354136e64885933565e335c458c5.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/dcfc403612c743ea8c069077166d2708.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/bffdf8302d1a45f683dc117d613379ef.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/bf58c5959ea847499cc43139b85269ff.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/66e8605bb6204c31bb8ce98287ab30ce.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/aeceab28b6b8491ca4515eb24ad82c80.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/92730e2da5fe41838fbc1529f1209074.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/3006241ba4054360a9e618c93e4058ce.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/b1a856e0efb44e8c90e56d6eb8d1ecec.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/f7992020576a4a86bc73c52d06d50316.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/4a56c657bff141e4b1b487ff4c842212.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/b34faf557e5a407e95f9516b7d649fab.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/783a2fb3038e469cb9e6342785b0a2eb.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/ad320961cd1f4f9fb29065f526ac9711.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/f19c08bc17094060a22db60cf2df0be6.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/561450676ea34fc5847faf276fdce490.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/cb2691cf019645308516d16c7e156759.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/9a22230d8fb043869301fffdb5d84434.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/d3ebc762aa4a4aa7bc9bd63969be86f2.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/f6c54d3bab5a44d990fcb66662047aac.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/d061f77634d44d73887f6849b763cc29.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/1ef7556a6abc4f5884db88773a99fbf9.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/c5988b9345814ead92cf658c1905a76a.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/98c99bbbc4cf4c55bbb9448c7eebf432.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/c65d3e20b39841e4a4ba0d5e111db855.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/beb25d9af3ca471ab1073f2b71fe6190.png">
+<meta property="og:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/990e7598899f4dcd80d653d77bb356a6.png">
+<meta property="article:published_time" content="2022-09-04T14:37:11.000Z">
+<meta property="article:modified_time" content="2023-11-08T07:58:52.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/4c3513f7510d4f5eb5f01da18c6ca750.png"><title>《网络协议》03. 传输层（TCP &amp; UDP） | 镜坛</title><link ref="canonical" href="http://example.com/2022/09/04/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B03.%20%E4%BC%A0%E8%BE%93%E5%B1%82%EF%BC%88TCP%20&amp;%20UDP%EF%BC%89/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《网络协议》03. 传输层（TCP &amp; UDP）</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2022-09-04</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-11-08</span></span></div></header><div class="post-body"><p>@<a href="%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE">TOC</a></p>
+<hr>
+<blockquote>
+<p>网络协议从入门到底层原理。</p>
+</blockquote>
+
+        <h1 id="1：网络互连模型"   >
+          <a href="#1：网络互连模型" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：网络互连模型" class="headerlink" title="1：网络互连模型"></a>1：网络互连模型</h1>
+      <p>为了更好地促进互联网络的研究和发展，国际标准化组织 ISO 在 1985 年制定了网络互连模型：OSI 参考模型（Open System Interconnect Reference Model）。</p>
+<ul>
+<li>国际标准：OSI 参考模型（7层）</li>
+<li>实际应用：TCP&#x2F;IP 协议（4层）</li>
+<li>学习研究：（5层）</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/4c3513f7510d4f5eb5f01da18c6ca750.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="1-1：请求过程"   >
+          <a href="#1-1：请求过程" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-1：请求过程" class="headerlink" title="1.1：请求过程"></a>1.1：请求过程</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/f4edd14724624039b0f142c38c4d5456.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="1-2：网络分层"   >
+          <a href="#1-2：网络分层" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-2：网络分层" class="headerlink" title="1.2：网络分层"></a>1.2：网络分层</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/af9a65a68050462da0d2fc36175c5e0f.png" alt="在这里插入图片描述"></p>
+
+        <h1 id="2：传输层"   >
+          <a href="#2：传输层" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：传输层" class="headerlink" title="2：传输层"></a>2：传输层</h1>
+      <p><strong>传输层</strong>（Transport），也叫运输层。</p>
+<p>传输层有 2 个协议：</p>
+<ul>
+<li><strong>TCP</strong>（Transmission Control Protocol），传输控制协议</li>
+<li><strong>UDP</strong>（User Datagram Protocol），用户数据报协议</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/16eb41c9ab6d4aceb33971de13cd123d.png" alt="在这里插入图片描述"></p>
+
+        <h1 id="3：UDP"   >
+          <a href="#3：UDP" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：UDP" class="headerlink" title="3：UDP"></a>3：UDP</h1>
+      <p><strong>数据格式</strong>：</p>
+<ul>
+<li>UDP 是无连接的，减少了建立和释放连接的开销</li>
+<li>UDP 尽最大能力交付，不保证可靠交付，因此不需要维护一些复杂的参数，首部只有 8 个字节（TCP 的首部至少有 20 个字节）</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/4bef99f1d141482c971328866420a710.png" alt="在这里插入图片描述"></p>
+<ul>
+<li><strong>UDP 长度</strong>（Length）<ul>
+<li>占 16 位：首部的长度 + 数据的长度</li>
+</ul>
+</li>
+<li><strong>端口号</strong>（Port）<ul>
+<li>UDP 首部中端口是占用 2 字节</li>
+<li>可以推测出端口号的取值范围是：0 ~ 65535</li>
+<li>客户端的源端口是临时开启的随机端口</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>防火墙可以设置开启\关闭某些端口来提高安全性。</p>
+</blockquote>
+<ul>
+<li><strong>检验和</strong>（Checksum）<ul>
+<li>检验和的计算内容：伪首部 + 首部 + 数据</li>
+</ul>
+</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/071cd9f5cf9b4a998031d0e1fc1e469f.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>伪首部：仅在计算检验和时起作用，并不会传递给网络层。</p>
+</blockquote>
+
+        <h1 id="4：TCP"   >
+          <a href="#4：TCP" class="heading-link"><i class="fas fa-link"></i></a><a href="#4：TCP" class="headerlink" title="4：TCP"></a>4：TCP</h1>
+      <p><strong>TCP 的几个要点</strong>：</p>
+<ul>
+<li>可靠传输</li>
+<li>流量控制</li>
+<li>拥塞控制</li>
+<li>连接管理（建立连接、释放连接）</li>
+</ul>
+<p><strong>数据格式</strong>：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/4ddce323caa44c98b985fc11d8b08fde.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="4-1：首部"   >
+          <a href="#4-1：首部" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1：首部" class="headerlink" title="4.1：首部"></a>4.1：首部</h2>
+      
+        <h3 id="4-1-1：序号"   >
+          <a href="#4-1-1：序号" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-1：序号" class="headerlink" title="4.1.1：序号"></a>4.1.1：序号</h3>
+      <p>序号（Sequence Number）</p>
+<ul>
+<li>占 4 字节</li>
+<li>首先，在传输过程的每一个字节都会有一个编号</li>
+<li>在建立连接后，序号代表：这一次传给对方的 TCP 数据部分的第一个字节的编号</li>
+</ul>
+
+        <h3 id="4-1-2：确认号"   >
+          <a href="#4-1-2：确认号" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-2：确认号" class="headerlink" title="4.1.2：确认号"></a>4.1.2：确认号</h3>
+      <p>确认号（Acknowledgment Number）</p>
+<ul>
+<li>占 4 字节</li>
+<li>在建立连接后，确认号代表：期望对方下一次传过来的 TCP 数据部分的第一个字节的编号</li>
+</ul>
+
+        <h3 id="4-1-3：数据偏移"   >
+          <a href="#4-1-3：数据偏移" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-3：数据偏移" class="headerlink" title="4.1.3：数据偏移"></a>4.1.3：数据偏移</h3>
+      <p>数据偏移</p>
+<ul>
+<li>占 4 位，取值范围是 0b0101 ~ 0b1111（5~15）</li>
+<li><code>数据偏移 * 4 = 首部长度</code>（Header Length）</li>
+<li>首部长度是 20 ~ 60 字节</li>
+</ul>
+
+        <h3 id="4-1-4：保留"   >
+          <a href="#4-1-4：保留" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-4：保留" class="headerlink" title="4.1.4：保留"></a>4.1.4：保留</h3>
+      <p>保留（Reserved）</p>
+<ul>
+<li>占 6 位，目前全为 0</li>
+</ul>
+<blockquote>
+<p>有些资料中，TCP 首部的保留字段占 3 位，标志字段占 9 位（Wireshark 中也是如此）</p>
+</blockquote>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/6effac46a0d94f80aa282e40a0ae8a64.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>UDP 的首部中有个 16 位的字段记录了整个 UDP 报文段的长度（首部 + 数据）。<br>但是，TCP的首部中仅仅有个 4 位的字段记录了 TCP 报文段的首部长度，并没有字段记录 TCP 报文段的数据长度。<br>分析：</p>
+<ul>
+<li>UDP 首部中占 16 位的长度字段是冗余的，纯粹是为了保证首部是 32 位对齐</li>
+<li>TCP&#x2F;UDP 的数据长度，完全可以由 IP 数据包的首部推测出来<br> <code>传输层数据长度 = 网络层总长度 - 网络层首部长度 - 传输层首部长度</code></li>
+</ul>
+</blockquote>
+
+        <h3 id="4-1-5：标志位"   >
+          <a href="#4-1-5：标志位" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-5：标志位" class="headerlink" title="4.1.5：标志位"></a>4.1.5：标志位</h3>
+      <p>标志位（Flags）</p>
+<p><strong>URG</strong>（Urgent）</p>
+<ul>
+<li>当 <code>URG = 1</code> 时，紧急指针字段才有效。表明当前报文段中有紧急数据，应优先尽快传送</li>
+</ul>
+<p><strong>ACK</strong>（Acknowledgment）</p>
+<ul>
+<li>当 <code>ACK = 1</code> 时，确认号字段才有效</li>
+</ul>
+<p> <strong>PSH</strong>（Push）</p>
+<p> <strong>RST</strong>（Reset）</p>
+<ul>
+<li>当 <code>RST = 1</code> 时，表明连接中出现严重差错，必须释放连接，然后再重新建立连接</li>
+</ul>
+<p><strong>SYN</strong>（Synchronization）</p>
+<ul>
+<li>当 <code>SYN = 1、ACK = 0</code> 时，表明这是一个建立连接的请求</li>
+<li>若对方同意建立连接，则回复 <code>SYN = 1、ACK = 1</code></li>
+</ul>
+<p><strong>FIN</strong>（Finish） </p>
+<ul>
+<li>当 <code>FIN = 1</code> 时，表明数据已经发送完毕，要求释放连接</li>
+</ul>
+
+        <h3 id="4-1-6：窗口"   >
+          <a href="#4-1-6：窗口" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-6：窗口" class="headerlink" title="4.1.6：窗口"></a>4.1.6：窗口</h3>
+      <p>窗口（Window）</p>
+<ul>
+<li>占 2 字节</li>
+<li>这个字段有流量控制功能，用以告知对方下一次允许发送的数据大小（以字节为单位）</li>
+</ul>
+
+        <h3 id="4-1-7：检验和"   >
+          <a href="#4-1-7：检验和" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-7：检验和" class="headerlink" title="4.1.7：检验和"></a>4.1.7：检验和</h3>
+      <p>检验和（CheckSum）</p>
+<ul>
+<li>跟 UDP 一样，TCP 检验和的计算内容：<code>伪首部 + 首部 + 数据</code>。</li>
+</ul>
+<blockquote>
+<p>伪首部：占用 12 字节，仅在计算检验和时起作用，并不会传递给网络层。</p>
+</blockquote>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/716757014f6f4079bf3ed39e91b241fe.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="4-2：可靠传输"   >
+          <a href="#4-2：可靠传输" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2：可靠传输" class="headerlink" title="4.2：可靠传输"></a>4.2：可靠传输</h2>
+      <p>可靠传输是为了保证包的完整性，当有丢包、受到三次重复确认等情况，就会重新发包。</p>
+
+        <h3 id="4-2-1：停止等待-超时重传"   >
+          <a href="#4-2-1：停止等待-超时重传" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-1：停止等待-超时重传" class="headerlink" title="4.2.1：停止等待 &amp; 超时重传"></a>4.2.1：停止等待 &amp; 超时重传</h3>
+      <p><strong>ARQ</strong>（Automatic Repeat–reQuest），自动重传请求。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/64abc5043e02403c96245279479c1b73.png" alt="在这里插入图片描述"></p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/7e19354136e64885933565e335c458c5.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p><strong>疑问</strong>： 若有个包重传了 N 次还是失败，会一直持续重传到成功为止么？<br>这个取决于系统的设置，比如有些系统，重传 5 次还未成功就会发送 <strong>reset 报文</strong>（RST）断开 TCP 连接。 </p>
+</blockquote>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/dcfc403612c743ea8c069077166d2708.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="4-2-2：连续-ARQ-协议-滑动窗口协议"   >
+          <a href="#4-2-2：连续-ARQ-协议-滑动窗口协议" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-2：连续-ARQ-协议-滑动窗口协议" class="headerlink" title="4.2.2：连续 ARQ 协议 &amp; 滑动窗口协议"></a>4.2.2：连续 ARQ 协议 &amp; 滑动窗口协议</h3>
+      <p><strong>ARQ</strong>（Automatic Repeat–reQuest），自动重传请求。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/bffdf8302d1a45f683dc117d613379ef.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>如果接收窗口最多能接收 4 个包，但发送方只发了 2 个包，接收方如何确定后面还有没有 2 个包？<br>等待一定时间后没有第 3 个包，就会返回确认收到 2 个包给发送方。</p>
+</blockquote>
+<ul>
+<li>在 TCP 通信过程中，如果发送序列中间某个数据包丢失<br>（比如 1、2、3、4、5 中 3 丢失了）</li>
+<li>TCP 会重传最后确认分组后续的分组<br>（最后确认的是 2，会重传 3、4、5）</li>
+<li>这样原先已经正确传输的分组也可能重复发送（比如 4、5），降低了 TCP 性能</li>
+<li>为改善上述情况，发展出了 SACK 技术</li>
+</ul>
+
+        <h3 id="4-2-3：SACK-技术"   >
+          <a href="#4-2-3：SACK-技术" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-3：SACK-技术" class="headerlink" title="4.2.3：SACK 技术"></a>4.2.3：SACK 技术</h3>
+      <p><strong>SACK</strong>（Selective acknowledgment，选择性确认）</p>
+<ul>
+<li>告诉发送方哪些数据丢失，哪些数据已经提前收到</li>
+<li>使 TCP 只重新发送丢失的包，不用发送后续所有的分组</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/bf58c5959ea847499cc43139b85269ff.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>SACK 信息会放在 TCP 首部的选项部分</li>
+<li>Kind：占 1 字节。值为 5 代表这是 SACK 选项</li>
+<li>Length：占 1 字节。表明 SACK 选项一共占用多少字节</li>
+<li>Left Edge：占 4 字节，左边界</li>
+<li>Right Edge：占 4 字节，右边界</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/66e8605bb6204c31bb8ce98287ab30ce.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>一对边界信息需要占用 8 字节，由于 TCP 首部的选项部分最多 40 字节，所以 SACK 选项最多携带 4 组边界信息</li>
+<li><code>SACK 选项的最大占用字节数 = 4 * 8 + 2 = 34</code></li>
+</ul>
+
+        <h3 id="4-2-4：可靠传输图示"   >
+          <a href="#4-2-4：可靠传输图示" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-4：可靠传输图示" class="headerlink" title="4.2.4：可靠传输图示"></a>4.2.4：可靠传输图示</h3>
+      <p>假设每一组数据是 100 个字节，代表一个数据段的数据，每一组给一个编号。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/aeceab28b6b8491ca4515eb24ad82c80.png" alt="在这里插入图片描述"></p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/92730e2da5fe41838fbc1529f1209074.png" alt="在这里插入图片描述"></p>
+<p><strong>思考</strong>：<br>为什么选择在传输层就将数据 “ 大卸八块 ” 分成多个段，而不是等到网络层再分片传递给数据链路层？</p>
+<ul>
+<li>需要明确的是：<strong>可靠传输是在传输层进行控制的</strong></li>
+<li>如果在传输层不分段，一旦出现数据丢失，整个传输层的数据都得重传</li>
+<li>如果在传输层分了段，一旦出现数据丢失，只需要重传丢失的那些段即可</li>
+</ul>
+
+        <h2 id="4-3：流量控制"   >
+          <a href="#4-3：流量控制" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3：流量控制" class="headerlink" title="4.3：流量控制"></a>4.3：流量控制</h2>
+      <p><strong>流量控制</strong>：让发送方的发送速率不要太快，让接收方来得及接收处理。</p>
+<blockquote>
+<p>流量控制是点对点、端对端，两台设备之间的。</p>
+</blockquote>
+<ul>
+<li>如果接收方的缓存区满了，发送方还在疯狂着发送数据</li>
+<li>接收方只能把收到的数据包丢掉，大量的丢包会极大的浪费网络资源</li>
+<li>所以要进行流量控制</li>
+</ul>
+<p><strong>原理</strong>：</p>
+<ul>
+<li>通过确认报文中的窗口字段来控制发送方的发送速率</li>
+<li>发送方的发送窗口大小不能超过接收方给出窗口大小</li>
+<li>当发送方收到接收窗口的大小为 0 时，发送方就会停止发送数据</li>
+</ul>
+<p><strong>流量控制的一种特殊情况</strong>：</p>
+<ul>
+<li>一开始，接收方给发送方发送了 0 窗口的报文段</li>
+<li>后面，接收方又有了一些存储空间，但给发送方发送的非 0 窗口的报文段丢失了</li>
+<li>发送方的发送窗口一直为 0，双方陷入僵局</li>
+</ul>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>当发送方收到 0 窗口通知时，发送方停止发送报文</li>
+<li>同时开启一个定时器，隔一段时间就发个测试报文去询问接收方最新的窗口大小</li>
+<li>如果接收的窗口大小还是为 0，则发送方再次刷新定时器</li>
+</ul>
+<p><strong>流量控制图示</strong>：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/3006241ba4054360a9e618c93e4058ce.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="4-4：拥塞控制"   >
+          <a href="#4-4：拥塞控制" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4：拥塞控制" class="headerlink" title="4.4：拥塞控制"></a>4.4：拥塞控制</h2>
+      <p><strong>拥塞控制</strong>：防止过多的数据注入到网络中，避免网络中的路由器或链路过载。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/b1a856e0efb44e8c90e56d6eb8d1ecec.png" alt="在这里插入图片描述"></p>
+<p><strong>拥塞控制是一个全局性的过程</strong>，涉及到所有的主机、路由器，以及与降低网络传输性能有关的所有因素，是大家共同努力的结果。</p>
+<blockquote>
+<p>相比而言，流量控制是点对点通信的控制。</p>
+</blockquote>
+<p><strong>拥塞控制方法</strong>：</p>
+<ul>
+<li>慢开始（slow start，慢启动）</li>
+<li>拥塞避免（congestion avoidance）</li>
+<li>快速重传（fast retransmit）</li>
+<li>快速恢复（fast recovery）</li>
+</ul>
+<p><strong>相关概念</strong>：</p>
+<ul>
+<li><strong>MSS</strong>（Maximum Segment Size）：每个段最大数据部分的大小（在建立连接时确定），一般是 <code>MTU（1500）- 20 - 20 = 1460</code>。</li>
+<li><strong>cwnd</strong>（congestion window）：拥塞窗口。</li>
+<li><strong>rwnd</strong>（receive window）：接收窗口。</li>
+<li><strong>swnd</strong>（send window）：发送窗口。<code>swnd = min(cwnd, rwnd)</code></li>
+</ul>
+
+        <h3 id="4-4-1：慢开始"   >
+          <a href="#4-4-1：慢开始" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-1：慢开始" class="headerlink" title="4.4.1：慢开始"></a>4.4.1：慢开始</h3>
+      <p><strong>慢开始</strong>（slow start），cwnd 的初始值比较小，随着数据包被接收方确认（收到一个 ACK），cwnd 就成倍增长（指数级）。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/f7992020576a4a86bc73c52d06d50316.png" alt="在这里插入图片描述"></p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/4a56c657bff141e4b1b487ff4c842212.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="4-4-2：拥塞避免"   >
+          <a href="#4-4-2：拥塞避免" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-2：拥塞避免" class="headerlink" title="4.4.2：拥塞避免"></a>4.4.2：拥塞避免</h3>
+      <p><strong>拥塞避免</strong>（congestion avoidance），拥塞窗口 cwnd 缓慢增大，以防止网络过早出现拥塞（加法增大）。</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/b34faf557e5a407e95f9516b7d649fab.png" alt="在这里插入图片描述"></p>
+<ul>
+<li>ssthresh（slow start threshold）：慢开始阈值，cwnd 达到阈值后，开始拥塞避免（加法增大）</li>
+<li>乘法减小：只要出现网络拥塞，把 ssthresh 减为拥塞峰值的一半，同时执行慢开始算法（cwnd 又恢复到初始值）</li>
+<li>当网络出现频繁拥塞时，ssthresh 值就下降的很快</li>
+</ul>
+
+        <h3 id="4-4-3：快重传"   >
+          <a href="#4-4-3：快重传" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-3：快重传" class="headerlink" title="4.4.3：快重传"></a>4.4.3：快重传</h3>
+      <p><strong>快重传</strong>（fast retransmit）</p>
+<ul>
+<li>接收方<ul>
+<li>每收到一个失序的分组后就立即发出重复确认</li>
+<li>使发送方及时知道有分组没有到达</li>
+<li>而不要等待自己发送数据时才进行确认</li>
+</ul>
+</li>
+<li>发送方<ul>
+<li>只要连续收到三个重复确认（总共 4 个相同的确认），就应当立即重传对方尚未收到的报文段</li>
+<li>而不必继续等待重传计时器到期后再重传</li>
+</ul>
+</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/783a2fb3038e469cb9e6342785b0a2eb.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="4-4-4：快恢复"   >
+          <a href="#4-4-4：快恢复" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-4：快恢复" class="headerlink" title="4.4.4：快恢复"></a>4.4.4：快恢复</h3>
+      <p><strong>快恢复</strong>（fast recovery）：当发送方连续收到三个重复确认，就执行 “ 乘法减小 ” 算法，把 ssthresh 减半。</p>
+<blockquote>
+<p>这是为了预防网络发生拥塞</p>
+</blockquote>
+<p>当发送方现在认为网络很可能没有发生拥塞时：</p>
+<ul>
+<li>与慢开始不同之处是现在不执行慢开始算法，即 cwnd 现在不恢复到初始值</li>
+<li>而是把 cwnd 值设置为 ssthresh 减半后的数值</li>
+<li>然后开始执行拥塞避免算法（加法增大），使拥塞窗口缓慢地线性增大</li>
+</ul>
+
+        <h3 id="4-4-5：快重传-快恢复"   >
+          <a href="#4-4-5：快重传-快恢复" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-5：快重传-快恢复" class="headerlink" title="4.4.5：快重传 &amp; 快恢复"></a>4.4.5：快重传 &amp; 快恢复</h3>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/ad320961cd1f4f9fb29065f526ac9711.png" alt="在这里插入图片描述"></p>
+<p>发送窗口的最大值 <code>swnd = min(cwnd, rwnd)</code></p>
+<ul>
+<li>当 <code>rwnd &lt; cwnd</code> 时，是接收方的接收能力限制发送窗口的最大值</li>
+<li>当 <code>rwnd &gt; cwnd</code> 时，是网络的拥塞限制发送窗口的最大值</li>
+</ul>
+
+        <h2 id="4-5：建立连接"   >
+          <a href="#4-5：建立连接" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-5：建立连接" class="headerlink" title="4.5：建立连接"></a>4.5：建立连接</h2>
+      
+        <h3 id="4-5-1：三次握手"   >
+          <a href="#4-5-1：三次握手" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-5-1：三次握手" class="headerlink" title="4.5.1：三次握手"></a>4.5.1：三次握手</h3>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/f19c08bc17094060a22db60cf2df0be6.png" alt="在这里插入图片描述"></p>
+<p><strong>状态解读</strong>：</p>
+<ul>
+<li><code>CLOSED</code>：client 处于关闭状态</li>
+<li><code>LISTEN</code>：server 处于监听状态，等待 client 连接</li>
+<li><code>SYN-RCVD</code>：表示 server 接受到了 SYN 报文，当收到 client 的 ACK 报文后，它会进入到 ESTABLISHED 状态</li>
+<li><code>SYN-SENT</code>：表示 client 已发送 SYN 报文，等待 server 的第 2 次握手</li>
+<li><code>ESTABLISHED</code>：表示连接已经建立</li>
+</ul>
+<p><strong>前2次握手的特点</strong>：</p>
+<ul>
+<li>SYN 都设置为 1</li>
+<li>数据部分的长度都为 0</li>
+<li>TCP 头部的长度一般是 32 字节<ul>
+<li>固定头部：20 字节</li>
+<li>选项部分：12 字节</li>
+</ul>
+</li>
+<li>双方会交换确认一些信息<ul>
+<li>比如 MSS、是否支持 SACK、Window scale（窗口缩放系数）等</li>
+<li>这些数据都放在 TCP 头部的选项部分（12 字节）</li>
+</ul>
+</li>
+</ul>
+
+        <h3 id="4-5-1：补充"   >
+          <a href="#4-5-1：补充" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-5-1：补充" class="headerlink" title="4.5.1：补充"></a>4.5.1：补充</h3>
+      <p><strong>为什么建立连接的时候，要进行 3 次握手？2 次不行吗</strong>？</p>
+<ul>
+<li>主要目的：防止 server 端一直等待，浪费资源。</li>
+</ul>
+<p><strong>如果建立连接只需要 2 次握手，可能会出现的情况</strong>：</p>
+<ul>
+<li>假设 client 发出的第一个连接请求报文段，因为网络延迟，在连接释放以后的某个时间才到达 server</li>
+<li>本来这是一个早已失效的连接请求，但 server 收到此失效的请求后，误认为是 client 再次发出的一个新的连接请求</li>
+<li>于是 server 就向 client 发出确认报文段，同意建立连接</li>
+<li>如果不采用 3 次握手，那么只要 server 发出确认，新的连接就建立了</li>
+<li>由于现在 client 并没有真正想连接服务器的意愿，因此不会理睬 server 的确认，也不会向 server 发送数据</li>
+<li>但 server 却以为新的连接已经建立，并一直等待 client 发来数据，这样，server 的资源就白白浪费掉了</li>
+</ul>
+<blockquote>
+<p>三次握手可以防止上述现象发生。<br>例如上述情况，client 没有向 server 的确认发出确认，server 由于收不到确认，就知道 client 并没有要求建立连接。</p>
+</blockquote>
+<p><strong>如果第 3 次握手失败了，会怎么处理</strong>？</p>
+<ul>
+<li>此时 server 的状态为 <code>SYN-RCVD</code>，若等不到 client 的 ACK，server 会重新发送 SYN+ACK 包。</li>
+<li>如果 server 多次重发 SYN+ACK 都等不到 client 的 ACK，就会发送 RST 包，强制关闭连接</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/561450676ea34fc5847faf276fdce490.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="4-6：释放连接"   >
+          <a href="#4-6：释放连接" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-6：释放连接" class="headerlink" title="4.6：释放连接"></a>4.6：释放连接</h2>
+      
+        <h3 id="4-6-1：四次挥手"   >
+          <a href="#4-6-1：四次挥手" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-6-1：四次挥手" class="headerlink" title="4.6.1：四次挥手"></a>4.6.1：四次挥手</h3>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/cb2691cf019645308516d16c7e156759.png" alt="在这里插入图片描述"></p>
+<p><strong>状态解读</strong>：</p>
+<ul>
+<li><code>FIN-WAIT-1</code>：<strong>表示想主动关闭连接</strong><ul>
+<li>向对方发送了 FIN 报文，此时进入到 FIN-WAIT-1 状态</li>
+</ul>
+</li>
+<li><code>CLOSE-WAIT</code>：<strong>表示在等待关闭</strong><ul>
+<li>当对方发送 FIN 给自己，自己会回应一个 ACK 报文给对方，此时则进入到 CLOSE-WAIT 状态</li>
+<li>在此状态下，需要考虑自己是否还有数据要发送给对方，如果没有，发送 FIN 报文给对方</li>
+</ul>
+</li>
+<li><code>FIN-WAIT-2</code>：<strong>只要对方发送 ACK 确认后，主动方就会处于 FIN-WAIT-2 状态，然后等待对方发送 FIN 报文</strong></li>
+<li><code>CLOSING</code>：<strong>一种比较罕见的例外状态</strong><ul>
+<li>表示你发送 FIN 报文后，并没有收到对方的 ACK 报文，反而却也收到了对方的 FIN 报文</li>
+<li>如果双方几乎在同时准备关闭连接的话，那么就出现了双方同时发送 FIN 报文的情况，也即会出现 CLOSING 状态</li>
+<li>表示双方都正在关闭连接</li>
+</ul>
+</li>
+<li><code>LAST-ACK</code>：<strong>被动关闭一方在发送 FIN 报文后，最后等待对方的 ACK 报文</strong><ul>
+<li>当收到 ACK 报文后，即可进入 CLOSED 状态了</li>
+</ul>
+</li>
+<li><code>TIME-WAIT</code>：<strong>表示收到了对方的 FIN 报文，并发送出了 ACK 报文，就等 2 MSL 后即可进入 CLOSED 状态</strong><ul>
+<li>如果 FIN-WAIT-1 状态下，收到了对方同时带 FIN 标志和 ACK 标志的报文时，可以直接进入到 TIME-WAIT 状态，而无须经过 FIN-WAIT-2 状态</li>
+</ul>
+</li>
+<li><code>CLOSED</code>：<strong>关闭状态</strong></li>
+</ul>
+<blockquote>
+<p><strong>MSL</strong>（Maximum Segment Lifetime，最大分段生存期），是 TCP 报文在 Internet 上的最长生存时间。<br>每个具体的 TCP 实现都必须选择一个确定的 MSL 值，RFC 1122 建议是 2 分钟。</p>
+</blockquote>
+<blockquote>
+<p>由于有些状态的时间比较短暂，所以很难用 <code>netstat</code> 命令看到，比如 SYN-RCVD、FIN-WAIT-1 等。</p>
+</blockquote>
+
+        <h3 id="4-6-2：细节"   >
+          <a href="#4-6-2：细节" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-6-2：细节" class="headerlink" title="4.6.2：细节"></a>4.6.2：细节</h3>
+      <ul>
+<li>TCP 是全双工模式。</li>
+<li>TCP&#x2F;IP 协议栈在设计上，允许任何一方先发起断开请求。上面演示的是 client 主动要求断开。</li>
+<li>client 发送 ACK 后，需要有个 TIME-WAIT 阶段，等待一段时间后，再真正关闭连接。<ul>
+<li>一般是等待 2 倍的 MSL。</li>
+<li>可以防止本次连接中产生的数据包误传到下一次连接中。</li>
+<li>因为本次连接中的数据包都会在 2MSL 时间内消失了。</li>
+</ul>
+</li>
+<li>如果 client 发送 ACK 后马上释放了，然后又因为网络原因，server 没有收到 client 的 ACK，server 就会重发 FIN，这时可能出现两种情况：<ul>
+<li>client 没有任何响应，服务器那边会干等，甚至多次重发 FIN，浪费资源</li>
+<li>client 有个新的应用程序刚好分配了同一个端口号，新的应用程序收到 FIN 后马上开始执行断开连接的操作，本来它可能是想跟 server 建立连接的</li>
+</ul>
+</li>
+<li>有时候在使用抓包工具的时候，有可能只会看到 “ 3 次挥手 ”。<ul>
+<li>这其实是将第 2、3 次挥手合并了</li>
+<li>当 server 接收到 client 的 FIN 时，如果 server 后面也没有数据要发送给 client了</li>
+<li>这时，server 就可以将第 2、3 次挥手合并。同时告诉 client 两件事：<br>1、已经知道 client 没有数据要发<br>2、server 已经没有数据要发了</li>
+</ul>
+</li>
+</ul>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/9a22230d8fb043869301fffdb5d84434.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="4-6-3：补充"   >
+          <a href="#4-6-3：补充" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-6-3：补充" class="headerlink" title="4.6.3：补充"></a>4.6.3：补充</h3>
+      <p><strong>为什么释放连接的时候，要进行 4 次挥手</strong>？</p>
+<ul>
+<li>第 1 次挥手：当主机 1 发出 FIN 报文段时<ul>
+<li>表示主机 1 告诉主机 2，主机 1 已经没有数据要发送了</li>
+<li>但是此时主机 1 还是可以接受来自主机 2 的数据</li>
+</ul>
+</li>
+<li>第 2 次挥手：当主机 2 返回 ACK 报文段时<ul>
+<li>表示主机 2 已经知道主机 1 没有数据发送了</li>
+<li>但是主机 2 还是可以发送数据到主机 1</li>
+</ul>
+</li>
+<li>第 3 次挥手：当主机 2 也发送了 FIN 报文段时<ul>
+<li>表示主机 2 告诉主机 1，主机 2 已经没有数据要发送了</li>
+</ul>
+</li>
+<li>第 4 次挥手：当主机 1 返回 ACK 报文段时<ul>
+<li>表示主机 1 已经知道主机 2 没有数据发送了</li>
+<li>随后正式断开整个 TCP 连接</li>
+</ul>
+</li>
+</ul>
+<p><strong>长连接、短连接的概念</strong>：</p>
+<ul>
+<li>如果建立连接后<strong>不需要进行数据交互就会关闭</strong>，那就是<strong>短连接</strong>。</li>
+<li>如果建立连接后<strong>需要进行数据交互以后再关闭</strong>，那就是<strong>长连接</strong>。</li>
+</ul>
+
+        <h1 id="5：TCP-序号-确认号（详细过程）"   >
+          <a href="#5：TCP-序号-确认号（详细过程）" class="heading-link"><i class="fas fa-link"></i></a><a href="#5：TCP-序号-确认号（详细过程）" class="headerlink" title="5：TCP 序号 &amp; 确认号（详细过程）"></a>5：TCP 序号 &amp; 确认号（详细过程）</h1>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/d3ebc762aa4a4aa7bc9bd63969be86f2.png" alt="在这里插入图片描述"></p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/f6c54d3bab5a44d990fcb66662047aac.png" alt="在这里插入图片描述"></p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/d061f77634d44d73887f6849b763cc29.png" alt="在这里插入图片描述"></p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/1ef7556a6abc4f5884db88773a99fbf9.png" alt="在这里插入图片描述"></p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/c5988b9345814ead92cf658c1905a76a.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="5-1：相对序号-确认号"   >
+          <a href="#5-1：相对序号-确认号" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-1：相对序号-确认号" class="headerlink" title="5.1：相对序号 &amp; 确认号"></a>5.1：相对序号 &amp; 确认号</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/98c99bbbc4cf4c55bbb9448c7eebf432.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="5-2：原生序号-确认号"   >
+          <a href="#5-2：原生序号-确认号" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2：原生序号-确认号" class="headerlink" title="5.2：原生序号 &amp; 确认号"></a>5.2：原生序号 &amp; 确认号</h2>
+      <p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/c65d3e20b39841e4a4ba0d5e111db855.png" alt="在这里插入图片描述"></p>
+
+        <h1 id="6：TCP-完整流程"   >
+          <a href="#6：TCP-完整流程" class="heading-link"><i class="fas fa-link"></i></a><a href="#6：TCP-完整流程" class="headerlink" title="6：TCP 完整流程"></a>6：TCP 完整流程</h1>
+      <p><strong>示例一</strong>：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/beb25d9af3ca471ab1073f2b71fe6190.png" alt="在这里插入图片描述"></p>
+<p><strong>示例二</strong>：</p>
+<p><img src="/./assets/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/03/990e7598899f4dcd80d653d77bb356a6.png" alt="在这里插入图片描述"></p>
+
+        <h1 id="7：相关命令"   >
+          <a href="#7：相关命令" class="heading-link"><i class="fas fa-link"></i></a><a href="#7：相关命令" class="headerlink" title="7：相关命令"></a>7：相关命令</h1>
+      <p>Windows 下的一些相关命令。</p>
+<p><strong>查看被占用的端口</strong>：<br><code>netstat –an</code></p>
+<p><strong>查看被占用的端口、占用端口的应用程序</strong>：<br><code>netstat –anb</code></p>
+<p><strong>查看是否可以访问主机的某个端口</strong>：<br><code>telnet &lt;主机&gt; &lt;端口&gt;</code></p>
+<hr>
+<p><font color="#00CD66">
+终古闲情归落照，一春幽梦逐游丝。
+</font></p>
+<p align="right"><font color="#00CD66">
+——《浣溪沙》（清）纳兰性德
+</font></p>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://example.com">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://example.com/2022/09/04/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B03.%20%E4%BC%A0%E8%BE%93%E5%B1%82%EF%BC%88TCP%20&amp;%20UDP%EF%BC%89/">http://example.com/2022/09/04/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B03.%20%E4%BC%A0%E8%BE%93%E5%B1%82%EF%BC%88TCP%20&amp;%20UDP%EF%BC%89/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2022/09/05/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B04.%20%E5%BA%94%E7%94%A8%E5%B1%82%EF%BC%88DNS%20&amp;%20DHCP%20&amp;%20HTTP%EF%BC%89/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《网络协议》04. 应用层（DNS &amp; DHCP &amp; HTTP）</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2022/08/31/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/%E3%80%8A%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E3%80%8B02.%20%E7%89%A9%E7%90%86%E5%B1%82%20%C2%B7%20%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%20%C2%B7%20%E7%BD%91%E7%BB%9C%E5%B1%82/"><span class="paginator-prev__text">《网络协议》02. 物理层 · 数据链路层 · 网络层</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9A%E7%BD%91%E7%BB%9C%E4%BA%92%E8%BF%9E%E6%A8%A1%E5%9E%8B"><span class="toc-text">
+          1：网络互连模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%EF%BC%9A%E8%AF%B7%E6%B1%82%E8%BF%87%E7%A8%8B"><span class="toc-text">
+          1.1：请求过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%EF%BC%9A%E7%BD%91%E7%BB%9C%E5%88%86%E5%B1%82"><span class="toc-text">
+          1.2：网络分层</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9A%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="toc-text">
+          2：传输层</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9AUDP"><span class="toc-text">
+          3：UDP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EF%BC%9ATCP"><span class="toc-text">
+          4：TCP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1%EF%BC%9A%E9%A6%96%E9%83%A8"><span class="toc-text">
+          4.1：首部</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-1%EF%BC%9A%E5%BA%8F%E5%8F%B7"><span class="toc-text">
+          4.1.1：序号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-2%EF%BC%9A%E7%A1%AE%E8%AE%A4%E5%8F%B7"><span class="toc-text">
+          4.1.2：确认号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-3%EF%BC%9A%E6%95%B0%E6%8D%AE%E5%81%8F%E7%A7%BB"><span class="toc-text">
+          4.1.3：数据偏移</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-4%EF%BC%9A%E4%BF%9D%E7%95%99"><span class="toc-text">
+          4.1.4：保留</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-5%EF%BC%9A%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="toc-text">
+          4.1.5：标志位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-6%EF%BC%9A%E7%AA%97%E5%8F%A3"><span class="toc-text">
+          4.1.6：窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-7%EF%BC%9A%E6%A3%80%E9%AA%8C%E5%92%8C"><span class="toc-text">
+          4.1.7：检验和</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2%EF%BC%9A%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93"><span class="toc-text">
+          4.2：可靠传输</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1%EF%BC%9A%E5%81%9C%E6%AD%A2%E7%AD%89%E5%BE%85-%E8%B6%85%E6%97%B6%E9%87%8D%E4%BC%A0"><span class="toc-text">
+          4.2.1：停止等待 &amp; 超时重传</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2%EF%BC%9A%E8%BF%9E%E7%BB%AD-ARQ-%E5%8D%8F%E8%AE%AE-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E5%8D%8F%E8%AE%AE"><span class="toc-text">
+          4.2.2：连续 ARQ 协议 &amp; 滑动窗口协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3%EF%BC%9ASACK-%E6%8A%80%E6%9C%AF"><span class="toc-text">
+          4.2.3：SACK 技术</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4%EF%BC%9A%E5%8F%AF%E9%9D%A0%E4%BC%A0%E8%BE%93%E5%9B%BE%E7%A4%BA"><span class="toc-text">
+          4.2.4：可靠传输图示</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3%EF%BC%9A%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="toc-text">
+          4.3：流量控制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4%EF%BC%9A%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6"><span class="toc-text">
+          4.4：拥塞控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-1%EF%BC%9A%E6%85%A2%E5%BC%80%E5%A7%8B"><span class="toc-text">
+          4.4.1：慢开始</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-2%EF%BC%9A%E6%8B%A5%E5%A1%9E%E9%81%BF%E5%85%8D"><span class="toc-text">
+          4.4.2：拥塞避免</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-3%EF%BC%9A%E5%BF%AB%E9%87%8D%E4%BC%A0"><span class="toc-text">
+          4.4.3：快重传</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-4%EF%BC%9A%E5%BF%AB%E6%81%A2%E5%A4%8D"><span class="toc-text">
+          4.4.4：快恢复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-5%EF%BC%9A%E5%BF%AB%E9%87%8D%E4%BC%A0-%E5%BF%AB%E6%81%A2%E5%A4%8D"><span class="toc-text">
+          4.4.5：快重传 &amp; 快恢复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5%EF%BC%9A%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-text">
+          4.5：建立连接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-1%EF%BC%9A%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="toc-text">
+          4.5.1：三次握手</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-1%EF%BC%9A%E8%A1%A5%E5%85%85"><span class="toc-text">
+          4.5.1：补充</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-6%EF%BC%9A%E9%87%8A%E6%94%BE%E8%BF%9E%E6%8E%A5"><span class="toc-text">
+          4.6：释放连接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-1%EF%BC%9A%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="toc-text">
+          4.6.1：四次挥手</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-2%EF%BC%9A%E7%BB%86%E8%8A%82"><span class="toc-text">
+          4.6.2：细节</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-3%EF%BC%9A%E8%A1%A5%E5%85%85"><span class="toc-text">
+          4.6.3：补充</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%EF%BC%9ATCP-%E5%BA%8F%E5%8F%B7-%E7%A1%AE%E8%AE%A4%E5%8F%B7%EF%BC%88%E8%AF%A6%E7%BB%86%E8%BF%87%E7%A8%8B%EF%BC%89"><span class="toc-text">
+          5：TCP 序号 &amp; 确认号（详细过程）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1%EF%BC%9A%E7%9B%B8%E5%AF%B9%E5%BA%8F%E5%8F%B7-%E7%A1%AE%E8%AE%A4%E5%8F%B7"><span class="toc-text">
+          5.1：相对序号 &amp; 确认号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2%EF%BC%9A%E5%8E%9F%E7%94%9F%E5%BA%8F%E5%8F%B7-%E7%A1%AE%E8%AE%A4%E5%8F%B7"><span class="toc-text">
+          5.2：原生序号 &amp; 确认号</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6%EF%BC%9ATCP-%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B"><span class="toc-text">
+          6：TCP 完整流程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7%EF%BC%9A%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="toc-text">
+          7：相关命令</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">28</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">6</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2023</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
