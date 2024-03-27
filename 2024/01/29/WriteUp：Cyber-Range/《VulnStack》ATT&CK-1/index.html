@@ -163,7 +163,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
       <p>先利用蚁剑的虚拟终端随便查看一下信息。</p>
 <p><img src="/./assets/WriteUp%EF%BC%9ACyber-Range/%E3%80%8AVulnStack%E3%80%8BATT&CK-1/426068959bd141b984fb8a9fa3f4f65d.png" alt="在这里插入图片描述"></p>
 <p>直接就是 admin 账户，很省事，方便提权至 system。</p>
-<p>那就先试试反弹 shell。这里使用 metasploit 生成后门文件，然后上传至目标机器反弹 shell。</p>
+<p>那就先试试反弹 shell。因为目标机器 445 端口有防火墙过滤，所以这里使用 metasploit 生成后门文件，然后上传至目标机器反弹 shell。</p>
 <p><strong>msf，启动！</strong>（<br><code>msfdb init &amp;&amp; msfconsole</code></p>
 <p>查看一下 Windows 反弹 shell 的相关工具。<br><code>search windows/meterpreter/reverse_tcp</code></p>
 <p><img src="/./assets/WriteUp%EF%BC%9ACyber-Range/%E3%80%8AVulnStack%E3%80%8BATT&CK-1/296d777e4d61471bbbfb570406fa90a6.png" alt="在这里插入图片描述"></p>
