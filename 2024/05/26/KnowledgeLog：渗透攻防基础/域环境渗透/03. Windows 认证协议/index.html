@@ -1,0 +1,690 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="Windows 认证方式（本地认证、网络认证）；NTLM 协议；Kerberos 协议；各协议流量分析。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《域环境渗透》03. Windows 认证 &amp; 相关协议">
+<meta property="og:url" content="https://blog.lens-shrine.top/2024/05/26/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03.%20Windows%20%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="Windows 认证方式（本地认证、网络认证）；NTLM 协议；Kerberos 协议；各协议流量分析。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-10-17-07-03.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-08-15-33-10.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-08-15-39-36.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-06-13-10-42.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-08-16-20-18.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-08-17-02-25.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-08-17-36-57.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-14-34-53.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-14-46-31.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-14-50-44.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-14-55-07.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-14-59-33.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-15-00-35.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-15-04-25.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-15-12-36.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-15-22-59.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-11-53-22.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-11-54-35.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-11-57-18.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-13-21-39.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-13-20-26.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-13-22-58.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-13-33-32.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-13-36-13.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-13-50-25.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-17-45-44.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-00-10.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-08-40.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-11-25.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-27-19.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-32-07.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-15-38.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-39-04.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-41-14.png">
+<meta property="article:published_time" content="2024-05-26T07:48:29.000Z">
+<meta property="article:modified_time" content="2024-11-13T12:20:15.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-10-17-07-03.png"><title>《域环境渗透》03. Windows 认证 &amp; 相关协议 | 镜坛</title><link ref="canonical" href="https://blog.lens-shrine.top/2024/05/26/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03.%20Windows%20%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":2},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《域环境渗透》03. Windows 认证 &amp; 相关协议</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2024-05-26</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2024-11-13</span></span></div></header><div class="post-body"><blockquote>
+<p>本系列侧重方法论，各工具只是实现目标的载体。<br>命令与工具只做简单介绍，其使用另见《软件工具录》。</p>
+</blockquote>
+<blockquote>
+<p>本专栏文章侧重于对 Windows 工作组与域环境的渗透攻击手法。</p>
+</blockquote>
+
+        <h1 id="1：Windows-认证方式"   >
+          <a href="#1：Windows-认证方式" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：Windows-认证方式" class="headerlink" title="1：Windows 认证方式"></a>1：Windows 认证方式</h1>
+      <p>关于 Windows 的认证方式，分为本地认证和网络认证。</p>
+<ul>
+<li><strong>本地认证</strong>：用户的账户密码存储在本机电脑中，无论电脑是否联网，都可输入正确的账户密码进行登录</li>
+<li><strong>网络认证</strong>：当进行网络通信和资源访问时，需要通过网络进行用户身份验证</li>
+</ul>
+<p>Windows 操作系统中，用户的密码 Hash 一般有两种：LM-Hash 和 NTLM-Hash。</p>
+<ul>
+<li><strong>LM-Hash</strong>：LAN Manager Hash，基于 DES 对称加密</li>
+<li><strong>NTLM-Hash</strong>：NT LAN Manager Hash，基于 MD4 散列摘要算法</li>
+</ul>
+<blockquote>
+<p>Windows Vista 和 Windows 2008 版本后默认禁用 LM-Hash。<br>Windows Vista 和 Windows 2003 版本后默认采用 NTLM-Hash。<br>若 LM-Hash 值为 <code>aad3b435b51404eead3b435b51404ee</code>，则表示为空值或被禁用。</p>
+</blockquote>
+<blockquote>
+<p>因为 LM-Hash&#x2F;NTLM-Hash 表述比较复杂，所以后面文章使用 “ 用户密码 Hash ” 来表述。</p>
+</blockquote>
+
+        <h1 id="2：本地认证"   >
+          <a href="#2：本地认证" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：本地认证" class="headerlink" title="2：本地认证"></a>2：本地认证</h1>
+      <p><strong>本地认证</strong>：用户的账户密码存储在本机电脑中，无论电脑是否联网，都可输入正确的账户密码进行登录。</p>
+<p><strong>认证流程</strong>：</p>
+<ol>
+<li>由 winlogon.exe 进程接受用户输入的账号密码</li>
+<li>调用 lsass.exe 进程对用户输入的密码进行加密转换为 LM-Hash&#x2F;NTLM-Hash</li>
+<li>lsass.exe 进程将由密码转换成的结果与 SAM 文件中存储的 LM-Hash&#x2F;NTLM-Hash 进行比较<ul>
+<li>如果相同，则将 groupsid 和 usersid 发送给 winlogon.exe 准备登录</li>
+<li>如果不同则登录失败</li>
+</ul>
+</li>
+</ol>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-10-17-07-03.png" alt="Alt text"></p>
+<p><strong>组件介绍</strong>：</p>
+<ul>
+<li>winlogon.exe：Windows Logon Process，即 Windows NT 用户登录程序，用于管理用户登录和退出<ul>
+<li>用户注销、重启、锁屏后，操作系统会让 winlogon.exe 显示登陆界面</li>
+</ul>
+</li>
+<li>lsass.exe：Local Security Authority Service，即本地安全认证服务，用于管理本地安全策略和认证策略，负责对用户进行身份验证<ul>
+<li>会将登录的明文账号密码在内存中保留一份备用</li>
+</ul>
+</li>
+<li>SAM 文件：位于 <code>C:\windows\system32\config\</code> 目录，用于存储所有本地用户的凭证信息<ul>
+<li>普通用户无法对其进行增加、修改、查看、复制等操作</li>
+<li>格式简要如下：<code>Username:LM-HASH:NTLM-HASH</code></li>
+</ul>
+</li>
+</ul>
+
+        <h1 id="3：网络认证"   >
+          <a href="#3：网络认证" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：网络认证" class="headerlink" title="3：网络认证"></a>3：网络认证</h1>
+      <p><strong>网络认证</strong>：当进行网络通信和资源访问时，需要通过网络进行用户身份验证。</p>
+<p><strong>认证协议</strong>：Windows 有两种认证协议：</p>
+<ul>
+<li><strong>NTLM 协议</strong>：一种早期的网络认证协议，基于 Challenge&#x2F;Response（挑战&#x2F;响应）的方式进行身份验证<ul>
+<li>工作组环境下，一般采用 NTLM 协议进行网络认证</li>
+<li>域环境中，在与旧版 Windows 系统或非 Windows 系统进行交互时也可能采用</li>
+</ul>
+</li>
+<li><strong>Kerberos 协议</strong>：通过使用 TGT（票证授权票据）和 ST（服务票据）来进行用户验证与授权，并生成会话密钥用于加密通信<ul>
+<li>在域环境中被广泛使用</li>
+</ul>
+</li>
+</ul>
+
+        <h2 id="3-1：NTLM-协议"   >
+          <a href="#3-1：NTLM-协议" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1：NTLM-协议" class="headerlink" title="3.1：NTLM 协议"></a>3.1：NTLM 协议</h2>
+      
+        <h3 id="3-1-1：协议简介"   >
+          <a href="#3-1-1：协议简介" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-1：协议简介" class="headerlink" title="3.1.1：协议简介"></a>3.1.1：协议简介</h3>
+      <p><strong>NTLM 协议</strong>：一种早期的网络认证协议，基于 Challenge&#x2F;Response（挑战&#x2F;响应）的方式进行身份验证。</p>
+<ul>
+<li>工作组环境下，一般采用 NTLM 协议进行网络认证</li>
+<li>域环境中，在与旧版 Windows 系统或非 Windows 系统进行交互时也可能采用</li>
+</ul>
+<p><strong>NTLM 协议版本</strong>：分为 NTLMv1 与 NTLMv2：</p>
+<ul>
+<li>NTLMv1 使用 8 位 Challenge，基于 DES 对 Challenge 进行处理</li>
+<li>NTLMv2 使用 16 位 Challenge，基于 HMAC-MD5 对 Challenge 进行处理</li>
+</ul>
+
+        <h3 id="3-1-2：认证流程"   >
+          <a href="#3-1-2：认证流程" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-2：认证流程" class="headerlink" title="3.1.2：认证流程"></a>3.1.2：认证流程</h3>
+      <p><strong>工作组环境</strong>：</p>
+<ol>
+<li>协商：双方确定传输协议的版本等相关信息</li>
+<li>质询：挑战&#x2F;响应机制的核心<ol>
+<li>Client 向 Server 发送用户信息请求</li>
+<li>Server 本地随机生成 Challenge，并将 Challenge 发送给 Client</li>
+<li>Client 接收到 Challenge 后，使用对应的用户密码 Hash 对 Challenge 进行加密，添加用户名、域名、机器名等相关信息生成 Response，并将 Response 发送给 Server</li>
+</ol>
+</li>
+<li>验证：Server 收到 Response 后，使用相同的方式加密 Challenge，并与 Response 中的信息进行对比<ul>
+<li>如果相同，则返回验证成功信息</li>
+<li>否则验证失败</li>
+</ul>
+</li>
+</ol>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-08-15-33-10.png" alt="Alt text"></p>
+<p><strong>域环境</strong>：</p>
+<ol>
+<li>协商：双方确定传输协议的版本等相关信息</li>
+<li>质询：挑战&#x2F;响应机制的核心<ol>
+<li>Client 向 Server 发送用户信息请求</li>
+<li>Server 本地随机生成 Challenge，并将 Challenge 发送给 Client</li>
+<li>Client 接收到 Challenge 后，使用对应的用户密码 Hash 对 Challenge 进行加密，添加用户名、域名、机器名等相关信息生成 Response，并将 Response 发送给 Server</li>
+</ol>
+</li>
+<li>验证：Server 收到 Response 后，通过 Netlogon 协议将 Response 转发给 DC<ul>
+<li>DC 使用相同的方式加密 Challenge，并与 Response 中的信息进行对比</li>
+<li>如果相同，则返回验证成功信息</li>
+<li>否则验证失败</li>
+</ul>
+</li>
+</ol>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-08-15-39-36.png" alt="Alt text"></p>
+
+        <h3 id="3-1-3：Challenge-Response"   >
+          <a href="#3-1-3：Challenge-Response" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-3：Challenge-Response" class="headerlink" title="3.1.3：Challenge &amp; Response"></a>3.1.3：Challenge &amp; Response</h3>
+      <p>Challenge 本质是一串随机字符。</p>
+<p>Response 由 NTProofStr 和 blob 两部分拼接，即 <code>Response = NTProofStr + blob</code>。</p>
+<ul>
+<li>blob：由时间、目标信息、随机填充字符等生成</li>
+<li>NTProofStr：由 <code>Net-NTLM Hash</code> 和 <code>Challenge + blob</code> 进行摘要计算生成<ul>
+<li>Net-NTLM Hash：由用户名等信息和用户密码 Hash 进行摘要计算生成</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Net-NTLM Hash 也分为 Net-NTLMv1 Hash 和 Net-NTLMv2 Hash。<br>两个版本有时也简称为 NTLMv1 Hash 和 NTLMv2 Hash。</p>
+</blockquote>
+
+        <h3 id="3-1-4：概念梳理"   >
+          <a href="#3-1-4：概念梳理" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-4：概念梳理" class="headerlink" title="3.1.4：概念梳理"></a>3.1.4：概念梳理</h3>
+      <p><strong>用户密码 Hash</strong>：</p>
+<ul>
+<li>是一段 Hash 值</li>
+<li>由 Windows 用户密码进行摘要计算生成</li>
+<li>分为 LM-Hash 和 NTLM-Hash</li>
+</ul>
+<p><strong>NTLM 协议</strong>：</p>
+<ul>
+<li>是一种认证协议，用于身份验证</li>
+<li>分为 NTLMv1 和 NTLMv2 两个版本</li>
+</ul>
+<p><strong>Net-NTLM Hash</strong>：</p>
+<ul>
+<li>是 NTLM 协议认证中生成的一段中间数据</li>
+<li>由用户名等信息和用户密码 Hash 进行摘要计算生成</li>
+<li>分为 Net-NTLMv1 Hash 和 Net-NTLMv2 Hash</li>
+</ul>
+
+        <h2 id="3-2：Kerberos-协议"   >
+          <a href="#3-2：Kerberos-协议" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2：Kerberos-协议" class="headerlink" title="3.2：Kerberos 协议"></a>3.2：Kerberos 协议</h2>
+      
+        <h3 id="3-2-1：协议简介"   >
+          <a href="#3-2-1：协议简介" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2-1：协议简介" class="headerlink" title="3.2.1：协议简介"></a>3.2.1：协议简介</h3>
+      <p><strong>Kerberos 协议</strong>：通过使用 TGT（票证授予票据）和 ST（服务票据）来进行用户验证与授权，并生成会话密钥用于加密通信。</p>
+<ul>
+<li>在域环境中被广泛使用</li>
+</ul>
+<blockquote>
+<p>票证授予票据（Ticket Granting Ticket，TGT）<br>服务票据（Service Ticket，ST）</p>
+</blockquote>
+<p>Kerberos 通过传统的密码学技术，提供了可信的第三方认证服务，能够在以下条件下工作：</p>
+<ul>
+<li>认证过程不依赖于主机操作系统的认证</li>
+<li>不需要基于主机地址的信任</li>
+<li>不要求网络中所有主机的物理安全</li>
+<li>假设网络传输的数据包可能会被任意读取、修改或插入</li>
+</ul>
+<p><strong>协议角色组成</strong>：</p>
+<ul>
+<li>客户端（Client）：请求服务的一方</li>
+<li>服务端（Server）：提供服务的一方</li>
+<li>密钥分发中心（Key Distribution Center，KDC）：进行认证与授权的一方。根据功能又分为 AS 和 TGS<ul>
+<li>认证服务器（Authentication Server，AS）：用来认证客户端的身份，并发放客户端用于访问 TGS 的 TGT</li>
+<li>票据授予服务器（Ticket Granting Server，TGS）：用来发放客户端访问服务端时所需的 ST</li>
+</ul>
+</li>
+</ul>
+
+        <h3 id="3-2-2：认证流程"   >
+          <a href="#3-2-2：认证流程" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2-2：认证流程" class="headerlink" title="3.2.2：认证流程"></a>3.2.2：认证流程</h3>
+      <ol>
+<li>验证用户身份（Client 与 AS 通信）<ol>
+<li>Client 向 AS 发送请求，提供其身份信息</li>
+<li>AS 认证用户身份，并生成 TGT 响应给 Client</li>
+</ol>
+</li>
+<li>获取服务票据（Client 与 TGS 通信）<ol>
+<li>Client 向 TGS 发起请求，提供 TGT 和希望访问的服务信息</li>
+<li>TGS 验证 TGT 的有效性，生成特定服务的 ST 响应给 Client</li>
+</ol>
+</li>
+<li>访问相应服务（Client 与 Server 通信）<ol>
+<li>Client 向 Server 发起请求，提供 ST</li>
+<li>Server 验证 ST 的有效性，之后建立安全会话</li>
+</ol>
+</li>
+</ol>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-06-13-10-42.png" alt="Alt text"></p>
+
+        <h3 id="3-2-3：认证流程详解"   >
+          <a href="#3-2-3：认证流程详解" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2-3：认证流程详解" class="headerlink" title="3.2.3：认证流程详解"></a>3.2.3：认证流程详解</h3>
+      
+        <h4 id="3-2-3-1：Client-与-AS-通信"   >
+          <a href="#3-2-3-1：Client-与-AS-通信" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2-3-1：Client-与-AS-通信" class="headerlink" title="3.2.3.1：Client 与 AS 通信"></a>3.2.3.1：Client 与 AS 通信</h4>
+      <blockquote>
+<p>Client 向 AS 发送的请求数据包称为 AS-REQ（AS-Request）。<br>AS 向 Client 返回的响应数据包称为 AS-REP（AS-Response）。</p>
+</blockquote>
+<ol>
+<li>Client 向 AS 以明文的方式发起请求。请求中携带了用户名、主机 IP、当前时间戳</li>
+<li>AS 查找用户是否存在，若存在，则返回 TGT 和一段验证信息（均包含 CT_SK）<ul>
+<li>TGT 使用 TGS 密码加密</li>
+<li>验证信息使用 Client 用户密码 Hash 加密</li>
+</ul>
+</li>
+</ol>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-08-16-20-18.png" alt="Alt text"></p>
+<blockquote>
+<p>TGS 密码实际上就是 DC 上 krbtgt 用户的密码 Hash。</p>
+</blockquote>
+<blockquote>
+<p>Client 收到 AS-REP 后，可以使用自己的用户密码 Hash 解密验证信息获取 CT_SK 和时间戳，实现了身份认证的功能（因为伪造的身份无法解密验证信息）。<br>Client 会根据时间戳计算 AS-REQ 与 AS-REP 时间之间的差值，以此判断 AS 是否是真实或伪造的。</p>
+</blockquote>
+
+        <h4 id="3-2-3-2：Client-与-TGS-通信"   >
+          <a href="#3-2-3-2：Client-与-TGS-通信" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2-3-2：Client-与-TGS-通信" class="headerlink" title="3.2.3.2：Client 与 TGS 通信"></a>3.2.3.2：Client 与 TGS 通信</h4>
+      <blockquote>
+<p>Client 向 TGS 发送的请求数据包称为 TGS-REQ（TGS-Request）。<br>TGS 向 Client 返回的响应数据包称为 TGS-REP（TGS-Response）。</p>
+</blockquote>
+<ol>
+<li>Client 向 TGS 发起请求，请求中携带了以下内容<ul>
+<li>使用 CT_SK 加密的用户名、主机 IP、当前时间戳</li>
+<li>AS 返回的 TGT</li>
+<li>明文形式的想要访问的 Server 服务</li>
+</ul>
+</li>
+<li>TGS 查看服务是否可被访问</li>
+<li>TGS 解密 TGT，获取 CT_SK 和时间戳，并检查时间是否超时</li>
+<li>TGS 使用 CT_SK 解密 Client 的加密信息获取用户信息，并与 TGT 中的用户信息进行对比</li>
+<li>TGS 返回 ST 和一段验证信息（均包含 CS_SK）<ul>
+<li>ST 使用 Server 密码 Hash 加密</li>
+<li>验证信息使用 CT_SK 加密</li>
+</ul>
+</li>
+</ol>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-08-17-02-25.png" alt="Alt text"></p>
+<blockquote>
+<p>Client 收到 TGS-REP 后，可以使用 CT_SK 解密验证信息获取 CS_SK 和时间戳。<br>Client 会根据时间戳计算 TGS-REQ 与 TGS-REP 时间之间的差值，以此判断数据是否有效。</p>
+</blockquote>
+
+        <h4 id="3-2-3-3：Client-与-Server-通信"   >
+          <a href="#3-2-3-3：Client-与-Server-通信" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2-3-3：Client-与-Server-通信" class="headerlink" title="3.2.3.3：Client 与 Server 通信"></a>3.2.3.3：Client 与 Server 通信</h4>
+      <ol>
+<li>Client 向 Server 发起请求，请求中携带了以下内容<ul>
+<li>使用 CS_SK 加密的用户名、主机 IP、当前时间戳、ST 有效时间</li>
+<li>TGS 返回的 ST</li>
+</ul>
+</li>
+<li>Server 解密 ST，获取 CS_SK 和时间戳，并检查时间是否超时</li>
+<li>Server 使用 CS_SK 解密 Client 的加密信息获取用户信息，并与 ST 中的用户信息进行对比</li>
+<li>Server 返回一段使用 CS_SK 加密的信息，表示准备提供服务</li>
+<li>Client 使用 CS_SK 解密 Server 返回的信息，验证了 Server 身份</li>
+<li>之后 Server 与 Client 建立安全会话，进行通信</li>
+</ol>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-08-17-36-57.png" alt="Alt text"></p>
+<blockquote>
+<p>实际上 Server 还会使用数字证书证明自己的身份。</p>
+</blockquote>
+
+        <h1 id="4：补充知识"   >
+          <a href="#4：补充知识" class="heading-link"><i class="fas fa-link"></i></a><a href="#4：补充知识" class="headerlink" title="4：补充知识"></a>4：补充知识</h1>
+      
+        <h2 id="4-1：LM-Hash-加密步骤"   >
+          <a href="#4-1：LM-Hash-加密步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1：LM-Hash-加密步骤" class="headerlink" title="4.1：LM-Hash 加密步骤"></a>4.1：LM-Hash 加密步骤</h2>
+      <blockquote>
+<p>LM-Hash 的明文密码被限定在 14 位以内。如果版本恰当，14 位以上的用户密码会转为使用 NTLM-Hash 加密。</p>
+</blockquote>
+<p>以密码 <code>Admin@123</code> 为例。</p>
+<ol>
+<li>将明文口令字母转换为大写形式</li>
+</ol>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Admin@123</span><br><span class="line">-&gt; </span><br><span class="line">ADMIN@123</span><br></pre></td></tr></table></div></figure>
+
+<ol start="2">
+<li>转换为 16 进制字符串</li>
+</ol>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ADMIN@123</span><br><span class="line">-&gt;</span><br><span class="line">41 44 4d 49 4e 40 31 32 33</span><br></pre></td></tr></table></div></figure>
+
+<ol start="3">
+<li>若长度不足 14 字节，则末尾用 0 补全</li>
+</ol>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">41 44 4d 49 4e 40 31 32 33</span><br><span class="line">-&gt;</span><br><span class="line">41 44 4d 49 4e 40 31 32 33 00 00 00 00 00</span><br></pre></td></tr></table></div></figure>
+
+<ol start="4">
+<li>将上述编码分成 2 组，每组 7 字节</li>
+</ol>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">41 44 4d 49 4e 40 31 32 33 00 00 00 00 00</span><br><span class="line">-&gt;</span><br><span class="line">第 1 组：41 44 4d 49 4e 40 31</span><br><span class="line">第 2 组：32 33 00 00 00 00 00</span><br></pre></td></tr></table></div></figure>
+
+<ol start="5">
+<li>将每一组分别转换为二进制，每 7 bit 一组在末尾加 0，再转换成十六进制，分别得到 2 组 8 字节的编码</li>
+</ol>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">第 1 组：</span><br><span class="line">41 44 4d 49 4e 40 31</span><br><span class="line">-&gt; </span><br><span class="line">转换为二进制</span><br><span class="line">01000001 01000100 01001101 01001001 01001110 01000000 00110001</span><br><span class="line">-&gt; </span><br><span class="line">每 7 bit 一组</span><br><span class="line">0100000</span><br><span class="line">1010001</span><br><span class="line">0001001</span><br><span class="line">1010100</span><br><span class="line">1001010</span><br><span class="line">0111001</span><br><span class="line">0000000</span><br><span class="line">0110001</span><br><span class="line">-&gt; </span><br><span class="line">在末尾加 0</span><br><span class="line">01000000 10100010 00010010 10101000 10010100 01110010 00000000 01100010</span><br><span class="line">-&gt; </span><br><span class="line">转换成十六进制</span><br><span class="line">40 a2 12 a8 94 72 00 62</span><br><span class="line"></span><br><span class="line">同理对第 2 组进行操作，最终结果：</span><br><span class="line"></span><br><span class="line">第 1 组：40 a2 12 a8 94 72 00 62</span><br><span class="line">第 2 组：32 18 c0 00 00 00 00 00</span><br></pre></td></tr></table></div></figure>
+
+<ol start="6">
+<li>将上述步骤得到的两组 8 字节编码作为 DES 加密的密钥，分别加密魔术字符串 <code>KGS!@#$%</code>（16 进制为 4b47532140232425）</li>
+</ol>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">第 1 组：</span><br><span class="line">40 a2 12 a8 94 72 00 62</span><br><span class="line">-&gt;</span><br><span class="line">明文：4b47532140232425</span><br><span class="line">密钥：40a212a894720062</span><br><span class="line">-&gt;</span><br><span class="line">密文：</span><br><span class="line">6f08d7b306b1dad4</span><br><span class="line"></span><br><span class="line">同理，以第 2 组为密钥。最终结果：</span><br><span class="line"></span><br><span class="line">第 1 组：6f08d7b306b1dad4</span><br><span class="line">第 2 组：b75e0c8d76954a50</span><br></pre></td></tr></table></div></figure>
+
+<ol start="7">
+<li>最终拼接得到 LM-Hash：</li>
+</ol>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">6F08D7B306B1DAD4B75E0C8D76954A50</span><br></pre></td></tr></table></div></figure>
+
+
+
+        <h2 id="4-2：NTLM-Hash-加密步骤"   >
+          <a href="#4-2：NTLM-Hash-加密步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2：NTLM-Hash-加密步骤" class="headerlink" title="4.2：NTLM-Hash 加密步骤"></a>4.2：NTLM-Hash 加密步骤</h2>
+      <p>以密码 <code>Admin@123</code> 为例。</p>
+<ol>
+<li>将明文口令转换成十六进制的格式</li>
+</ol>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Admin@123</span><br><span class="line">-&gt;</span><br><span class="line">41 64 6d 69 6e 40 31 32 33</span><br></pre></td></tr></table></div></figure>
+
+<ol start="2">
+<li>将 16 进制转换成 Unicode 格式（即在每个字节之后添加 0x00，相当于将每个字符扩展为 2 字节表示）</li>
+</ol>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">41 64 6d 69 6e 40 31 32 33</span><br><span class="line">-&gt;</span><br><span class="line">4100 6400 6d00 6900 6e00 4000 3100 3200 3300</span><br></pre></td></tr></table></div></figure>
+
+<ol start="3">
+<li>使用 MD4 摘要算法对编码数据进行 Hash 散列处理得到 NTLM-Hash</li>
+</ol>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">410064006d0069006e004000310032003300</span><br><span class="line">-&gt;</span><br><span class="line">570a9a65db8fba761c1008a51d4c95ab</span><br></pre></td></tr></table></div></figure>
+
+
+
+        <h2 id="4-3：NTLM-协议流量分析"   >
+          <a href="#4-3：NTLM-协议流量分析" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3：NTLM-协议流量分析" class="headerlink" title="4.3：NTLM 协议流量分析"></a>4.3：NTLM 协议流量分析</h2>
+      
+        <h3 id="4-3-1：实验环境"   >
+          <a href="#4-3-1：实验环境" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3-1：实验环境" class="headerlink" title="4.3.1：实验环境"></a>4.3.1：实验环境</h3>
+      <p>采用两台工作组机器：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">IP</th>
+<th align="left">机器</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">192.168.8.222</td>
+<td align="left">Win 7</td>
+</tr>
+<tr>
+<td align="left">192.168.8.155</td>
+<td align="left">Win 10</td>
+</tr>
+</tbody></table></div>
+<p>使用 WireShark 工具抓包。</p>
+<blockquote>
+<p>WireShark 中，可以使用以下语句过滤两个机器间的通信过程：<br><code>(ip.src == 192.168.8.155 &amp;&amp; ip.dst == 192.168.8.222) || (ip.src == 192.168.8.222 &amp;&amp; ip.dst == 192.168.8.155)</code><br>以上语句可以简化为：<br><code>(ip.addr == 192.168.8.155 &amp;&amp; ip.addr == 192.168.8.222)</code></p>
+</blockquote>
+
+        <h3 id="4-3-2：实验步骤"   >
+          <a href="#4-3-2：实验步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3-2：实验步骤" class="headerlink" title="4.3.2：实验步骤"></a>4.3.2：实验步骤</h3>
+      <ol>
+<li>打开 WireShark 进行抓包</li>
+<li>使用 <code>net use \\&lt;target&gt; /u:&lt;username&gt; &lt;password&gt;</code> 命令进行认证，触发 NTLM 协议</li>
+</ol>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-14-34-53.png" alt="Alt text"></p>
+<p>抓取认证过程中通信的数据包：</p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-14-46-31.png" alt="Alt text"></p>
+
+        <h3 id="4-3-3：数据包分析"   >
+          <a href="#4-3-3：数据包分析" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3-3：数据包分析" class="headerlink" title="4.3.3：数据包分析"></a>4.3.3：数据包分析</h3>
+      <p>前四个数据包，主要进行协商过程。</p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-14-50-44.png" alt="Alt text"></p>
+<p>第五个数据包，主要包含用户身份验证启动包和一些 Flag 协商规则。</p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-14-55-07.png" alt="Alt text"></p>
+<p>第六个数据包，包含了 Challenge 和一些其他信息。</p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-14-59-33.png" alt="Alt text"></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-15-00-35.png" alt="Alt text"></p>
+<blockquote>
+<p>这里 Challenge 是 16 位，说明协议版本为 NTLMv2；如果版本为 NTLMv2，Challenge 就是 8 位。</p>
+</blockquote>
+<p>第七个数据包，主要进行 Response，还包含用户相关信息。</p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-15-04-25.png" alt="Alt text"></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-15-12-36.png" alt="Alt text"></p>
+<p>第八个数据包，返回认证结果，用来表示成功还是失败。</p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-12-15-22-59.png" alt="Alt text"></p>
+
+        <h2 id="4-4：Kerberos-协议流量分析"   >
+          <a href="#4-4：Kerberos-协议流量分析" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4：Kerberos-协议流量分析" class="headerlink" title="4.4：Kerberos 协议流量分析"></a>4.4：Kerberos 协议流量分析</h2>
+      
+        <h3 id="4-4-1：实验环境"   >
+          <a href="#4-4-1：实验环境" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-1：实验环境" class="headerlink" title="4.4.1：实验环境"></a>4.4.1：实验环境</h3>
+      <p>采用两台域内机器：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">IP</th>
+<th align="left">机器</th>
+<th align="left">主机名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">10.10.10.8</td>
+<td align="left">Win 2008（域控）</td>
+<td align="left">owa</td>
+</tr>
+<tr>
+<td align="left">10.10.10.25</td>
+<td align="left">Win 10（域成员）</td>
+<td align="left">Win10-test</td>
+</tr>
+</tbody></table></div>
+<p>使用 WireShark 工具抓包；使用 kekeo 工具获取票据，触发 Kerberos 协议。</p>
+<blockquote>
+<p>WireShark 中，可以使用以下语句过滤两个机器间的通信过程：<br><code>(ip.src == 10.10.10.8 &amp;&amp; ip.dst == 10.10.10.25) || (ip.src == 10.10.10.25 &amp;&amp; ip.dst == 10.10.10.8)</code><br>以上语句可以简化为：<br><code>(ip.addr == 10.10.10.8 &amp;&amp; ip.addr == 10.10.10.25)</code></p>
+</blockquote>
+
+        <h3 id="4-4-2：实验步骤"   >
+          <a href="#4-4-2：实验步骤" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-2：实验步骤" class="headerlink" title="4.4.2：实验步骤"></a>4.4.2：实验步骤</h3>
+      <blockquote>
+<p>实验前可以使用 <code>klist</code> 命令查看当前内存缓存的票据，使用 <code>klist purge</code> 命令清空内存票据。</p>
+</blockquote>
+<ol>
+<li>打开 WireShark 进行抓包</li>
+<li>使用 kekeo，执行 <code>tgt::ask /domain:&lt;domain&gt; /user:&lt;username&gt; /password:&lt;password&gt;</code> 申请 TGT，触发 Client 与 AS 通信</li>
+</ol>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-11-53-22.png" alt="Alt text"></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-11-54-35.png" alt="Alt text"></p>
+<p>抓取 AS-REQ 与 AS-REP 数据包：</p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-11-57-18.png" alt="Alt text"></p>
+<ol start="3">
+<li>使用 kekeo，执行 <code>tgs::ask /service:&lt;service&gt;/&lt;server&gt; /tgt:&lt;TGT&gt;</code> 申请 ST，触发 Client 与 TGS 通信</li>
+</ol>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-13-21-39.png" alt="Alt text"></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-13-20-26.png" alt="Alt text"></p>
+<p>抓取 TGS-REQ 与 TGS-REP 数据包：</p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-13-22-58.png" alt="Alt text"></p>
+<ol start="4">
+<li>使用 kekeo，执行 <code>kerberos::ptt &lt;ticket&gt;</code> 将票据注入内存</li>
+<li>使用 <code>dir &lt;target&gt;</code> 命令触发 Client 与 Server 通信</li>
+</ol>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-13-33-32.png" alt="Alt text"></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-13-36-13.png" alt="Alt text"></p>
+<p>抓取 Client 与 Server 通信的数据包：</p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-13-50-25.png" alt="Alt text"></p>
+
+        <h3 id="4-4-3：AS-REQ-AS-REP-分析"   >
+          <a href="#4-4-3：AS-REQ-AS-REP-分析" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-3：AS-REQ-AS-REP-分析" class="headerlink" title="4.4.3：AS-REQ &amp; AS-REP 分析"></a>4.4.3：AS-REQ &amp; AS-REP 分析</h3>
+      <p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-17-45-44.png" alt="Alt text"></p>
+<p>AS-REQ 主要包含用户的一些信息，部分信息如下：</p>
+<ul>
+<li><code>PA-DATA pA-ENC-TIMESTAMP</code>：使用用户密码 Hash 或 AES key 加密时间戳生成的 Value</li>
+<li><code>kdc-options</code>：一些协商字段</li>
+<li><code>cname</code>：发起请求的用户名</li>
+<li><code>realm</code>：域名</li>
+<li><code>sname</code>：请求的服务</li>
+</ul>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-00-10.png" alt="Alt text"></p>
+<p>AS-REP 包含的信息：</p>
+<ul>
+<li><code>ticket.enc-part</code>：由 TGS 密码加密（即使用 krbtgt 用户的密码 Hash 加密）</li>
+<li><code>as-rep.enc-part</code>：由用户密码 Hash 加密的内容</li>
+</ul>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-08-40.png" alt="Alt text"></p>
+
+        <h3 id="4-4-4：TGS-REQ-TGS-REP-分析"   >
+          <a href="#4-4-4：TGS-REQ-TGS-REP-分析" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-4：TGS-REQ-TGS-REP-分析" class="headerlink" title="4.4.4：TGS-REQ &amp; TGS-REP 分析"></a>4.4.4：TGS-REQ &amp; TGS-REP 分析</h3>
+      <p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-11-25.png" alt="Alt text"></p>
+<p>TGS-REQ 包含的信息：</p>
+<ul>
+<li><code>ticket</code>：原始的 TGT</li>
+<li><code>authenticator</code>：使用 CT_SK 加密的内容</li>
+<li><code>cname</code>：发起请求的用户名</li>
+<li><code>sname</code>：请求的服务</li>
+</ul>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-27-19.png" alt="Alt text"></p>
+<p>TGS-REP 包含的信息：</p>
+<ul>
+<li><code>ticket.enc-part</code>：由 Server 密码 Hash 加密的内容</li>
+<li><code>tgs-rep.enc-part</code>：由 CT_SK 加密的内容</li>
+</ul>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-32-07.png" alt="Alt text"></p>
+
+        <h3 id="4-4-5：Client-Server-通信分析"   >
+          <a href="#4-4-5：Client-Server-通信分析" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-5：Client-Server-通信分析" class="headerlink" title="4.4.5：Client &amp; Server 通信分析"></a>4.4.5：Client &amp; Server 通信分析</h3>
+      <p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-15-38.png" alt="Alt text"></p>
+<p>Client 与 Server 初始请求通信包含的信息：</p>
+<ul>
+<li><code>ticket</code>：原始的 ST</li>
+<li><code>authenticator</code>：使用 CS_SK 加密的内容</li>
+</ul>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-39-04.png" alt="Alt text"></p>
+<p>Server 向 Client 初始响应通信，包含了一些验证信息：</p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03/2024-11-13-18-41-14.png" alt="Alt text"></p>
+
+        <h1 id="5：其他"   >
+          <a href="#5：其他" class="heading-link"><i class="fas fa-link"></i></a><a href="#5：其他" class="headerlink" title="5：其他"></a>5：其他</h1>
+      
+        <h2 id="5-1：相关工具"   >
+          <a href="#5-1：相关工具" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-1：相关工具" class="headerlink" title="5.1：相关工具"></a>5.1：相关工具</h2>
+      <p>WireShark 官网：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.wireshark.org/" >https://www.wireshark.org/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>kekeo 工具：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/gentilkiwi/kekeo" >https://github.com/gentilkiwi/kekeo</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="5-2：参考资料"   >
+          <a href="#5-2：参考资料" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2：参考资料" class="headerlink" title="5.2：参考资料"></a>5.2：参考资料</h2>
+      <p>《The NTLM Authentication Protocol and Security Support Provider》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://davenport.sourceforge.net/ntlm.html" >https://davenport.sourceforge.net/ntlm.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《Windows协议之NTLM》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/yuy0ung/articles/18223233" >https://www.cnblogs.com/yuy0ung/articles/18223233</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《NTLM协议原理分析》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44159028/article/details/129396092" >https://blog.csdn.net/qq_44159028/article/details/129396092</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《Windows认证方式》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://songshare.cn/index.php/archives/61/" >https://songshare.cn/index.php/archives/61/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《快速入门Kerberos认证》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1381205" >https://developer.aliyun.com/article/1381205</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《详解kerberos认证原理》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://seevae.github.io/2020/09/12/%E8%AF%A6%E8%A7%A3kerberos%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B/" >https://seevae.github.io/2020/09/12/%E8%AF%A6%E8%A7%A3kerberos%E8%AE%A4%E8%AF%81%E6%B5%81%E7%A8%8B/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《域渗透学习（一）Windows认证机制》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://ares-x.com/2020/03/16/%E5%9F%9F%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Windows%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/" >https://ares-x.com/2020/03/16/%E5%9F%9F%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89Windows%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《windows 认证（总结篇）》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://r0fus0d.blog.ffffffff0x.com/post/windows-authenticate/" >https://r0fus0d.blog.ffffffff0x.com/post/windows-authenticate/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《Wireshark使用教程（界面说明、捕获过滤器表达式、显示过滤器表达式）》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/lsdb/p/9254544.html" >https://www.cnblogs.com/lsdb/p/9254544.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<hr>
+<hr>
+<hr>
+<p><font color="#00CDCD">
+远书归梦两悠悠，只有空床敌素秋。
+</font></p>
+<p align="right"><font color="#00CDCD">
+——《端居》（唐）李商隐
+</font></p>
+
+
+
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://blog.lens-shrine.top">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://blog.lens-shrine.top/2024/05/26/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03.%20Windows%20%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE/">https://blog.lens-shrine.top/2024/05/26/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/03.%20Windows%20%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2024/05/29/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/04.%20%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《域环境渗透》04. 信息收集 &amp; 系统命令</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2024/05/18/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/%E5%9F%9F%E7%8E%AF%E5%A2%83%E6%B8%97%E9%80%8F/02.%20%E6%9D%83%E9%99%90%E4%BB%8B%E7%BB%8D/"><span class="paginator-prev__text">《域环境渗透》02. 权限介绍</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9AWindows-%E8%AE%A4%E8%AF%81%E6%96%B9%E5%BC%8F"><span class="toc-text">
+          1：Windows 认证方式</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9A%E6%9C%AC%E5%9C%B0%E8%AE%A4%E8%AF%81"><span class="toc-text">
+          2：本地认证</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9A%E7%BD%91%E7%BB%9C%E8%AE%A4%E8%AF%81"><span class="toc-text">
+          3：网络认证</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1%EF%BC%9ANTLM-%E5%8D%8F%E8%AE%AE"><span class="toc-text">
+          3.1：NTLM 协议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%EF%BC%9AKerberos-%E5%8D%8F%E8%AE%AE"><span class="toc-text">
+          3.2：Kerberos 协议</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EF%BC%9A%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86"><span class="toc-text">
+          4：补充知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1%EF%BC%9ALM-Hash-%E5%8A%A0%E5%AF%86%E6%AD%A5%E9%AA%A4"><span class="toc-text">
+          4.1：LM-Hash 加密步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2%EF%BC%9ANTLM-Hash-%E5%8A%A0%E5%AF%86%E6%AD%A5%E9%AA%A4"><span class="toc-text">
+          4.2：NTLM-Hash 加密步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3%EF%BC%9ANTLM-%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="toc-text">
+          4.3：NTLM 协议流量分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4%EF%BC%9AKerberos-%E5%8D%8F%E8%AE%AE%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="toc-text">
+          4.4：Kerberos 协议流量分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%EF%BC%9A%E5%85%B6%E4%BB%96"><span class="toc-text">
+          5：其他</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1%EF%BC%9A%E7%9B%B8%E5%85%B3%E5%B7%A5%E5%85%B7"><span class="toc-text">
+          5.1：相关工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2%EF%BC%9A%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">
+          5.2：参考资料</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">50</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
