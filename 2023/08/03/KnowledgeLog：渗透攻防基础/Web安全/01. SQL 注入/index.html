@@ -67,14 +67,14 @@ var CONFIG = {
 window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《Web安全》01. SQL 注入</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-08-03</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2024-09-30</span></span></div></header><div class="post-body"><blockquote>
 <p>本系列侧重方法论，各工具只是实现目标的载体。<br>命令与工具只做简单介绍，其使用另见《软件工具录》。</p>
 </blockquote>
-<blockquote>
-<p>SQL 注入不同数据库语法有少量区别，思路都差不多，文章以 MySQL 为例。<br>靶场以 SQLi-Labs 为例。<br>靶场地址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/Audi-1/sqli-labs" >https://github.com/Audi-1/sqli-labs</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-</blockquote>
 
         <h1 id="1：漏洞简介"   >
           <a href="#1：漏洞简介" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：漏洞简介" class="headerlink" title="1：漏洞简介"></a>1：漏洞简介</h1>
       <blockquote>
 <p>SQL 注入比较复杂，对不同数据库类型、提交方法、数据类型等有不同的攻击手段。</p>
+</blockquote>
+<blockquote>
+<p>SQL 注入不同数据库语法有少量区别，思路都差不多，文章以 MySQL 为例。</p>
 </blockquote>
 
         <h2 id="1-1：漏洞原理"   >
@@ -123,7 +123,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">username</span> <span class="operator">=</span> <span class="string">&quot;user&#x27; order by 3; -- 233&quot;</span>;  <span class="comment">// 用户输入</span></span><br><span class="line"><span class="type">String</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="string">&quot;SELECT * FROM users WHERE username = ?&quot;</span>;</span><br><span class="line"><span class="type">PreparedStatement</span> <span class="variable">pstmt</span> <span class="operator">=</span> connection.prepareStatement(sql);</span><br><span class="line">pstmt.setString(<span class="number">1</span>, username);  <span class="comment">// 占位符安全传参</span></span><br><span class="line"><span class="type">ResultSet</span> <span class="variable">rs</span> <span class="operator">=</span> pstmt.executeQuery();</span><br></pre></td></tr></table></div></figure>
 
 <hr>
-<p>MyBatis</p>
+<p><code>Java：MyBatis</code></p>
 <ul>
 <li>一个持久层框架，支持通过 XML 或注解的方式映射 SQL 语句</li>
 <li><code>#&#123;&#125;</code>：表示预编译的参数，可以有效防止 SQL 注入</li>
@@ -193,6 +193,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 </ol>
 <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 查看数据库版本</span><br><span class="line"><span class="keyword">select</span> version();</span><br><span class="line"><span class="keyword">select</span> @<span class="variable">@database</span>;</span><br><span class="line"></span><br><span class="line"># 查看当前数据库名</span><br><span class="line"><span class="keyword">select</span> database();</span><br><span class="line"></span><br><span class="line"># 查看当前用户</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">user</span>();</span><br><span class="line"></span><br><span class="line"># 查看操作系统</span><br><span class="line"><span class="keyword">select</span> @<span class="variable">@version_compile_os</span>;</span><br></pre></td></tr></table></div></figure>
 
+<hr>
 <ol start="2">
 <li><strong>利用</strong> <code>information_schema</code> <strong>数据库</strong>。</li>
 </ol>
@@ -219,6 +220,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>实际用的时候把它们理解成表就行。</li>
 </ul>
 </blockquote>
+<hr>
 <ol start="3">
 <li><strong>其他辅助函数</strong></li>
 </ol>
@@ -714,12 +716,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>简单示例：</p>
 </blockquote>
 <p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/01/image-11.png" alt="Alt text"></p>
-<p><strong>补充</strong>：</p>
-<p>单字节字符集：所有的字符都使用一个字节来表示，比如 ASCII 编码。</p>
-<p>宽字节字符集：相对于单字节而言，实际上只有两字节。比如 GB2312、GBK 等。</p>
-<p>多字节字符集：一种可变长度的编码方案。例如 UTF-8，使用 1 ~ 4 个字节表示一个符号。</p>
-<p><strong>宽字节注入</strong>：</p>
-<blockquote>
+
+        <h3 id="5-2-1：宽字节注入"   >
+          <a href="#5-2-1：宽字节注入" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2-1：宽字节注入" class="headerlink" title="5.2.1：宽字节注入"></a>5.2.1：宽字节注入</h3>
+      <blockquote>
 <p>利用 MySQL 的一个特性，使用宽字节（如 GBK）编码时，会认为两个字节是一个字符。</p>
 </blockquote>
 <p>为了过滤用户输入的一些数据，程序会对特殊的字符加上反斜杠【<code>\</code>】进行转义。例如 MySQL 中的 <code>addslashes()</code>。</p>
@@ -732,6 +732,13 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>数据转化过程：</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%DF&#x27;  --&gt;  %DF\&#x27;  --&gt;  %DF%5C%27  --&gt;  運&#x27;</span><br><span class="line">输入  --&gt;  转义   --&gt; 16 进制表示 --&gt;  MySQL 解析结果</span><br></pre></td></tr></table></div></figure>
 
+
+
+        <h3 id="5-2-2：补充"   >
+          <a href="#5-2-2：补充" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2-2：补充" class="headerlink" title="5.2.2：补充"></a>5.2.2：补充</h3>
+      <p>单字节字符集：所有的字符都使用一个字节来表示，比如 ASCII 编码。</p>
+<p>宽字节字符集：相对于单字节而言，实际上只有两字节。比如 GB2312、GBK 等。</p>
+<p>多字节字符集：一种可变长度的编码方案。例如 UTF-8，使用 1 ~ 4 个字节表示一个符号。</p>
 
         <h2 id="5-3：绕过逗号过滤"   >
           <a href="#5-3：绕过逗号过滤" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-3：绕过逗号过滤" class="headerlink" title="5.3：绕过逗号过滤"></a>5.3：绕过逗号过滤</h2>
@@ -801,8 +808,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li><code>select substr(database(), 1, 1);</code></li>
 <li><code>select mid(database(), 1, 1);</code></li>
 </ul>
-<p><strong>补充</strong>：</p>
-<p>MySQL 中，<code>select ... into</code> 语法用于将查询结果存储到用户定义的变量中。<br><code>into</code> 后的变量数量必须与 <code>select</code> 返回的列数量匹配，否则会产生错误。</p>
+
+        <h3 id="5-7-1：补充"   >
+          <a href="#5-7-1：补充" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-7-1：补充" class="headerlink" title="5.7.1：补充"></a>5.7.1：补充</h3>
+      <p>MySQL 中，<code>select ... into</code> 语法用于将查询结果存储到用户定义的变量中。<br><code>into</code> 后的变量数量必须与 <code>select</code> 返回的列数量匹配，否则会产生错误。</p>
 
         <h2 id="5-8：其他"   >
           <a href="#5-8：其他" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-8：其他" class="headerlink" title="5.8：其他"></a>5.8：其他</h2>
@@ -966,7 +975,8 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="8-2：相关平台"   >
           <a href="#8-2：相关平台" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-2：相关平台" class="headerlink" title="8.2：相关平台"></a>8.2：相关平台</h2>
-      <p>DNSlog 平台：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://dnslog.org/" >https://dnslog.org/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://www.dnslog.cn/" >http://www.dnslog.cn/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://eyes.sh/dns/" >https://eyes.sh/dns/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://ceye.io/" >http://ceye.io/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+      <p>SQLi-Labs：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/Audi-1/sqli-labs" >https://github.com/Audi-1/sqli-labs</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>DNSlog 平台：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://dnslog.org/" >https://dnslog.org/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://www.dnslog.cn/" >http://www.dnslog.cn/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://eyes.sh/dns/" >https://eyes.sh/dns/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://ceye.io/" >http://ceye.io/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 
         <h2 id="8-3：参考资料"   >
           <a href="#8-3：参考资料" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-3：参考资料" class="headerlink" title="8.3：参考资料"></a>8.3：参考资料</h2>
