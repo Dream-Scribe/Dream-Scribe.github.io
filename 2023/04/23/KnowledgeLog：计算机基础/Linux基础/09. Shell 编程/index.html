@@ -34,7 +34,7 @@ var CONFIG = {
   fancybox: false,
   zoomImage: {"gapAside":"20px"},
   galleryWaterfall: undefined,
-  lazyload: false,
+  lazyload: true,
   pjax: {"avoidBanner":true},
   externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
   shortcuts: undefined,
@@ -51,7 +51,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h1 id="1：Shell-简介"   >
           <a href="#1：Shell-简介" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：Shell-简介" class="headerlink" title="1：Shell 简介"></a>1：Shell 简介</h1>
       <p><strong>Shell</strong> 是一个<strong>命令行解释器</strong>，它为用户提供了一个向 Linux 内核发送请求以便运行程序的<strong>界面系统级程序</strong>，用户可以用 Shell 来执行命令，它接收应用程序或用户的命令，然后调用操作系统内核执行。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/e1f8ea9685f647abbead1e66b9bc13b2.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/e1f8ea9685f647abbead1e66b9bc13b2.png"  alt="在这里插入图片描述">
+      </p>
 
         <h1 id="2：Shell-脚本"   >
           <a href="#2：Shell-脚本" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：Shell-脚本" class="headerlink" title="2：Shell 脚本"></a>2：Shell 脚本</h1>
@@ -196,7 +199,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash position.sh 250 hello</span><br></pre></td></tr></table></div></figure>
 
 <p>结果：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/534cb437b9f7405bbdcbde063c27b513.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/534cb437b9f7405bbdcbde063c27b513.png"  alt="在这里插入图片描述">
+      </p>
 <blockquote>
 <p>如果要在脚本执行时读取控制台输入，可以使用 read。</p>
 </blockquote>
@@ -216,7 +222,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">filename: preVar.sh</span></span><br><span class="line"></span><br><span class="line">echo &quot;当前执行的进程 id = $$&quot; </span><br><span class="line">echo &#x27;即$$&#x27; = $$</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">以后台的方式运行 position.sh 脚本，并获取他的进程号。“ &amp; ” 代表后台运行</span></span><br><span class="line">bash position.sh 233 &amp;</span><br><span class="line"></span><br><span class="line">echo &quot;最后一个后台方式运行的进程 id = $!&quot; </span><br><span class="line">echo &#x27;即$!&#x27; = $!</span><br><span class="line"></span><br><span class="line">echo &quot;执行的结果是：$?&quot;</span><br><span class="line">echo &#x27;即$?&#x27; = $?</span><br></pre></td></tr></table></div></figure>
 
 <p>结果：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/d42d50adf65a4abc8e1fe34b0dc04448.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/d42d50adf65a4abc8e1fe34b0dc04448.png"  alt="在这里插入图片描述">
+      </p>
 
         <h1 id="6：读取标准输入"   >
           <a href="#6：读取标准输入" class="heading-link"><i class="fas fa-link"></i></a><a href="#6：读取标准输入" class="headerlink" title="6：读取标准输入"></a>6：读取标准输入</h1>
@@ -269,7 +278,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">filename: operate.sh</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">案例1：计算 ( 2 + 3 ) * 4 的值</span></span><br><span class="line">RES1=$(((2+3)*4))</span><br><span class="line">echo &quot;res1 = $RES1&quot;</span><br><span class="line">echo &#x27;&#x27;</span><br><span class="line"></span><br><span class="line">RES2=$[(2+3)*4]</span><br><span class="line">echo &quot;res2 = $RES2&quot;</span><br><span class="line">echo &#x27;&#x27;</span><br><span class="line"></span><br><span class="line">TEMP=`expr 2 + 3` </span><br><span class="line">RES4=`expr $TEMP \* 4` </span><br><span class="line">echo &quot;temp = $TEMP&quot;</span><br><span class="line">echo &quot;res4 = $RES4&quot;</span><br></pre></td></tr></table></div></figure>
 
 <p>结果：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/8ac5eaea5a114b7da12ad0264ed7a3c7.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/8ac5eaea5a114b7da12ad0264ed7a3c7.png"  alt="在这里插入图片描述">
+      </p>
 
         <h1 id="8：条件判断"   >
           <a href="#8：条件判断" class="heading-link"><i class="fas fa-link"></i></a><a href="#8：条件判断" class="headerlink" title="8：条件判断"></a>8：条件判断</h1>
@@ -399,7 +411,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">filename: condition.sh</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">案例 1：<span class="string">&quot;ok&quot;</span> 是否等于 <span class="string">&quot;ok&quot;</span></span></span><br><span class="line">if [ &quot;ok&quot; = &quot;ok&quot; ]</span><br><span class="line">then</span><br><span class="line">	echo &quot;等于&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">案例 2：23 是否大于等于 22</span></span><br><span class="line">if [ 23 -ge 22 ]</span><br><span class="line">then</span><br><span class="line">	echo &quot;大于等于&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">案例 3：/root/shcode/ 目录中的 aaa.txt 文件是否存在</span></span><br><span class="line">if [ -f /root/shcode/aaa.txt ]</span><br><span class="line">then</span><br><span class="line">	echo &quot;存在&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">案例 4</span></span><br><span class="line">if [ hello ]</span><br><span class="line">then</span><br><span class="line">	echo &quot;hello world!&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">案例 5</span></span><br><span class="line">if [ 23 -ge 22 -a 23 -lt 50 ]</span><br><span class="line">then</span><br><span class="line">	echo &quot;23大于等于22 且 23小于50&quot;</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">案例 6</span></span><br><span class="line">[ 15 -le 20 ] &amp;&amp; echo &quot;15&lt;=20&quot; || echo &quot;15&gt;20&quot;</span><br></pre></td></tr></table></div></figure>
 
 <p>运行结果：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/bc68fba52bb44f5b80b83bb79d34f3d3.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/bc68fba52bb44f5b80b83bb79d34f3d3.png"  alt="在这里插入图片描述">
+      </p>
 
         <h1 id="9：流程控制"   >
           <a href="#9：流程控制" class="heading-link"><i class="fas fa-link"></i></a><a href="#9：流程控制" class="headerlink" title="9：流程控制"></a>9：流程控制</h1>
@@ -474,7 +489,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>执行：</p>
 <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash forDemo.sh 1 2 3 4</span><br></pre></td></tr></table></div></figure>
 
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/758abdf672e64de2be12d8e93268a3f8.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/758abdf672e64de2be12d8e93268a3f8.png"  alt="在这里插入图片描述">
+      </p>
 
         <h2 id="9-4：while-循环"   >
           <a href="#9-4：while-循环" class="heading-link"><i class="fas fa-link"></i></a><a href="#9-4：while-循环" class="headerlink" title="9.4：while 循环"></a>9.4：while 循环</h2>
@@ -552,7 +570,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">basename /home/aaa/bbb/test.txt</span><br><span class="line"></span><br><span class="line">basename /home/aaa/bbb/test.txt .txt</span><br></pre></td></tr></table></div></figure>
 
 <p>运行结果：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/a966c7e544e540528cef1e199a2ce8d2.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/a966c7e544e540528cef1e199a2ce8d2.png"  alt="在这里插入图片描述">
+      </p>
 <p><strong>dirname()函数</strong></p>
 <p><strong>功能</strong>：返回完整路径最后 “ &#x2F; ” 的前面的部分，常用于获取路径。</p>
 <p><strong>参数</strong>：</p>
@@ -563,7 +584,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dirname /home/aaa/bbb/test.txt</span><br></pre></td></tr></table></div></figure>
 
 <p>运行结果：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/b90887cb0567417d957a36aaa6f40e17.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/b90887cb0567417d957a36aaa6f40e17.png"  alt="在这里插入图片描述">
+      </p>
 
         <h1 id="11：文件包含"   >
           <a href="#11：文件包含" class="heading-link"><i class="fas fa-link"></i></a><a href="#11：文件包含" class="headerlink" title="11：文件包含"></a>11：文件包含</h1>
@@ -590,7 +614,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">filename: inTest.sh</span></span><br><span class="line"></span><br><span class="line">function my_add() &#123;</span><br><span class="line">	S=$[$1+$2]</span><br><span class="line">	echo $S</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">STR=&quot;this is inTest.sh&quot;</span><br></pre></td></tr></table></div></figure>
 
 <p>运行结果：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/56a17c8168d24375811e1cfff6837aac.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/09/56a17c8168d24375811e1cfff6837aac.png"  alt="在这里插入图片描述">
+      </p>
 <hr>
 <p><font color="#EE2C2C">
 是非入耳君须忍，半作痴呆半作聋。
@@ -632,7 +659,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           10：函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#10-1%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="toc-text">
           10.1：自定义函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-2%EF%BC%9A%E7%B3%BB%E7%BB%9F%E5%87%BD%E6%95%B0"><span class="toc-text">
           10.2：系统函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11%EF%BC%9A%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB"><span class="toc-text">
-          11：文件包含</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+          11：文件包含</span></a></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
   var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
   // 加载进度条的计时器
   var loadingTimer = null;

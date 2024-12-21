@@ -56,7 +56,7 @@ var CONFIG = {
   fancybox: false,
   zoomImage: {"gapAside":"20px"},
   galleryWaterfall: undefined,
-  lazyload: false,
+  lazyload: true,
   pjax: {"avoidBanner":true},
   externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
   shortcuts: undefined,
@@ -105,7 +105,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#2-1-1：二进制格式" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1-1：二进制格式" class="headerlink" title="2.1.1：二进制格式"></a>2.1.1：二进制格式</h3>
       <p>HTTP&#x2F;2 采用二进制格式传输数据，而非 HTTP&#x2F;1.1 的文本格式。</p>
 <p>二进制格式在协议的解析和优化扩展上带来更多的优势和可能。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/d29e722c9791418cbe4009c60216dea4.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/d29e722c9791418cbe4009c60216dea4.png"  alt="在这里插入图片描述">
+      </p>
 <p><strong>一些基本概念</strong>：</p>
 <ul>
 <li><p><strong>数据流</strong>：已建立的连接内的双向字节流，可以承载一条或多条消息。<br>所有通信都在一个 TCP 连接上完成，此连接可以承载任意数量的双向数据流。</p>
@@ -115,24 +118,39 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li><p><strong>帧</strong>：HTTP&#x2F;2 通信的最小单位，每个帧都包含帧头（会标识出当前帧所属的数据流）<br>来自不同数据流的帧可以交错发送，然后再根据每个帧头的数据流标识符重新组装</p>
 </li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/fcbca48699c444cbb760be0345c5189d.png" alt="在这里插入图片描述"></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/553fd2ab9ab2404081dbc8e1abf00042.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/fcbca48699c444cbb760be0345c5189d.png"  alt="在这里插入图片描述">
+      </p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/553fd2ab9ab2404081dbc8e1abf00042.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="2-1-2：多路复用"   >
           <a href="#2-1-2：多路复用" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1-2：多路复用" class="headerlink" title="2.1.2：多路复用"></a>2.1.2：多路复用</h3>
       <p><strong>多路复用</strong>（Multiplexing），客户端和服务器可以将 HTTP 消息分解为互不依赖的帧，然后交错发送，最后再在另一端把它们重新组装起来</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/f2fe7719f8dc4355a26e46ae71591cfd.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/f2fe7719f8dc4355a26e46ae71591cfd.png"  alt="在这里插入图片描述">
+      </p>
 <ul>
 <li>并行交错地发送多个请求，请求之间互不影响</li>
 <li>并行交错地发送多个响应，响应之间互不干扰</li>
 <li>使用一个连接并行发送多个请求和响应</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/5f3fd03a4a1d4bca9de8cd2c96caf62c.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/5f3fd03a4a1d4bca9de8cd2c96caf62c.png"  alt="在这里插入图片描述">
+      </p>
 <p>不必再为绕过 HTTP&#x2F;1.1 限制而做很多工作。比如精灵图（image sprites）、合并 CSS&#x2F;JS、内嵌 CSS&#x2F;JS&#x2F;Base64 图片、域名分片等。</p>
 <blockquote>
 <p>精灵图（image sprites），也叫做 CSS Sprites，将多张小图合并成一张大图。最后通过 CSS 结合小图的位置、尺寸进行精准定位。</p>
 </blockquote>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/5d9fc86c421f419883580c426f6f79ca.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/5d9fc86c421f419883580c426f6f79ca.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="2-1-3：优先级"   >
           <a href="#2-1-3：优先级" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1-3：优先级" class="headerlink" title="2.1.3：优先级"></a>2.1.3：优先级</h3>
@@ -145,7 +163,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 </li>
 </ul>
 <p>示例：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/d3873a5d0db84068a442646aa4547e3e.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/d3873a5d0db84068a442646aa4547e3e.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="2-1-4：头部压缩"   >
           <a href="#2-1-4：头部压缩" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1-4：头部压缩" class="headerlink" title="2.1.4：头部压缩"></a>2.1.4：头部压缩</h3>
@@ -153,14 +174,23 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <blockquote>
 <p>早期版本的 HTTP&#x2F;2 和 SPDY 使用 zlib 压缩请求头和响应头，可以将所传输头数据的大小减小 85% ~ 88%。<br>但在 2012 年夏天被攻击，导致会话劫持。<br>后被更安全的 HPACK 取代。</p>
 </blockquote>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/ef4432864de24f77ad5a71f4da3beef8.png" alt="在这里插入图片描述"></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/59692cb33c7844d2a5153d165dabef2d.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/ef4432864de24f77ad5a71f4da3beef8.png"  alt="在这里插入图片描述">
+      </p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/59692cb33c7844d2a5153d165dabef2d.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="2-1-5：服务器推送"   >
           <a href="#2-1-5：服务器推送" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1-5：服务器推送" class="headerlink" title="2.1.5：服务器推送"></a>2.1.5：服务器推送</h3>
       <p><strong>服务器推送</strong>（Server Push）：服务器可以对一个客户端请求发送多个响应。</p>
 <p>除了对最初请求的响应外，服务器还可以向客户端推送额外资源，而无需客户端额外明确地请求。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/13c2c08d06594cff8736b71c982c2843.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/13c2c08d06594cff8736b71c982c2843.png"  alt="在这里插入图片描述">
+      </p>
 
         <h2 id="2-2：HTTP-2-的问题"   >
           <a href="#2-2：HTTP-2-的问题" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2：HTTP-2-的问题" class="headerlink" title="2.2：HTTP&#x2F;2 的问题"></a>2.2：HTTP&#x2F;2 的问题</h2>
@@ -168,15 +198,24 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h3 id="2-2-1：队头阻塞"   >
           <a href="#2-2-1：队头阻塞" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2-1：队头阻塞" class="headerlink" title="2.2.1：队头阻塞"></a>2.2.1：队头阻塞</h3>
       <p>队头阻塞（head of line blocking）。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/45e1af10bdf54f059432113e627cdbc3.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/45e1af10bdf54f059432113e627cdbc3.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="2-2-2：握手延迟"   >
           <a href="#2-2-2：握手延迟" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2-2：握手延迟" class="headerlink" title="2.2.2：握手延迟"></a>2.2.2：握手延迟</h3>
-      <p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/294da1460b764b9e871ab1d7eca220eb.png" alt="在这里插入图片描述"></p>
+      <p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/294da1460b764b9e871ab1d7eca220eb.png"  alt="在这里插入图片描述">
+      </p>
 <blockquote>
 <p>RTT（Round Trip Time）：往返时延，可以简单理解为通信一来一回的时间。</p>
 </blockquote>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/3183c5a96e514714ab6016b5e5f97268.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/3183c5a96e514714ab6016b5e5f97268.png"  alt="在这里插入图片描述">
+      </p>
 
         <h1 id="3：HTTP-3"   >
           <a href="#3：HTTP-3" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：HTTP-3" class="headerlink" title="3：HTTP&#x2F;3"></a>3：HTTP&#x2F;3</h1>
@@ -188,7 +227,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>QUIC（Quick UDP Internet Connections，快速 UDP 网络连接），由 Google 在 2013 年实现</li>
 <li>于 2018 年从 HTTP-over-QUIC 改为 HTTP&#x2F;3</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/222183db4f5547cb88d63e4727c0ff4a.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/222183db4f5547cb88d63e4727c0ff4a.png"  alt="在这里插入图片描述">
+      </p>
 <p><strong>思考</strong>：</p>
 <p><strong>HTTP&#x2F;3 基于 UDP，如何保证可靠传输</strong>？</p>
 <ul>
@@ -265,14 +307,23 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>Eve：窃听者</li>
 <li>Mallory：主动攻击者</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/c07d318897ca420aa55a006ea9f77229.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/c07d318897ca420aa55a006ea9f77229.png"  alt="在这里插入图片描述">
+      </p>
 <p>如何防止被窃听：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/8089e2a8ef754372a1f7dbe021fb0f9e.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/8089e2a8ef754372a1f7dbe021fb0f9e.png"  alt="在这里插入图片描述">
+      </p>
 
         <h2 id="4-1：SPDY"   >
           <a href="#4-1：SPDY" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1：SPDY" class="headerlink" title="4.1：SPDY"></a>4.1：SPDY</h2>
       <p><strong>SPDY</strong>（speedy 的缩写），是基于 TCP 的应用层协议，它强制要求使用 SSL&#x2F;TLS。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/432079bcfe1a4199a412eb7ee33799ac.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/432079bcfe1a4199a412eb7ee33799ac.png"  alt="在这里插入图片描述">
+      </p>
 <blockquote>
 <p>2009 年 11 月，Google 宣布将 SPDY 作为提高网络速度的内部项目。</p>
 </blockquote>
@@ -307,14 +358,20 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="5-2：HTTPS-通信过程"   >
           <a href="#5-2：HTTPS-通信过程" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2：HTTPS-通信过程" class="headerlink" title="5.2：HTTPS 通信过程"></a>5.2：HTTPS 通信过程</h2>
       <p>总的可以分为 3 大阶段：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/cf2278dbc57a44b3850075e3f6201176.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/cf2278dbc57a44b3850075e3f6201176.png"  alt="在这里插入图片描述">
+      </p>
 
         <h1 id="6：SSL-TLS"   >
           <a href="#6：SSL-TLS" class="heading-link"><i class="fas fa-link"></i></a><a href="#6：SSL-TLS" class="headerlink" title="6：SSL&#x2F;TLS"></a>6：SSL&#x2F;TLS</h1>
       <p><strong>SSL</strong>（Secure Sockets Layer，安全套接层），是 TLS 的前身。</p>
 <p><strong>TLS</strong>（Transport Layer Security，传输层安全性协议）。</p>
 <p>HTTPS 是在 HTTP 的基础上使用 SSL&#x2F;TLS 来加密报文，对窃听和中间人攻击提供合理的防护。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/4f0da17863844efb89e9782568ce4ef4.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/4f0da17863844efb89e9782568ce4ef4.png"  alt="在这里插入图片描述">
+      </p>
 <p>SSL&#x2F;TLS 也可以用在其他协议上，比如：</p>
 <ul>
 <li><code>FTP -&gt; FTPS</code></li>
@@ -333,13 +390,19 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="6-1：SSL-TLS-工作在哪一层"   >
           <a href="#6-1：SSL-TLS-工作在哪一层" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-1：SSL-TLS-工作在哪一层" class="headerlink" title="6.1：SSL&#x2F;TLS 工作在哪一层"></a>6.1：SSL&#x2F;TLS 工作在哪一层</h2>
-      <p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/9733cbb1f09e431eb2ec3522657eb618.png" alt="在这里插入图片描述"></p>
+      <p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/9733cbb1f09e431eb2ec3522657eb618.png"  alt="在这里插入图片描述">
+      </p>
 
         <h2 id="6-2：TLS-1-2-的连接"   >
           <a href="#6-2：TLS-1-2-的连接" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2：TLS-1-2-的连接" class="headerlink" title="6.2：TLS 1.2 的连接"></a>6.2：TLS 1.2 的连接</h2>
       <p>TLS 1.2 的连接（ECDHE 密钥交换算法）大概有 10 大步骤。</p>
 <p>下图中省略了中间产生的一些 ACK 确认。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/9a7699c3399f408d9e898ff83a36bbc0.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/9a7699c3399f408d9e898ff83a36bbc0.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="6-2-1：Client-Hello"   >
           <a href="#6-2-1：Client-Hello" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-1：Client-Hello" class="headerlink" title="6.2.1：Client Hello"></a>6.2.1：Client Hello</h3>
@@ -348,7 +411,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>支持的加密组件（Cipher Suite）列表<br>加密组件是指所使用的加密算法及密钥长度等</li>
 <li>一个随机数（Client Random）</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/14cbc7e4a8d942aa9111148d4e3b8587.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/14cbc7e4a8d942aa9111148d4e3b8587.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="6-2-2：Server-Hello"   >
           <a href="#6-2-2：Server-Hello" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-2：Server-Hello" class="headerlink" title="6.2.2：Server Hello"></a>6.2.2：Server Hello</h3>
@@ -357,28 +423,40 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>选择的加密组件<br>是从接收到的客户端加密组件列表中挑选出来的</li>
 <li>一个随机数（Server Random）</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/b8287b7017324c7386a66b87711a44b2.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/b8287b7017324c7386a66b87711a44b2.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="6-2-3：Certificate"   >
           <a href="#6-2-3：Certificate" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-3：Certificate" class="headerlink" title="6.2.3：Certificate"></a>6.2.3：Certificate</h3>
       <ul>
 <li>服务器的公钥证书（被 CA 签名过的）</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/e756425dfd764cdfbc99aa5afbcaa491.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/e756425dfd764cdfbc99aa5afbcaa491.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="6-2-4：Server-Key-Exchange"   >
           <a href="#6-2-4：Server-Key-Exchange" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-4：Server-Key-Exchange" class="headerlink" title="6.2.4：Server Key Exchange"></a>6.2.4：Server Key Exchange</h3>
       <ul>
 <li>用以实现 ECDHE 算法的其中一个参数（Server Params）<br>ECDHE 是一种密钥交换算法<br>为了防止伪造，Server Params 经过了服务器私钥签名</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/2af02c8cea194d86b5edb0e6386e3908.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/2af02c8cea194d86b5edb0e6386e3908.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="6-2-5：Server-Hello-Done"   >
           <a href="#6-2-5：Server-Hello-Done" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-5：Server-Hello-Done" class="headerlink" title="6.2.5：Server Hello Done"></a>6.2.5：Server Hello Done</h3>
       <ul>
 <li>告知客户端：协商部分结束</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/5cc628fdc40e4e68ab7032ee40f8cf3c.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/5cc628fdc40e4e68ab7032ee40f8cf3c.png"  alt="在这里插入图片描述">
+      </p>
 <p>到目前为止，客户端和服务器之间通过明文共享了：</p>
 <ul>
 <li>Client Random</li>
@@ -392,7 +470,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
       <ul>
 <li>用以实现 ECDHE 算法的另一个参数（Client Params）</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/0d0f51dc81b74a6b95d0d324685e3503.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/0d0f51dc81b74a6b95d0d324685e3503.png"  alt="在这里插入图片描述">
+      </p>
 <p>目前为止，客户端和服务器都拥有了 ECDHE 算法需要的 2 个参数：</p>
 <ul>
 <li>Server Params</li>
@@ -407,7 +488,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
       <ul>
 <li>告知服务器：之后的通信会采用计算出来的会话密钥进行加密</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/a0127996591c4a708340ddf4491135ac.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/a0127996591c4a708340ddf4491135ac.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="6-2-8：Finished（Client）"   >
           <a href="#6-2-8：Finished（Client）" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-8：Finished（Client）" class="headerlink" title="6.2.8：Finished（Client）"></a>6.2.8：Finished（Client）</h3>
@@ -415,11 +499,17 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>包含连接至今全部报文的整体校验值（摘要），加密之后发送给服务器</li>
 <li>这次握手协商是否成功，要以服务器是否能够正确解密该报文作为判定标准</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/5bada67b8825425d92f6fb3ace9323a7.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/5bada67b8825425d92f6fb3ace9323a7.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="6-2-9：Change-Cipher-Spec"   >
           <a href="#6-2-9：Change-Cipher-Spec" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-9：Change-Cipher-Spec" class="headerlink" title="6.2.9：Change Cipher Spec"></a>6.2.9：Change Cipher Spec</h3>
-      <p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/a0113b991dfe470daedd836ddeb63e24.png" alt="在这里插入图片描述"></p>
+      <p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/a0113b991dfe470daedd836ddeb63e24.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="6-2-10：Finished（Server）"   >
           <a href="#6-2-10：Finished（Server）" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2-10：Finished（Server）" class="headerlink" title="6.2.10：Finished（Server）"></a>6.2.10：Finished（Server）</h3>
@@ -427,7 +517,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>到此为止，客户端服务器都验证加密解密没问题，握手正式结束</li>
 <li>后面开始传输加密的 HTTP 请求和响应</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/76cf716e4a3c49fba7544627100f2829.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/06/76cf716e4a3c49fba7544627100f2829.png"  alt="在这里插入图片描述">
+      </p>
 
         <h2 id="6-3：OpenSSL"   >
           <a href="#6-3：OpenSSL" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-3：OpenSSL" class="headerlink" title="6.3：OpenSSL"></a>6.3：OpenSSL</h2>
@@ -465,7 +558,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           6：SSL&#x2F;TLS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1%EF%BC%9ASSL-TLS-%E5%B7%A5%E4%BD%9C%E5%9C%A8%E5%93%AA%E4%B8%80%E5%B1%82"><span class="toc-text">
           6.1：SSL&#x2F;TLS 工作在哪一层</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2%EF%BC%9ATLS-1-2-%E7%9A%84%E8%BF%9E%E6%8E%A5"><span class="toc-text">
           6.2：TLS 1.2 的连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-3%EF%BC%9AOpenSSL"><span class="toc-text">
-          6.3：OpenSSL</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+          6.3：OpenSSL</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
   var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
   // 加载进度条的计时器
   var loadingTimer = null;

@@ -40,7 +40,7 @@ var CONFIG = {
   fancybox: false,
   zoomImage: {"gapAside":"20px"},
   galleryWaterfall: undefined,
-  lazyload: false,
+  lazyload: true,
   pjax: {"avoidBanner":true},
   externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
   shortcuts: undefined,
@@ -157,7 +157,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">* * * * *         每分钟定时执行一次</span><br><span class="line">0 * * * *         每小时整点定时执行一次</span><br><span class="line">0 0 * * *         每天 0:00 定时执行一次</span><br><span class="line">*/1 * * * *       每分钟定时执行一次</span><br><span class="line">45 22 * * *       每天 22:45 执行</span><br><span class="line">0 17 * * 1        每周一 17:00 执行</span><br><span class="line">0 5 1,15 * *      每月 1 号和 15 号的 5:00 执行</span><br><span class="line">40 4 * * 1-5      每周一到周五的 4:00 执行</span><br><span class="line">*/10 4 * * *      每天的 4:00，每隔 10 分钟执行一次（5:00 过后不再执行）</span><br><span class="line">0 0 1,15 * 1      每月 1 号和 15 号，和每周一的 0:00 执行</span><br><span class="line"></span><br><span class="line">注意：星期几和几号最好不要同时出现，阅读时容易引起混乱</span><br></pre></td></tr></table></div></figure>
 
 <p>示例：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/d0afbff5ba20410b8f6ece5290360dab.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/d0afbff5ba20410b8f6ece5290360dab.png"  alt="在这里插入图片描述">
+      </p>
 <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">每隔 5 分钟，就将当前的日期信息，追加到 /tmp/mydate.txt 文件中</span><br><span class="line">*/</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设定时程表，编辑定时任务</span></span><br><span class="line">crontab -e</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">进入 vi 编辑器的形式，编辑定时任务指令</span></span><br><span class="line">*/5 * * * * date &gt;&gt; /tmp/mydate.txt</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">在 /home/ 目录下，创建 shell 脚本 my.sh，实现上一个示例.</span><br><span class="line">*/</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">准备脚本文件</span></span><br><span class="line">vim /home/my.sh</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">写入以下命令</span></span><br><span class="line">date &gt;&gt; /tmp/mydate.txt</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">给 my.sh 增加执行权限</span></span><br><span class="line">chmod u+x /home/my.sh</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设定时程表，编辑定时任务</span></span><br><span class="line">crontab -e</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">进入 vi 编辑器的形式，编辑定时任务指令</span></span><br><span class="line">*/5 * * * * /home/my.sh</span><br></pre></td></tr></table></div></figure>
 
 
@@ -230,7 +233,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#2-1：原理介绍" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1：原理介绍" class="headerlink" title="2.1：原理介绍"></a>2.1：原理介绍</h2>
       <p>Linux 无论磁盘有几个分区，分给哪一目录使用，归根结底就<strong>只有一个根目录，一个独立且唯一的文件结构</strong>，Linux 中每个分区都是整个文件系统的一部分。</p>
 <p>Linux 采用了一种叫 “ <strong>载入</strong> ” 的处理方法，它的整个文件系统中包含了一整套的文件和目录，且<strong>将一个分区和一个目录联系起来（挂载）</strong>。这时载入的<strong>一个分区的存储空间与一个目录（挂载点）对应</strong>。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/a0c4956c51ec4dd19d5611747382b9e8.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/a0c4956c51ec4dd19d5611747382b9e8.png"  alt="在这里插入图片描述">
+      </p>
 
         <h2 id="2-2：硬盘说明"   >
           <a href="#2-2：硬盘说明" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2：硬盘说明" class="headerlink" title="2.2：硬盘说明"></a>2.2：硬盘说明</h2>
@@ -274,7 +280,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 </tr>
 </tbody></table></div>
 <p>示例：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/e1471615f6b744be8151fea0b8a8dd4c.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/e1471615f6b744be8151fea0b8a8dd4c.png"  alt="在这里插入图片描述">
+      </p>
 <p>参数说明：</p>
 <ul>
 <li>NAME：块设备名与分区情况。</li>
@@ -285,7 +294,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>TYPE：表示块设备是否是磁盘或磁盘上的一个分区。（如上图，sda 为磁盘。sda1、sda2、sda3 为 sda 分区。sr0 为只读存储 rom）</li>
 <li>MOUNTPOINT：挂载点。</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/bb94928685eb421fac07159e61f05942.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/bb94928685eb421fac07159e61f05942.png"  alt="在这里插入图片描述">
+      </p>
 <p>参数说明：</p>
 <ul>
 <li>NAME：块设备名与分区情况。</li>
@@ -316,7 +328,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 </tr>
 </tbody></table></div>
 <p>示例：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/3f069542acf7409e8433d5d7943dcbce.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/3f069542acf7409e8433d5d7943dcbce.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="2-3-3：du"   >
           <a href="#2-3-3：du" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-3：du" class="headerlink" title="2.3.3：du"></a>2.3.3：du</h3>
@@ -356,7 +371,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 </tr>
 </tbody></table></div>
 <p>示例：</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/1a16d2c0a7f0430ead1c92c39a1d7009.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/1a16d2c0a7f0430ead1c92c39a1d7009.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="2-3-4：tree"   >
           <a href="#2-3-4：tree" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-4：tree" class="headerlink" title="2.3.4：tree"></a>2.3.4：tree</h3>
@@ -526,10 +544,16 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#2-4-5：相关配置文件" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4-5：相关配置文件" class="headerlink" title="2.4.5：相关配置文件"></a>2.4.5：相关配置文件</h3>
       <p>有关挂载的配置，保存在 <font style="background:#70AD47">&#x2F;etc&#x2F;fstab</font> 文件。</p>
 <p>可通过编辑此文件来改变挂载。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/363095a503d04fcfa8af02285796b607.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/363095a503d04fcfa8af02285796b607.png"  alt="在这里插入图片描述">
+      </p>
 <p>可用分区 UUID 或路径进行挂载。</p>
 <p>示例：<br>将 <font style="background:#70AD47">&#x2F;dev&#x2F;sdb1</font> 挂在 <font style="background:#70AD47">&#x2F;newdisk&#x2F;</font> 之下。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/b13ffe10aab84095b611fa50aafbb39d.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/b13ffe10aab84095b611fa50aafbb39d.png"  alt="在这里插入图片描述">
+      </p>
 
         <h2 id="2-5：挂载案例"   >
           <a href="#2-5：挂载案例" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-5：挂载案例" class="headerlink" title="2.5：挂载案例"></a>2.5：挂载案例</h2>
@@ -545,29 +569,50 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h3 id="2-5-1：虚拟机添加硬盘"   >
           <a href="#2-5-1：虚拟机添加硬盘" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-5-1：虚拟机添加硬盘" class="headerlink" title="2.5.1：虚拟机添加硬盘"></a>2.5.1：虚拟机添加硬盘</h3>
       <p>在设备列表里添加硬盘，然后只需一直【下一步】，只有选择磁盘大小的地方需要修改，直到完成。然后重启系统才能识别。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/749d92a1526341baa23e878f4c5f1b5a.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/749d92a1526341baa23e878f4c5f1b5a.png"  alt="在这里插入图片描述">
+      </p>
 <p>可以看到硬盘为 sdb。还没有分区。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/36d6acd854184219857a6acfb698b0a9.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/36d6acd854184219857a6acfb698b0a9.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="2-5-2：硬盘分区"   >
           <a href="#2-5-2：硬盘分区" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-5-2：硬盘分区" class="headerlink" title="2.5.2：硬盘分区"></a>2.5.2：硬盘分区</h3>
       <p>给添加的硬盘分区。这里为了方便，只分一个区。</p>
 <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/sdb</span><br></pre></td></tr></table></div></figure>
 
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/614aea5c5a4c483f84d99a98aaa73fce.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/614aea5c5a4c483f84d99a98aaa73fce.png"  alt="在这里插入图片描述">
+      </p>
 <p>输入 <code>n</code>，新增分区；然后输入 <code>p</code>（分区类型为主分区）；两次【回车】默认分配剩余全部空间。最后输入 <code>w</code> ，写入分区并退出。分区完成。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/7c48dcb29da0447dbeeaf9cadea98aef.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/7c48dcb29da0447dbeeaf9cadea98aef.png"  alt="在这里插入图片描述">
+      </p>
 <p>可以看到有了一个分区。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/a78e2162574c40f4950b2d3e32c8a9b7.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/a78e2162574c40f4950b2d3e32c8a9b7.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="2-5-3：格式化"   >
           <a href="#2-5-3：格式化" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-5-3：格式化" class="headerlink" title="2.5.3：格式化"></a>2.5.3：格式化</h3>
       <p>新增分区需格式化后才能分配 UUID。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/016d28bf59034d7bbbda929ef0c71452.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/016d28bf59034d7bbbda929ef0c71452.png"  alt="在这里插入图片描述">
+      </p>
 <figure class="highlight shell"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs -t ext4 /dev/sdb1</span><br></pre></td></tr></table></div></figure>
 
 <p>格式化后分配了 UUID。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/8f51b06aa0814db68f2fb69f5f2762ca.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/Linux%E5%9F%BA%E7%A1%80/05/8f51b06aa0814db68f2fb69f5f2762ca.png"  alt="在这里插入图片描述">
+      </p>
 
         <h3 id="2-5-4：挂载"   >
           <a href="#2-5-4：挂载" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-5-4：挂载" class="headerlink" title="2.5.4：挂载"></a>2.5.4：挂载</h3>
@@ -594,7 +639,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           2.2：硬盘说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3%EF%BC%9A%E7%A3%81%E7%9B%98%E7%9B%AE%E5%BD%95%E6%83%85%E5%86%B5%E6%9F%A5%E8%AF%A2"><span class="toc-text">
           2.3：磁盘目录情况查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4%EF%BC%9A%E5%88%86%E5%8C%BA-%E6%8C%82%E8%BD%BD"><span class="toc-text">
           2.4：分区&amp;挂载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5%EF%BC%9A%E6%8C%82%E8%BD%BD%E6%A1%88%E4%BE%8B"><span class="toc-text">
-          2.5：挂载案例</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+          2.5：挂载案例</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
   var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
   // 加载进度条的计时器
   var loadingTimer = null;

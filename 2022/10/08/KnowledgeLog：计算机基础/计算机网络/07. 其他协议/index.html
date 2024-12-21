@@ -41,7 +41,7 @@ var CONFIG = {
   fancybox: false,
   zoomImage: {"gapAside":"20px"},
   galleryWaterfall: undefined,
-  lazyload: false,
+  lazyload: true,
   pjax: {"avoidBanner":true},
   externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
   shortcuts: undefined,
@@ -105,8 +105,14 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
         <h2 id="1-2：首部格式"   >
           <a href="#1-2：首部格式" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-2：首部格式" class="headerlink" title="1.2：首部格式"></a>1.2：首部格式</h2>
       <p>IPv6 有 40 字节的固定首部。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/4a923f4da94e43a09eb2c3505a98d038.png" alt="在这里插入图片描述"></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/648878cdc5be4fd58ec1cb992e6af026.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/4a923f4da94e43a09eb2c3505a98d038.png"  alt="在这里插入图片描述">
+      </p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/648878cdc5be4fd58ec1cb992e6af026.png"  alt="在这里插入图片描述">
+      </p>
 <ul>
 <li><strong>Version</strong>（占 4 bit，0110）：<strong>版本号</strong></li>
 <li><strong>Traffic Class</strong>（占 8 bit）：<strong>交通类别</strong><ul>
@@ -138,8 +144,14 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <blockquote>
 <p>扩展头部示意图如下。</p>
 </blockquote>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/a9f3f980609f431abfb9e451783bb4f5.png" alt="在这里插入图片描述"></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/c8ee89d56cbb4093a4a0c3ed6f3cc537.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/a9f3f980609f431abfb9e451783bb4f5.png"  alt="在这里插入图片描述">
+      </p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/c8ee89d56cbb4093a4a0c3ed6f3cc537.png"  alt="在这里插入图片描述">
+      </p>
 
         <h1 id="2：WebSocket"   >
           <a href="#2：WebSocket" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：WebSocket" class="headerlink" title="2：WebSocket"></a>2：WebSocket</h1>
@@ -151,7 +163,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <p>轮询：由浏览器每隔一段时间（如每秒）向服务器发出 HTTP 请求，然后服务器返回最新的数据给客户端。</p>
 </blockquote>
 <p>为了能更好的节省服务器资源和带宽，并且能够更实时地进行通讯，HTML5 规范中出现了 WebSocket 协议。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/d73087162c2c4976a8dc32ca75f02605.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/d73087162c2c4976a8dc32ca75f02605.png"  alt="在这里插入图片描述">
+      </p>
 <p><strong>WebSocket</strong>，是<strong>基于 TCP 的</strong>支持全双工通信的<strong>应用层协议</strong>。客户端、服务器，任何一方都可以主动发消息给对方。</p>
 <blockquote>
 <p>在 2011 年由 IETF 标准化为 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc6455" >RFC 6455</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>，后由 <span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc7936" >RFC 7936</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 补充规范。</p>
@@ -178,8 +193,14 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#2-1：建立连接" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1：建立连接" class="headerlink" title="2.1：建立连接"></a>2.1：建立连接</h2>
       <p>WebSocket 需要借助 HTTP 协议来建立连接（也叫作 Handshake，握手）。</p>
 <p>由客户端（浏览器）主动发出握手请求。</p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/c587655349e5483eb241f8ab7dc0c8e5.png" alt="在这里插入图片描述"></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/535ccbda3e6b4ceabc564fa6574bb2ef.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/c587655349e5483eb241f8ab7dc0c8e5.png"  alt="在这里插入图片描述">
+      </p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/535ccbda3e6b4ceabc564fa6574bb2ef.png"  alt="在这里插入图片描述">
+      </p>
 <blockquote>
 <p>GUID：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc4122" >https://tools.ietf.org/html/rfc4122</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>SHA-1 摘要计算：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://encode.chahuo.com/" >http://encode.chahuo.com</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span><br>Hex To Base64编码：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://base64.guru/converter/encode/hex" >https://base64.guru/converter/encode/hex</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 </blockquote>
@@ -205,7 +226,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>很多时候，SOAP &#x3D; HTTP + XML</li>
 <li>WebService 使用 SOAP 协议封装传递数据</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/b068f251edb541adb0dabeaf9a2b7123.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/b068f251edb541adb0dabeaf9a2b7123.png"  alt="在这里插入图片描述">
+      </p>
 
         <h2 id="3-2：WSDL"   >
           <a href="#3-2：WSDL" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2：WSDL" class="headerlink" title="3.2：WSDL"></a>3.2：WSDL</h2>
@@ -226,7 +250,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>可以避免 Local DNS 造成的域名劫持和跨网访问问题</li>
 <li>常用在移动互联网中（比如在 Android、iOS 开发中）</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/f7719d1ae14846be84b5dd622d8c4123.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/f7719d1ae14846be84b5dd622d8c4123.png"  alt="在这里插入图片描述">
+      </p>
 <blockquote>
 <p><strong>HTTPDNS 的使用</strong></p>
 <ul>
@@ -241,7 +268,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#5：FTP" class="heading-link"><i class="fas fa-link"></i></a><a href="#5：FTP" class="headerlink" title="5：FTP"></a>5：FTP</h1>
       <p><strong>FTP</strong>（File Transport Protocol），文件传输协议。<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc959" >RFC 959</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 定义了此规范，<strong>是基于 TCP 的应用层协议</strong>。</p>
 <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc1738" >RFC 1738</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span> 中有定义，FTP 的 URL 格式为：<code>ftp://user:password@host:port/url-path</code></p>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/b11f9f6a6a2546aab18bf7ab7c52aedb.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/b11f9f6a6a2546aab18bf7ab7c52aedb.png"  alt="在这里插入图片描述">
+      </p>
 <p><strong>连接模式</strong>：</p>
 <p>FTP 有 2 种连接模式：主动（Active）和被动（Passive）。</p>
 <p>不管是哪种模式，都需要客户端和服务器建立 2 个连接：</p>
@@ -249,15 +279,24 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>控制连接：用于传输状态信息（命令，command）</li>
 <li>数据连接：用于传输文件和目录信息（data）</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/66ed7e0401fa4839be0d3aee096f5eb5.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/66ed7e0401fa4839be0d3aee096f5eb5.png"  alt="在这里插入图片描述">
+      </p>
 
         <h2 id="5-1：主动模式"   >
           <a href="#5-1：主动模式" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-1：主动模式" class="headerlink" title="5.1：主动模式"></a>5.1：主动模式</h2>
-      <p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/61d3cd8c52d3469ca39c6410f8e892df.png" alt="在这里插入图片描述"></p>
+      <p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/61d3cd8c52d3469ca39c6410f8e892df.png"  alt="在这里插入图片描述">
+      </p>
 
         <h2 id="5-2：被动模式"   >
           <a href="#5-2：被动模式" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2：被动模式" class="headerlink" title="5.2：被动模式"></a>5.2：被动模式</h2>
-      <p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/c13210b60d084a3a94b703090a281e9d.png" alt="在这里插入图片描述"></p>
+      <p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/c13210b60d084a3a94b703090a281e9d.png"  alt="在这里插入图片描述">
+      </p>
 
         <h1 id="6：邮件"   >
           <a href="#6：邮件" class="heading-link"><i class="fas fa-link"></i></a><a href="#6：邮件" class="headerlink" title="6：邮件"></a>6：邮件</h1>
@@ -289,11 +328,17 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h2 id="6-1：邮件收发过程"   >
           <a href="#6-1：邮件收发过程" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-1：邮件收发过程" class="headerlink" title="6.1：邮件收发过程"></a>6.1：邮件收发过程</h2>
-      <p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/bdb0443d900a4d17adec3d2d4340ad84.png" alt="在这里插入图片描述"></p>
+      <p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/bdb0443d900a4d17adec3d2d4340ad84.png"  alt="在这里插入图片描述">
+      </p>
 
         <h2 id="6-2：POP-vs-IMAP"   >
           <a href="#6-2：POP-vs-IMAP" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2：POP-vs-IMAP" class="headerlink" title="6.2：POP vs IMAP"></a>6.2：POP vs IMAP</h2>
-      <p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/0c32550e781b4b4089131c272a09c9d4.png" alt="在这里插入图片描述"></p>
+      <p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/0c32550e781b4b4089131c272a09c9d4.png"  alt="在这里插入图片描述">
+      </p>
 <p><strong>POP 的特点</strong>：</p>
 <ul>
 <li>客户端连接服务器时，将会从服务器下载所有邮件</li>
@@ -345,7 +390,10 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>不是专门为 IM 设计的协议，很多功能需要自己实现</li>
 <li>很多人认为 MQTT 是最适合物联网（Internet of Things，IoT）的网络协议</li>
 </ul>
-<p><img src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/b39a9e3323c944f3903d2be1cc447e11.png" alt="在这里插入图片描述"></p>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/KnowledgeLog%EF%BC%9A%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/07/b39a9e3323c944f3903d2be1cc447e11.png"  alt="在这里插入图片描述">
+      </p>
 
         <h1 id="8：流媒体"   >
           <a href="#8：流媒体" class="heading-link"><i class="fas fa-link"></i></a><a href="#8：流媒体" class="headerlink" title="8：流媒体"></a>8：流媒体</h1>
@@ -408,7 +456,7 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           7.1：XMPP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-2%EF%BC%9AMQTT"><span class="toc-text">
           7.2：MQTT</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8%EF%BC%9A%E6%B5%81%E5%AA%92%E4%BD%93"><span class="toc-text">
           8：流媒体</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#8-1%EF%BC%9A%E5%B8%B8%E8%A7%81%E5%8D%8F%E8%AE%AE"><span class="toc-text">
-          8.1：常见协议</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+          8.1：常见协议</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">53</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">21</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2024</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
   var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
   // 加载进度条的计时器
   var loadingTimer = null;
