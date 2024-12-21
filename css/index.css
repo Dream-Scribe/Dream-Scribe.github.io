@@ -297,6 +297,8 @@ template {
   display: none;
 }
 :root {
+  --color-my-code-back: #f9f2f4;
+  --color-my-code: #d83b64;
   --color-gray-100: #fff;
   --color-gray-150: #f9f9f9;
   --color-gray-200: #f5f6f7;
@@ -318,6 +320,8 @@ template {
   --color-blue-200: #ebeef5;
 }
 html.nightmode {
+  --color-my-code-back: #282c34;
+  --color-my-code: #f92672;
   --color-gray-100: #1c1e21;
   --color-gray-150: #2c323c;
   --color-gray-200: #303846;
@@ -434,8 +438,8 @@ code {
   padding: 1px 5px;
   font-family: 'Source Code Pro', Consolas, Menlo, Monaco, 'Courier New', monospace;
   font-size: 0.95em;
-  color: var(--color-gray-700);
-  background-color: var(--color-gray-200);
+  color: var(--color-my-code);
+  background-color: var(--color-my-code-back);
 }
 dt {
   font-weight: 700;
