@@ -1,0 +1,671 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="Dorking 简介；Google 检索语法；Bing 检索语法；Yandex 检索语法；补充知识（文件类型 &amp; 扩展名）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《OSINT分析》02. 搜索引擎检索语法">
+<meta property="og:url" content="https://blog.lens-shrine.top/2024/11/16/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/02.%20%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E6%A3%80%E7%B4%A2%E8%AF%AD%E6%B3%95/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="Dorking 简介；Google 检索语法；Bing 检索语法；Yandex 检索语法；补充知识（文件类型 &amp; 扩展名）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-11-16T12:32:00.000Z">
+<meta property="article:modified_time" content="2024-11-16T14:57:00.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary"><title>《OSINT分析》02. 搜索引擎检索语法 | 镜坛</title><link ref="canonical" href="https://blog.lens-shrine.top/2024/11/16/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/02.%20%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E6%A3%80%E7%B4%A2%E8%AF%AD%E6%B3%95/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":2},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《OSINT分析》02. 搜索引擎检索语法</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2024-11-16</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2024-11-16</span></span></div></header><div class="post-body"><blockquote>
+<p>本系列侧重方法论，各工具只是实现目标的载体。<br>命令与工具只做简单介绍，其使用另见《软件工具录》。</p>
+</blockquote>
+
+        <h1 id="1：Dorking-简介"   >
+          <a href="#1：Dorking-简介" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：Dorking-简介" class="headerlink" title="1：Dorking 简介"></a>1：Dorking 简介</h1>
+      <p>Dorking，也叫做 Dorks，是一种利用搜索引擎查找特定信息的技术，核心是通过精确的检索语法和关键词，定位互联网上暴露的敏感信息。</p>
+<blockquote>
+<p>Google 和其他搜索引擎允许在搜索文本中使用检索语法，检索语法是添加到搜索中的文本，用以执行某个功能。</p>
+</blockquote>
+<blockquote>
+<p>Google 检索语法对大部分其他搜索引擎都通用。</p>
+</blockquote>
+<p>Dorking 可用于查找多方面的信息，包括但不限于下述信息：</p>
+<ul>
+<li>网站、公司、组织的关键信息</li>
+<li>关于公司、产品和服务的评论</li>
+<li>有关特定主题的博客、文章、研究论文等</li>
+<li>泄露的软件、课程和电子书</li>
+<li>寻找某个问题的答案</li>
+<li>跟踪网络舆情信息</li>
+<li>寻找泄露数据的线索，包括用户名、密码、网站管理入口等</li>
+<li>跟踪网络威胁情报，追溯威胁历史活动信息</li>
+</ul>
+
+        <h1 id="2：Google-检索语法"   >
+          <a href="#2：Google-检索语法" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：Google-检索语法" class="headerlink" title="2：Google 检索语法"></a>2：Google 检索语法</h1>
+      <p>Google Dorking，亦称 Google Dorks 或 Google Hacking。</p>
+<blockquote>
+<p>Google 搜索引擎对于同一个检索语法，如果代理处于不同的地区，返回的检索结果也会不同。</p>
+</blockquote>
+<blockquote>
+<p>Google 检索语法对大部分其他搜索引擎都通用。</p>
+</blockquote>
+
+        <h2 id="2-1：常规搜索"   >
+          <a href="#2-1：常规搜索" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1：常规搜索" class="headerlink" title="2.1：常规搜索"></a>2.1：常规搜索</h2>
+      
+        <h3 id="2-1-1：不带引号"   >
+          <a href="#2-1-1：不带引号" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1-1：不带引号" class="headerlink" title="2.1.1：不带引号"></a>2.1.1：不带引号</h3>
+      <p><strong>语法说明</strong>：不要求完全匹配关键词，可能会包含拼写相似的词或内容相关但不精确匹配的页面。</p>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>OSINT</code></li>
+</ul>
+<p><strong>示例 2</strong>：查找多个独立的关键词，搜索结果中可能包含关键词的不同排列组合，也可能分散在页面的不同位置。</p>
+<ul>
+<li><code>Open Source Intelligence</code></li>
+</ul>
+
+        <h3 id="2-1-2：双引号"   >
+          <a href="#2-1-2：双引号" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1-2：双引号" class="headerlink" title="2.1.2：双引号"></a>2.1.2：双引号</h3>
+      <p><strong>语法说明</strong>：关键词检索，要求检索结果中必须包含完整的检索关键词。</p>
+<p><strong>示例 1</strong>：对单个词进行精确搜索，完全匹配包含关键词的页面。</p>
+<ul>
+<li><code>&quot;OSINT&quot;</code></li>
+</ul>
+<p><strong>示例 2</strong>：对短语进行精确匹配搜索，搜索包含完整短语的页面，不会拆分成单独的词。</p>
+<ul>
+<li><code>&quot;Open Source Intelligence&quot;</code></li>
+</ul>
+<p><strong>示例 3</strong>：对多个独立关键词精确匹配，返回包含所有独立词的页面，但它们不必按特定顺序出现，也不需要连在一起。</p>
+<ul>
+<li><code>&quot;开源&quot; &quot;情报&quot; &quot;分析&quot;</code></li>
+</ul>
+
+        <h2 id="2-2：检索符"   >
+          <a href="#2-2：检索符" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2：检索符" class="headerlink" title="2.2：检索符"></a>2.2：检索符</h2>
+      <blockquote>
+<p>除了以 “ all ” 开头的检索符，其他检索符只跟一个关键词。</p>
+</blockquote>
+
+        <h3 id="2-2-1：site"   >
+          <a href="#2-2-1：site" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2-1：site" class="headerlink" title="2.2.1：site"></a>2.2.1：site</h3>
+      <p><strong>语法说明</strong>：将搜索范围限定到特定网站。</p>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>site:github.com</code></li>
+</ul>
+<p><strong>示例 2</strong>：在特定网站检索特定的内容。</p>
+<ul>
+<li><code>&quot;OSINT&quot; site:github.com</code></li>
+</ul>
+
+        <h3 id="2-2-2：filetype"   >
+          <a href="#2-2-2：filetype" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2-2：filetype" class="headerlink" title="2.2.2：filetype"></a>2.2.2：filetype</h3>
+      <p><strong>语法说明</strong>：指定文件类型扩展名，搜索某一种文件类型的资源。</p>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>&quot;OSINT&quot; filetype:ppt</code></li>
+</ul>
+<p><strong>示例 2</strong>：</p>
+<ul>
+<li><code>&quot;情报&quot; site:github.com filetype:pdf</code></li>
+</ul>
+
+        <h3 id="2-2-3：intitle"   >
+          <a href="#2-2-3：intitle" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2-3：intitle" class="headerlink" title="2.2.3：intitle"></a>2.2.3：intitle</h3>
+      <p><strong>语法说明</strong>：限制网页标题中包含某一个特定的关键词。</p>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>intitle:OSINT</code></li>
+</ul>
+<p><strong>示例 2</strong>：</p>
+<ul>
+<li><code>intitle:&quot;index of&quot;</code></li>
+</ul>
+<p><strong>示例 3</strong>：查找网页标题中同时包含多个关键词的页面。</p>
+<ul>
+<li><code>intitle:开源 intitle:分析</code></li>
+</ul>
+<p><strong>示例 4</strong>：限制网页标题包含至少一个指定的关键词（使用 <code>OR</code> 运算符）。</p>
+<ul>
+<li><code>intitle:开源 OR intitle:分析</code></li>
+</ul>
+
+        <h3 id="2-2-4：allintitle"   >
+          <a href="#2-2-4：allintitle" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2-4：allintitle" class="headerlink" title="2.2.4：allintitle"></a>2.2.4：allintitle</h3>
+      <p><strong>语法说明</strong>：限制网页标题中同时包含多个关键词。</p>
+<p><strong>示例 1</strong>：等同于 <code>intitle:开源 intitle:分析</code>，关键词不必按特定顺序出现，也不需要连在一起。</p>
+<ul>
+<li><code>allintitle:开源 分析</code></li>
+</ul>
+
+        <h3 id="2-2-5：inurl"   >
+          <a href="#2-2-5：inurl" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2-5：inurl" class="headerlink" title="2.2.5：inurl"></a>2.2.5：inurl</h3>
+      <p><strong>语法说明</strong>：限制网页 URL 中包含某一个特定的关键词。用法与 <code>intitle</code> 类似。</p>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>&quot;OSINT&quot; inurl:blog</code></li>
+</ul>
+<p><strong>示例 2</strong>：查找 URL 中包含特定路径的结果。</p>
+<ul>
+<li><code>&quot;OSINT&quot; inurl:/blog/ site:inteltechniques.com</code></li>
+</ul>
+
+        <h3 id="2-2-6：related"   >
+          <a href="#2-2-6：related" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2-6：related" class="headerlink" title="2.2.6：related"></a>2.2.6：related</h3>
+      <p><strong>语法说明</strong>：搜索与某个网站相关联的页面，或者结构内容相似的一些其它网站。</p>
+<p><strong>示例 1</strong>：搜索一些与 GitHub 类似，或有类似内容的网站。即可能与代码托管、开源项目、版本控制等方面相关的其他平台。</p>
+<ul>
+<li><code>related:github.com</code></li>
+</ul>
+
+        <h2 id="2-3：运算符"   >
+          <a href="#2-3：运算符" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3：运算符" class="headerlink" title="2.3：运算符"></a>2.3：运算符</h2>
+      
+        <h3 id="2-3-1：排除符【-】"   >
+          <a href="#2-3-1：排除符【-】" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-1：排除符【-】" class="headerlink" title="2.3.1：排除符【-】"></a>2.3.1：排除符【-】</h3>
+      <p><strong>语法说明</strong>：</p>
+<ul>
+<li>直接跟关键词：排除任何包含指定关键词的结果（包括标题、正文、URL）</li>
+<li>结合检索符使用：与检索符功能相反</li>
+</ul>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>&quot;OSINT&quot; -book</code></li>
+</ul>
+<p><strong>示例 2</strong>：</p>
+<ul>
+<li><code>&quot;OSINT&quot; -&quot;Open Source Intelligence&quot;</code></li>
+</ul>
+<p><strong>示例 3</strong>：排除特定网站。</p>
+<ul>
+<li><code>&quot;OSINT&quot; -site:github.com</code></li>
+</ul>
+
+        <h3 id="2-3-2：与运算【AND】【-】"   >
+          <a href="#2-3-2：与运算【AND】【-】" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-2：与运算【AND】【-】" class="headerlink" title="2.3.2：与运算【AND】【+】"></a>2.3.2：与运算【AND】【+】</h3>
+      <p><strong>语法说明</strong>：搜索同时符合多个条件的结果。默认搜索（即用空格连接）就是 AND 逻辑。</p>
+<p><strong>示例 1</strong>：以下语句功能类似。</p>
+<ul>
+<li><code>intitle:开源 intitle:分析</code></li>
+<li><code>intitle:开源 + intitle:分析</code></li>
+<li><code>intitle:开源 AND intitle:分析</code></li>
+</ul>
+
+        <h3 id="2-3-3：或运算【OR】【-】"   >
+          <a href="#2-3-3：或运算【OR】【-】" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-3：或运算【OR】【-】" class="headerlink" title="2.3.3：或运算【OR】【|】"></a>2.3.3：或运算【OR】【|】</h3>
+      <p><strong>语法说明</strong>：符合多个条件之一即可。</p>
+<p><strong>示例 1</strong>：以下语句功能类似</p>
+<ul>
+<li><code>intitle:开源 OR intitle:分析</code></li>
+<li><code>intitle:开源 | intitle:分析</code></li>
+</ul>
+
+        <h3 id="2-3-4：通配符【-】"   >
+          <a href="#2-3-4：通配符【-】" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-4：通配符【-】" class="headerlink" title="2.3.4：通配符【*】"></a>2.3.4：通配符【*】</h3>
+      <p><strong>语法说明</strong>：可以匹配其他任意字符，用于模糊搜索。使用时需要使用双引号包裹关键词，一般不用于检索符之中。</p>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>&quot;开源*分析&quot;</code></li>
+</ul>
+<p><strong>示例 2</strong>：</p>
+<ul>
+<li><code>&quot;开源*分析&quot; -site:csdn.net</code></li>
+</ul>
+<p><strong>错误示例</strong>：错误语句，请勿模仿。</p>
+<ul>
+<li><code>site:cs*.net</code></li>
+</ul>
+
+        <h3 id="2-3-5：括号"   >
+          <a href="#2-3-5：括号" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3-5：括号" class="headerlink" title="2.3.5：括号"></a>2.3.5：括号</h3>
+      <p><strong>语法说明</strong>：用来优化运算符逻辑。</p>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>&quot;情报&quot; (site:zhihu.com OR site:github.com)</code></li>
+</ul>
+<p><strong>示例 2</strong>：</p>
+<ul>
+<li><code>(&quot;开源&quot; OR &quot;分析&quot;) site:github.com</code></li>
+</ul>
+
+        <h2 id="2-4：综合示例"   >
+          <a href="#2-4：综合示例" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4：综合示例" class="headerlink" title="2.4：综合示例"></a>2.4：综合示例</h2>
+      <ol>
+<li><p>搜索在线 Web 文件夹<br><code>intitle:&quot;index of&quot;</code></p>
+</li>
+<li><p>查找免费电子书<br><code>&quot;free&quot; (&quot;ebook&quot; OR &quot;book&quot;) filetype:pdf</code></p>
+</li>
+<li><p>查找网络摄像头<br><code>inurl:view/index.shtml</code></p>
+</li>
+<li><p>随机查找一些密码列表<br><code>login password filetype:xls</code></p>
+</li>
+<li><p>查找可以通过 Web 访问的 FTP 服务器<br><code>intitle:&quot;index of&quot; inurl:ftp</code></p>
+</li>
+<li><p>查找暴露在 Web 的 FTP 服务器<br><code>inurl:ftp -inurl:http -inurl:https</code></p>
+</li>
+<li><p>查找 FTP 服务器上的特定文件</p>
+<ul>
+<li>示例 1：<code>&quot;OSINT&quot; filetype:pdf inurl:ftp -inurl:http -inurl:https</code></li>
+<li>示例 2：<code>&quot;OSINT&quot; filetype:pdf inurl:ftp -inurl:(http|https)</code></li>
+</ul>
+</li>
+<li><p>寻找与目标用户相关的文件<br><code>&quot;John J. Doe&quot; (filetype:pdf OR filetype:xlsx OR filetype:docx)</code></p>
+</li>
+<li><p>寻找某人的社交媒体账户<br><code>&quot;John J. Doe&quot; site:x.com</code></p>
+</li>
+<li><p>自学 Google Dorking：</p>
+<ul>
+<li>示例 1：<code>(&quot;google&quot; OR &quot;谷歌&quot;) (&quot;检索&quot; OR &quot;搜索&quot;) (&quot;语法&quot; OR &quot;指令&quot; OR &quot;技巧&quot;)</code></li>
+<li>示例 2：<code>(&quot;Google syntax&quot; OR &quot;Google search operators&quot;) (site:.com OR site:.org OR site:.net OR site:.io OR site:.blog)</code></li>
+</ul>
+</li>
+</ol>
+
+        <h1 id="3：Bing-检索语法"   >
+          <a href="#3：Bing-检索语法" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：Bing-检索语法" class="headerlink" title="3：Bing 检索语法"></a>3：Bing 检索语法</h1>
+      <blockquote>
+<p>Bing 具备优秀的图像检索功能。</p>
+</blockquote>
+<blockquote>
+<p>由于 Google 检索语法基本上通用，这里只介绍 Bing 特有的检索语法。</p>
+</blockquote>
+
+        <h2 id="3-1：检索符"   >
+          <a href="#3-1：检索符" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1：检索符" class="headerlink" title="3.1：检索符"></a>3.1：检索符</h2>
+      
+        <h3 id="3-1-1：contains"   >
+          <a href="#3-1-1：contains" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-1：contains" class="headerlink" title="3.1.1：contains"></a>3.1.1：contains</h3>
+      <p><strong>语法说明</strong>：指定文件类型扩展名，搜索某一种文件类型的资源。与 Google <code>filetype</code> 类似，区别在于 <code>contains</code> 会检索来自指定域的文件链接，即便网页属于其他域名。</p>
+<p><strong>示例 1</strong>：检索来自指定域的文件链接，即便网页属于其他域名。</p>
+<ul>
+<li><code>contains:ppt site:cisco.com</code></li>
+</ul>
+<p><strong>示例 2</strong>：搜索结果限定在指定域。</p>
+<ul>
+<li><code>filetype:ppt site:cisco.com</code></li>
+</ul>
+
+        <h3 id="3-1-2：linkfromdomain"   >
+          <a href="#3-1-2：linkfromdomain" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-2：linkfromdomain" class="headerlink" title="3.1.2：linkfromdomain"></a>3.1.2：linkfromdomain</h3>
+      <p><strong>语法说明</strong>：查找指定域下所包含的链接。（首字母可以大写：<code>LinkFromDomain</code>）</p>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>linkfromdomain:example.com</code></li>
+</ul>
+
+        <h1 id="4：Yandex-检索语法"   >
+          <a href="#4：Yandex-检索语法" class="heading-link"><i class="fas fa-link"></i></a><a href="#4：Yandex-检索语法" class="headerlink" title="4：Yandex 检索语法"></a>4：Yandex 检索语法</h1>
+      <blockquote>
+<p>由于 Google 检索语法基本上通用，这里只介绍 Yandex 特有的检索语法。</p>
+</blockquote>
+
+        <h2 id="4-1：检索符"   >
+          <a href="#4-1：检索符" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1：检索符" class="headerlink" title="4.1：检索符"></a>4.1：检索符</h2>
+      
+        <h3 id="4-1-1：mime"   >
+          <a href="#4-1-1：mime" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-1：mime" class="headerlink" title="4.1.1：mime"></a>4.1.1：mime</h3>
+      <p><strong>语法说明</strong>：指定文件类型扩展名，搜索某一种文件类型的资源。与 Google <code>filetype</code> 类似。</p>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>&quot;passport&quot; mime:pdf</code></li>
+</ul>
+
+        <h3 id="4-1-2：date"   >
+          <a href="#4-1-2：date" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-2：date" class="headerlink" title="4.1.2：date"></a>4.1.2：date</h3>
+      <p><strong>语法说明</strong>：根据网页发布日期进行检索。</p>
+<div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">语法</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>date:&lt;YYYYMMDD</code></td>
+<td align="left">在某个日期前或后（<code>&lt;</code>、<code>&lt;=</code>、<code>&gt;</code>、<code>&gt;=</code>）</td>
+</tr>
+<tr>
+<td align="left"><code>date:YYYYMMDD..YYYYMMDD</code></td>
+<td align="left">发布日期在一定范围内</td>
+</tr>
+<tr>
+<td align="left"><code>date:YYYYMMDD</code></td>
+<td align="left">在某天发布</td>
+</tr>
+<tr>
+<td align="left"><code>date:YYYYMM*</code></td>
+<td align="left">在某月发布</td>
+</tr>
+<tr>
+<td align="left"><code>date:YYYY*</code></td>
+<td align="left">在某年发布</td>
+</tr>
+</tbody></table></div>
+<p><strong>示例 1</strong>：<br><code>festival date:&gt;=20231001</code></p>
+<p><strong>示例 2</strong>：<br><code>festival date:20230101..20231201</code></p>
+<p><strong>示例 3</strong>：<br><code>festival date:202312*</code></p>
+<p><strong>示例 4</strong>：<br><code>festival date:2023*</code></p>
+
+        <h2 id="4-2：运算符"   >
+          <a href="#4-2：运算符" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2：运算符" class="headerlink" title="4.2：运算符"></a>4.2：运算符</h2>
+      
+        <h3 id="4-2-1：排除符【-】"   >
+          <a href="#4-2-1：排除符【-】" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-1：排除符【-】" class="headerlink" title="4.2.1：排除符【~~】"></a>4.2.1：排除符【~~】</h3>
+      <p><strong>语法说明</strong>：</p>
+<ul>
+<li>直接跟关键词：排除任何包含指定关键词的结果（包括标题、正文、URL）</li>
+<li>结合检索符使用：与检索符功能相反</li>
+</ul>
+<blockquote>
+<p>此排除符是 Yandex 的官方操作符，但 Google 的排除符也可使用。</p>
+</blockquote>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>开源 ~~ github</code></li>
+</ul>
+<p><strong>示例 2</strong>：</p>
+<ul>
+<li><code>开源 ~~ site:csdn.net ~~ site:github.com</code></li>
+</ul>
+
+        <h3 id="4-2-2：或运算【-】"   >
+          <a href="#4-2-2：或运算【-】" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-2：或运算【-】" class="headerlink" title="4.2.2：或运算【|】"></a>4.2.2：或运算【|】</h3>
+      <p><strong>语法说明</strong>：</p>
+<ul>
+<li>与 Google 类似。不过 Yandex 不支持【<code>OR</code>】，但支持【<code>|</code>】</li>
+<li>另外 Yandex 的或运算对检索符的支持不是特别好</li>
+</ul>
+
+        <h3 id="4-2-3：关系运算【"   >
+          <a href="#4-2-3：关系运算【" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-3：关系运算【" class="headerlink" title="4.2.3：关系运算【&lt;&lt;】"></a>4.2.3：关系运算【&lt;&lt;】</h3>
+      <p><strong>语法说明</strong>：通常用于检索指定两个关键字之间存在关系的网页，关键字的顺序并不重要。</p>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>Moscow &lt;&lt; USA</code></li>
+</ul>
+
+        <h3 id="4-2-4：距离运算【-】"   >
+          <a href="#4-2-4：距离运算【-】" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-4：距离运算【-】" class="headerlink" title="4.2.4：距离运算【&#x2F;】"></a>4.2.4：距离运算【&#x2F;】</h3>
+      <p><strong>语法说明</strong>：【<code>/&lt;num&gt;</code>】运算符通常用于指定两个关键词之间的最大距离。</p>
+<p><strong>示例 1</strong>：指定关键词之间的最大距离不超过 2。</p>
+<ul>
+<li><code>great /2 hural</code></li>
+</ul>
+
+        <h3 id="4-2-5：【-】运算"   >
+          <a href="#4-2-5：【-】运算" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-5：【-】运算" class="headerlink" title="4.2.5：【&amp;】运算"></a>4.2.5：【&amp;】运算</h3>
+      <p><strong>语法说明</strong>：通常用于搜索在同一句子中包含指定关键词的网页。可以结合距离运算【<code>/&lt;num&gt;</code>】使用。</p>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>Hedgehog &amp; Flamingo</code></li>
+</ul>
+<p><strong>示例 2</strong>：指定关键词在一句话中，且距离不超过 3 个词。</p>
+<ul>
+<li><code>Hedgehog &amp;/3 Flamingo</code></li>
+</ul>
+
+        <h3 id="4-2-6：【-】运算"   >
+          <a href="#4-2-6：【-】运算" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-6：【-】运算" class="headerlink" title="4.2.6：【&amp;&amp;】运算"></a>4.2.6：【&amp;&amp;】运算</h3>
+      <p><strong>语法说明</strong>：通常用于搜索在整个页面中包含指定关键词的网页。可以结合距离运算【<code>/&lt;num&gt;</code>】使用。</p>
+<p><strong>示例 1</strong>：搜索同时包含指定关键词的页面，但不一定在同一句话中。</p>
+<ul>
+<li><code>Hedgehog &amp;&amp; Flamingo</code></li>
+</ul>
+<p><strong>示例 2</strong>：指定关键词都在页面中，且词间的距离不超过 3 个句子。</p>
+<ul>
+<li><code>Hedgehog &amp;&amp;/3 Flamingo</code></li>
+</ul>
+
+        <h1 id="5：补充知识"   >
+          <a href="#5：补充知识" class="heading-link"><i class="fas fa-link"></i></a><a href="#5：补充知识" class="headerlink" title="5：补充知识"></a>5：补充知识</h1>
+      
+        <h2 id="5-1：文件类型-扩展名"   >
+          <a href="#5-1：文件类型-扩展名" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-1：文件类型-扩展名" class="headerlink" title="5.1：文件类型 &amp; 扩展名"></a>5.1：文件类型 &amp; 扩展名</h2>
+      <div class="table-container"><table>
+<thead>
+<tr>
+<th align="left">文件类型扩展名</th>
+<th align="left">文件类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">7z</td>
+<td align="left">Compressed File</td>
+</tr>
+<tr>
+<td align="left">bmp</td>
+<td align="left">Bitmap Image</td>
+</tr>
+<tr>
+<td align="left">doc</td>
+<td align="left">Microsoft Word</td>
+</tr>
+<tr>
+<td align="left">docx</td>
+<td align="left">Microsoft Word</td>
+</tr>
+<tr>
+<td align="left">dwp</td>
+<td align="left">Autodesk</td>
+</tr>
+<tr>
+<td align="left">gip</td>
+<td align="left">Animated Image</td>
+</tr>
+<tr>
+<td align="left">htm</td>
+<td align="left">Web Page</td>
+</tr>
+<tr>
+<td align="left">html</td>
+<td align="left">Web Page</td>
+</tr>
+<tr>
+<td align="left">jpg</td>
+<td align="left">Image</td>
+</tr>
+<tr>
+<td align="left">jpeg</td>
+<td align="left">Image</td>
+</tr>
+<tr>
+<td align="left">kml</td>
+<td align="left">Google Earth</td>
+</tr>
+<tr>
+<td align="left">kmz</td>
+<td align="left">Google Earth</td>
+</tr>
+<tr>
+<td align="left">odp</td>
+<td align="left">OpenOffice Present</td>
+</tr>
+<tr>
+<td align="left">ods</td>
+<td align="left">OpenOffice Spreadsheet</td>
+</tr>
+<tr>
+<td align="left">odt</td>
+<td align="left">OpenOffice Text</td>
+</tr>
+<tr>
+<td align="left">pdf</td>
+<td align="left">Adobe Acrobat</td>
+</tr>
+<tr>
+<td align="left">png</td>
+<td align="left">Image</td>
+</tr>
+<tr>
+<td align="left">ppt</td>
+<td align="left">Microsoft PowerPoint</td>
+</tr>
+<tr>
+<td align="left">pptx</td>
+<td align="left">Microsoft PowerPoint</td>
+</tr>
+<tr>
+<td align="left">rar</td>
+<td align="left">Compressed File</td>
+</tr>
+<tr>
+<td align="left">rtf</td>
+<td align="left">Rich Text Format</td>
+</tr>
+<tr>
+<td align="left">txt</td>
+<td align="left">Text File</td>
+</tr>
+<tr>
+<td align="left">xls</td>
+<td align="left">Microsoft Excel</td>
+</tr>
+<tr>
+<td align="left">xlsx</td>
+<td align="left">Microsoft Excel</td>
+</tr>
+<tr>
+<td align="left">zip</td>
+<td align="left">Compressed File</td>
+</tr>
+</tbody></table></div>
+
+        <h1 id="6：其他"   >
+          <a href="#6：其他" class="heading-link"><i class="fas fa-link"></i></a><a href="#6：其他" class="headerlink" title="6：其他"></a>6：其他</h1>
+      
+        <h2 id="6-1：相关平台"   >
+          <a href="#6-1：相关平台" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-1：相关平台" class="headerlink" title="6.1：相关平台"></a>6.1：相关平台</h2>
+      <p>Google 搜索引擎：</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.google.com/" >https://www.google.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<p>Bing 搜索引擎：</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.bing.com/" >https://www.bing.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<p>Yandex 搜索引擎：</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://yandex.com/" >https://yandex.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h2 id="6-2：参考资料"   >
+          <a href="#6-2：参考资料" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2：参考资料" class="headerlink" title="6.2：参考资料"></a>6.2：参考资料</h2>
+      <p>《谷歌搜索引擎高级搜索、命令大全表格总结》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://evanli.github.io/blog/2019/01/26/advanced-google-search-engine-command/" >https://evanli.github.io/blog/2019/01/26/advanced-google-search-engine-command/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《谷歌搜索语法（一）基本语法》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/u014565127/article/details/53842885" >https://blog.csdn.net/u014565127/article/details/53842885</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《搜索引擎竟然有这么多用法：22种高级搜索语法》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.bilibili.com/opus/153051571910167163" >https://www.bilibili.com/opus/153051571910167163</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《搜索引擎对比：Google VS Bing》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.howsci.com/search-engine-showdown-google-vs-bing.html" >https://www.howsci.com/search-engine-showdown-google-vs-bing.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《为什么你找不到的东西别人能找到？-让你高人一筹的搜索技巧》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/testing-/p/18500415" >https://www.cnblogs.com/testing-/p/18500415</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《Yandex Search Context》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://yandex.com/support/search/query-language/search-context.html" >https://yandex.com/support/search/query-language/search-context.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《link和domain的区别》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/cgkitty/article/details/7990671" >https://blog.csdn.net/cgkitty/article/details/7990671</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《Search Macros: LinkfromDomain》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blogs.bing.com/search/October-2006/Search-Macros-LinkfromDomain" >https://blogs.bing.com/search/October-2006/Search-Macros-LinkfromDomain</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<hr>
+<hr>
+<hr>
+<p><font color="#FF4500">
+却下水晶帘，玲珑望秋月。
+</font></p>
+<p align="right"><font color="#FF4500">
+——《玉阶怨》（唐）李白
+</font></p>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://blog.lens-shrine.top">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://blog.lens-shrine.top/2024/11/16/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/02.%20%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E6%A3%80%E7%B4%A2%E8%AF%AD%E6%B3%95/">https://blog.lens-shrine.top/2024/11/16/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/02.%20%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E6%A3%80%E7%B4%A2%E8%AF%AD%E6%B3%95/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2024/12/10/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03.%20%E7%A4%BE%E4%BA%A4%E5%B9%B3%E5%8F%B0%E6%A3%80%E7%B4%A2/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《OSINT分析》03. 社交平台检索</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2024/11/01/SkillSummary%EF%BC%9A%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%E5%BD%95/%E5%B7%A5%E5%85%B7%E8%AE%B0%E5%BD%95/03.%20%E5%AE%89%E5%85%A8%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB%E5%88%86%E7%B1%BB/"><span class="paginator-prev__text">《工具记录》安全工具汇总分类</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9ADorking-%E7%AE%80%E4%BB%8B"><span class="toc-text">
+          1：Dorking 简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9AGoogle-%E6%A3%80%E7%B4%A2%E8%AF%AD%E6%B3%95"><span class="toc-text">
+          2：Google 检索语法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%EF%BC%9A%E5%B8%B8%E8%A7%84%E6%90%9C%E7%B4%A2"><span class="toc-text">
+          2.1：常规搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%EF%BC%9A%E6%A3%80%E7%B4%A2%E7%AC%A6"><span class="toc-text">
+          2.2：检索符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3%EF%BC%9A%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">
+          2.3：运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4%EF%BC%9A%E7%BB%BC%E5%90%88%E7%A4%BA%E4%BE%8B"><span class="toc-text">
+          2.4：综合示例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9ABing-%E6%A3%80%E7%B4%A2%E8%AF%AD%E6%B3%95"><span class="toc-text">
+          3：Bing 检索语法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1%EF%BC%9A%E6%A3%80%E7%B4%A2%E7%AC%A6"><span class="toc-text">
+          3.1：检索符</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EF%BC%9AYandex-%E6%A3%80%E7%B4%A2%E8%AF%AD%E6%B3%95"><span class="toc-text">
+          4：Yandex 检索语法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1%EF%BC%9A%E6%A3%80%E7%B4%A2%E7%AC%A6"><span class="toc-text">
+          4.1：检索符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2%EF%BC%9A%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">
+          4.2：运算符</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%EF%BC%9A%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86"><span class="toc-text">
+          5：补充知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1%EF%BC%9A%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B-%E6%89%A9%E5%B1%95%E5%90%8D"><span class="toc-text">
+          5.1：文件类型 &amp; 扩展名</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6%EF%BC%9A%E5%85%B6%E4%BB%96"><span class="toc-text">
+          6：其他</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1%EF%BC%9A%E7%9B%B8%E5%85%B3%E5%B9%B3%E5%8F%B0"><span class="toc-text">
+          6.1：相关平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2%EF%BC%9A%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">
+          6.2：参考资料</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">57</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
