@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="Twitter；LinkedIn；Telegram；补充知识（根据联系方式检索社交平台、用户名的价值）。">
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="Twitter；LinkedIn；Telegram；Reddit；补充知识（根据联系方式检索社交平台、用户名的价值）。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《OSINT分析》03. 社交平台检索">
-<meta property="og:url" content="https://blog.lens-shrine.top/2024/12/10/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03.%20%E7%A4%BE%E4%BA%A4%E5%B9%B3%E5%8F%B0%E6%A3%80%E7%B4%A2/index.html">
+<meta property="og:title" content="《OSINT分析》03. 在线社区检索">
+<meta property="og:url" content="https://blog.lens-shrine.top/2024/12/10/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03.%20%E5%9C%A8%E7%BA%BF%E7%A4%BE%E5%8C%BA%E6%A3%80%E7%B4%A2/index.html">
 <meta property="og:site_name" content="镜坛">
-<meta property="og:description" content="Twitter；LinkedIn；Telegram；补充知识（根据联系方式检索社交平台、用户名的价值）。">
+<meta property="og:description" content="Twitter；LinkedIn；Telegram；Reddit；补充知识（根据联系方式检索社交平台、用户名的价值）。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03/2024-12-03-14-01-54.png">
 <meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03/2024-12-03-14-55-29.png">
@@ -16,7 +16,7 @@
 <meta property="article:modified_time" content="2024-12-10T15:16:00.000Z">
 <meta property="article:author" content="镜坛主">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03/2024-12-03-14-01-54.png"><title>《OSINT分析》03. 社交平台检索 | 镜坛</title><link ref="canonical" href="https://blog.lens-shrine.top/2024/12/10/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03.%20%E7%A4%BE%E4%BA%A4%E5%B9%B3%E5%8F%B0%E6%A3%80%E7%B4%A2/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+<meta name="twitter:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03/2024-12-03-14-01-54.png"><title>《OSINT分析》03. 在线社区检索 | 镜坛</title><link ref="canonical" href="https://blog.lens-shrine.top/2024/12/10/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03.%20%E5%9C%A8%E7%BA%BF%E7%A4%BE%E5%8C%BA%E6%A3%80%E7%B4%A2/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
 var CONFIG = {
   root: '/',
   algolia: undefined,
@@ -40,7 +40,7 @@ var CONFIG = {
   sourcePath: {"js":"js","css":"css","images":"images"},
 };
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《OSINT分析》03. 社交平台检索</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2024-12-10</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2024-12-10</span></span></div></header><div class="post-body"><blockquote>
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《OSINT分析》03. 在线社区检索</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2024-12-10</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2024-12-10</span></span></div></header><div class="post-body"><blockquote>
 <p>本系列侧重方法论，各工具只是实现目标的载体。<br>命令与工具只做简单介绍，其使用另见《软件工具录》。</p>
 </blockquote>
 
@@ -421,11 +421,112 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li><code>&quot;osint&quot; site:telegra.ph</code></li>
 </ul>
 
-        <h1 id="4：补充知识"   >
-          <a href="#4：补充知识" class="heading-link"><i class="fas fa-link"></i></a><a href="#4：补充知识" class="headerlink" title="4：补充知识"></a>4：补充知识</h1>
+        <h1 id="4：Reddit"   >
+          <a href="#4：Reddit" class="heading-link"><i class="fas fa-link"></i></a><a href="#4：Reddit" class="headerlink" title="4：Reddit"></a>4：Reddit</h1>
+      <p>Reddit 包含众多子版块（subreddit），每个子版块都专注于特定主题。</p>
+<p>使用一些 Reddit 的检索语法可以更有效地找到所需信息：</p>
+
+        <h2 id="4-1：常规搜索"   >
+          <a href="#4-1：常规搜索" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1：常规搜索" class="headerlink" title="4.1：常规搜索"></a>4.1：常规搜索</h2>
       
-        <h2 id="4-1：根据联系方式检索社交平台"   >
-          <a href="#4-1：根据联系方式检索社交平台" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1：根据联系方式检索社交平台" class="headerlink" title="4.1：根据联系方式检索社交平台"></a>4.1：根据联系方式检索社交平台</h2>
+        <h3 id="4-1-1：不带引号"   >
+          <a href="#4-1-1：不带引号" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-1：不带引号" class="headerlink" title="4.1.1：不带引号"></a>4.1.1：不带引号</h3>
+      <p><strong>语法说明</strong>：不要求完全匹配关键词。</p>
+<p><strong>示例</strong>：</p>
+<ul>
+<li><code>ChatGPT Guide</code></li>
+</ul>
+
+        <h3 id="4-1-2：双引号"   >
+          <a href="#4-1-2：双引号" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1-2：双引号" class="headerlink" title="4.1.2：双引号"></a>4.1.2：双引号</h3>
+      <p><strong>语法说明</strong>：精确关键词检索，可以找到包含该精确关键字的帖子、子版块、评论、用户、视频或照片等。</p>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>&quot;ChatGPT Guide&quot;</code></li>
+</ul>
+<p><strong>示例 2</strong>：</p>
+<ul>
+<li><code>&quot;OSINT Tool&quot;</code></li>
+</ul>
+
+        <h2 id="4-2：检索符"   >
+          <a href="#4-2：检索符" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2：检索符" class="headerlink" title="4.2：检索符"></a>4.2：检索符</h2>
+      
+        <h3 id="4-2-1：author"   >
+          <a href="#4-2-1：author" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-1：author" class="headerlink" title="4.2.1：author"></a>4.2.1：author</h3>
+      <p><strong>语法说明</strong>：查找特定用户发布的所有帖子。</p>
+<p><strong>示例</strong>：</p>
+<ul>
+<li><code>author:OSINTribe</code></li>
+</ul>
+
+        <h3 id="4-2-2：title"   >
+          <a href="#4-2-2：title" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-2：title" class="headerlink" title="4.2.2：title"></a>4.2.2：title</h3>
+      <p><strong>语法说明</strong>：查找标题中含有特定关键字的帖子。</p>
+<p><strong>示例 1</strong>：</p>
+<ul>
+<li><code>title:ChatGPT</code></li>
+</ul>
+<p><strong>示例 2</strong>：</p>
+<ul>
+<li><code>title:&quot;OSINT Tool&quot;</code></li>
+</ul>
+
+        <h3 id="4-2-3：selftext"   >
+          <a href="#4-2-3：selftext" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-3：selftext" class="headerlink" title="4.2.3：selftext"></a>4.2.3：selftext</h3>
+      <p><strong>语法说明</strong>：查找内容、评论等含有特定关键字的帖子。</p>
+<p><strong>示例</strong>：</p>
+<ul>
+<li><code>selftext:&quot;OSINT book&quot;</code></li>
+</ul>
+
+        <h3 id="4-2-4：site"   >
+          <a href="#4-2-4：site" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2-4：site" class="headerlink" title="4.2.4：site"></a>4.2.4：site</h3>
+      <p><strong>语法说明</strong>：查找包含指定域名链接的帖子。</p>
+<p><strong>示例</strong>：</p>
+<ul>
+<li><code>site:nytimes.com</code></li>
+</ul>
+
+        <h2 id="4-3：寻求网友帮助"   >
+          <a href="#4-3：寻求网友帮助" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3：寻求网友帮助" class="headerlink" title="4.3：寻求网友帮助"></a>4.3：寻求网友帮助</h2>
+      <p>Reddit 有许多子版块可以提供独特的帮助。</p>
+<p>如果计划在 Reddit 上寻求帮助，有几点需要注意：</p>
+<ul>
+<li>大部分用户是自愿进行帮助的，在请求中不应该有过多要求</li>
+<li>创建一个新账户后不久就寻求帮助可能被视为粗鲁行为</li>
+<li>不要上传任何涉及秘密的内容</li>
+</ul>
+
+        <h3 id="4-3-1：RBI"   >
+          <a href="#4-3-1：RBI" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3-1：RBI" class="headerlink" title="4.3.1：RBI"></a>4.3.1：RBI</h3>
+      <p>RBI（Reddit Bureau of Investigation），这个活跃的社区帮助其他用户调查问题。</p>
+<p>链接：</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.reddit.com/r/RBI/" >https://www.reddit.com/r/RBI/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h3 id="4-3-2：PicRequests"   >
+          <a href="#4-3-2：PicRequests" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3-2：PicRequests" class="headerlink" title="4.3.2：PicRequests"></a>4.3.2：PicRequests</h3>
+      <p>这个子版块有很多数字照片专家，他们可以对几乎任何图像进行 PS 处理。</p>
+<p>链接：</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.reddit.com/r/picrequests/" >https://www.reddit.com/r/picrequests/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h3 id="4-3-3：What-Is-This-Thing"   >
+          <a href="#4-3-3：What-Is-This-Thing" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3-3：What-Is-This-Thing" class="headerlink" title="4.3.3：What Is This Thing"></a>4.3.3：What Is This Thing</h3>
+      <p>这个子版块可以发布未知物品的照片，而有人会准确知道它是什么，并提供详细的额外信息。</p>
+<p>链接：</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.reddit.com/r/whatisthisthing/" >https://www.reddit.com/r/whatisthisthing/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h1 id="5：补充知识"   >
+          <a href="#5：补充知识" class="heading-link"><i class="fas fa-link"></i></a><a href="#5：补充知识" class="headerlink" title="5：补充知识"></a>5：补充知识</h1>
+      
+        <h2 id="5-1：根据联系方式检索社交平台"   >
+          <a href="#5-1：根据联系方式检索社交平台" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-1：根据联系方式检索社交平台" class="headerlink" title="5.1：根据联系方式检索社交平台"></a>5.1：根据联系方式检索社交平台</h2>
       <p>如果获取了某个人的电子邮箱、电话号码，可以尝试获取其注册的社交平台：</p>
 <ul>
 <li>很多社交平台默认不允许通过联系方式来检索对应的用户</li>
@@ -434,8 +535,8 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>然后在 APP 中打开相应的隐私设置，以此匹配通信录关联的用户</li>
 </ul>
 
-        <h2 id="4-2：用户名的价值"   >
-          <a href="#4-2：用户名的价值" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2：用户名的价值" class="headerlink" title="4.2：用户名的价值"></a>4.2：用户名的价值</h2>
+        <h2 id="5-2：用户名的价值"   >
+          <a href="#5-2：用户名的价值" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2：用户名的价值" class="headerlink" title="5.2：用户名的价值"></a>5.2：用户名的价值</h2>
       <p>在数字环境中，一个人拥有许多不同的帐户。<br>对于用户名，不排除会包含一些个人信息，例如：人名、地理位置、职业等。</p>
 <p>对于调查而言，如果用户名是关于被调查对象的唯一信息，真正的价值在于找出该用户名是否在网上其他地方使用过。</p>
 <ul>
@@ -444,11 +545,11 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li>可以利用 Google 通配符，搜索 <code>&quot;BadGuy*com&quot;</code>，尝试查找使用此用户名作为标识符的电子邮件地址</li>
 </ul>
 
-        <h1 id="5：其他"   >
-          <a href="#5：其他" class="heading-link"><i class="fas fa-link"></i></a><a href="#5：其他" class="headerlink" title="5：其他"></a>5：其他</h1>
+        <h1 id="6：其他"   >
+          <a href="#6：其他" class="heading-link"><i class="fas fa-link"></i></a><a href="#6：其他" class="headerlink" title="6：其他"></a>6：其他</h1>
       
-        <h2 id="5-1：相关平台"   >
-          <a href="#5-1：相关平台" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-1：相关平台" class="headerlink" title="5.1：相关平台"></a>5.1：相关平台</h2>
+        <h2 id="6-1：相关平台"   >
+          <a href="#6-1：相关平台" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-1：相关平台" class="headerlink" title="6.1：相关平台"></a>6.1：相关平台</h2>
       <p>Twitter（推特，X）：</p>
 <ul>
 <li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://x.com/explore" >https://x.com/explore</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
@@ -469,8 +570,8 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://telegramgroups.com.hk/" >https://telegramgroups.com.hk/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
 </ul>
 
-        <h2 id="5-2：参考资料"   >
-          <a href="#5-2：参考资料" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2：参考资料" class="headerlink" title="5.2：参考资料"></a>5.2：参考资料</h2>
+        <h2 id="6-2：参考资料"   >
+          <a href="#6-2：参考资料" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2：参考资料" class="headerlink" title="6.2：参考资料"></a>6.2：参考资料</h2>
       <p>《Twitter 搜索技巧分享》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.jinbo123.com/7901.html" >https://www.jinbo123.com/7901.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 <p>《10个Twitter高级搜索技巧，让你成为高手》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://x.com/xiaoying_eth/status/1734102312325660675" >https://x.com/xiaoying_eth/status/1734102312325660675</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 <p>《4个方法教你如何搜索Telegram群组以及Telegram频道》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.bilibili.com/opus/871576321829896214" >https://www.bilibili.com/opus/871576321829896214</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
@@ -484,20 +585,24 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 ——《南轩松》（唐）李白
 </font></p>
 
-</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://blog.lens-shrine.top">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://blog.lens-shrine.top/2024/12/10/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03.%20%E7%A4%BE%E4%BA%A4%E5%B9%B3%E5%8F%B0%E6%A3%80%E7%B4%A2/">https://blog.lens-shrine.top/2024/12/10/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03.%20%E7%A4%BE%E4%BA%A4%E5%B9%B3%E5%8F%B0%E6%A3%80%E7%B4%A2/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2024/12/20/SkillSummary%EF%BC%9A%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%E5%BD%95/%E5%B7%A5%E5%85%B7%E8%AE%B0%E5%BD%95/04.%20Docker%20%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《工具记录》Docker 入门基础</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2024/11/16/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/02.%20%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E6%A3%80%E7%B4%A2%E8%AF%AD%E6%B3%95/"><span class="paginator-prev__text">《OSINT分析》02. 搜索引擎检索语法</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9ATwitter"><span class="toc-text">
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://blog.lens-shrine.top">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://blog.lens-shrine.top/2024/12/10/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03.%20%E5%9C%A8%E7%BA%BF%E7%A4%BE%E5%8C%BA%E6%A3%80%E7%B4%A2/">https://blog.lens-shrine.top/2024/12/10/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03.%20%E5%9C%A8%E7%BA%BF%E7%A4%BE%E5%8C%BA%E6%A3%80%E7%B4%A2/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2024/12/20/SkillSummary%EF%BC%9A%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%E5%BD%95/%E5%B7%A5%E5%85%B7%E8%AE%B0%E5%BD%95/04.%20Docker%20%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《工具记录》Docker 入门基础</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2024/11/16/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/02.%20%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E6%A3%80%E7%B4%A2%E8%AF%AD%E6%B3%95/"><span class="paginator-prev__text">《OSINT分析》02. 搜索引擎检索语法</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9ATwitter"><span class="toc-text">
           1：Twitter</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%EF%BC%9A%E5%B8%B8%E8%A7%84%E6%90%9C%E7%B4%A2"><span class="toc-text">
           1.1：常规搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%EF%BC%9A%E6%A3%80%E7%B4%A2%E7%AC%A6"><span class="toc-text">
           1.2：检索符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3%EF%BC%9A%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">
           1.3：运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4%EF%BC%9A%E5%9B%BE%E5%BD%A2%E5%8C%96%E6%A3%80%E7%B4%A2"><span class="toc-text">
           1.4：图形化检索</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9ALinkedIn"><span class="toc-text">
           2：LinkedIn</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9ATelegram"><span class="toc-text">
-          3：Telegram</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EF%BC%9A%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86"><span class="toc-text">
-          4：补充知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1%EF%BC%9A%E6%A0%B9%E6%8D%AE%E8%81%94%E7%B3%BB%E6%96%B9%E5%BC%8F%E6%A3%80%E7%B4%A2%E7%A4%BE%E4%BA%A4%E5%B9%B3%E5%8F%B0"><span class="toc-text">
-          4.1：根据联系方式检索社交平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2%EF%BC%9A%E7%94%A8%E6%88%B7%E5%90%8D%E7%9A%84%E4%BB%B7%E5%80%BC"><span class="toc-text">
-          4.2：用户名的价值</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%EF%BC%9A%E5%85%B6%E4%BB%96"><span class="toc-text">
-          5：其他</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1%EF%BC%9A%E7%9B%B8%E5%85%B3%E5%B9%B3%E5%8F%B0"><span class="toc-text">
-          5.1：相关平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2%EF%BC%9A%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">
-          5.2：参考资料</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">57</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+          3：Telegram</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EF%BC%9AReddit"><span class="toc-text">
+          4：Reddit</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1%EF%BC%9A%E5%B8%B8%E8%A7%84%E6%90%9C%E7%B4%A2"><span class="toc-text">
+          4.1：常规搜索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2%EF%BC%9A%E6%A3%80%E7%B4%A2%E7%AC%A6"><span class="toc-text">
+          4.2：检索符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3%EF%BC%9A%E5%AF%BB%E6%B1%82%E7%BD%91%E5%8F%8B%E5%B8%AE%E5%8A%A9"><span class="toc-text">
+          4.3：寻求网友帮助</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%EF%BC%9A%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86"><span class="toc-text">
+          5：补充知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1%EF%BC%9A%E6%A0%B9%E6%8D%AE%E8%81%94%E7%B3%BB%E6%96%B9%E5%BC%8F%E6%A3%80%E7%B4%A2%E7%A4%BE%E4%BA%A4%E5%B9%B3%E5%8F%B0"><span class="toc-text">
+          5.1：根据联系方式检索社交平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2%EF%BC%9A%E7%94%A8%E6%88%B7%E5%90%8D%E7%9A%84%E4%BB%B7%E5%80%BC"><span class="toc-text">
+          5.2：用户名的价值</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6%EF%BC%9A%E5%85%B6%E4%BB%96"><span class="toc-text">
+          6：其他</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1%EF%BC%9A%E7%9B%B8%E5%85%B3%E5%B9%B3%E5%8F%B0"><span class="toc-text">
+          6.1：相关平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2%EF%BC%9A%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">
+          6.2：参考资料</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">57</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
   var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
   // 加载进度条的计时器
   var loadingTimer = null;
