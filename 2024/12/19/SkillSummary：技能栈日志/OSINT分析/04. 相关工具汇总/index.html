@@ -1,0 +1,401 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="相关 OSINT 工具 &amp; 浏览器插件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《OSINT分析》04. 相关工具汇总">
+<meta property="og:url" content="https://blog.lens-shrine.top/2024/12/19/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04.%20%E7%9B%B8%E5%85%B3%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="相关 OSINT 工具 &amp; 浏览器插件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-13-23-39-21.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-13-23-46-09.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-13-23-52-55.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-20-51-59.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-00-01-06.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-00-07-59.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-20-56-51.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-01-23.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-07-08.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-09-00.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-50-37.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-54-55.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-59-47.png">
+<meta property="og:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-56-18.png">
+<meta property="article:published_time" content="2024-12-19T03:31:00.000Z">
+<meta property="article:modified_time" content="2025-01-26T02:21:00.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.lens-shrine.top/assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-13-23-39-21.png"><title>《OSINT分析》04. 相关工具汇总 | 镜坛</title><link ref="canonical" href="https://blog.lens-shrine.top/2024/12/19/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04.%20%E7%9B%B8%E5%85%B3%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":2},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《OSINT分析》04. 相关工具汇总</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2024-12-19</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2025-01-26</span></span></div></header><div class="post-body"><blockquote>
+<p>本系列侧重方法论，各工具只是实现目标的载体。<br>命令与工具只做简单介绍，其使用另见《软件工具录》。</p>
+</blockquote>
+
+        <h1 id="1：工具"   >
+          <a href="#1：工具" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：工具" class="headerlink" title="1：工具"></a>1：工具</h1>
+      
+        <h2 id="1-1：ExifTool"   >
+          <a href="#1-1：ExifTool" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-1：ExifTool" class="headerlink" title="1.1：ExifTool"></a>1.1：ExifTool</h2>
+      <blockquote>
+<p>网址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://exiftool.org/" >https://exiftool.org/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p><strong>简介</strong>：ExifTool 是一款免费、跨平台的开源软件，用于读写和处理图像、音视频、PDF 等文件的元数据。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看文件的元数据：</span></span><br><span class="line">exiftool &lt;file&gt;</span><br></pre></td></tr></table></div></figure>
+
+
+
+        <h2 id="1-2：Metagoofil"   >
+          <a href="#1-2：Metagoofil" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-2：Metagoofil" class="headerlink" title="1.2：Metagoofil"></a>1.2：Metagoofil</h2>
+      <blockquote>
+<p>网址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/opsdisk/metagoofil" >https://github.com/opsdisk/metagoofil</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p><strong>简介</strong>：Metagoofil 用于利用 Google 语法，搜索特定网站上公开托管的特定类型的文件。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入依赖</span></span><br><span class="line">pip install -r requirements.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从网站下载文件</span></span><br><span class="line">python metagoofil.py -d www.gov.tw -t pdf,docx,xlsx -u -f</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="1-3：Waybackpy"   >
+          <a href="#1-3：Waybackpy" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-3：Waybackpy" class="headerlink" title="1.3：Waybackpy"></a>1.3：Waybackpy</h2>
+      <blockquote>
+<p>网址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/akamhy/waybackpy" >https://github.com/akamhy/waybackpy</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p><strong>简介</strong>：通过访问 Wayback Machine 网站，自动采集网页存档 URL。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取已知的最古老的存档 URL</span></span><br><span class="line">./waybackpy --url <span class="string">&quot;https://pretendradio.org&quot;</span> --oldest &gt;&gt; pretendradio.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取最新的的存档 URL</span></span><br><span class="line">./waybackpy --url <span class="string">&quot;https://pretendradio.org&quot;</span> --newest &gt;&gt; pretendradio.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取某一年的存档</span></span><br><span class="line">./waybackpy --url <span class="string">&quot;https://pretendradio.org&quot;</span> --near --year 2011 &gt;&gt; pretendradio.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 去重并按日期排序</span></span><br><span class="line"><span class="built_in">sort</span> -u -i pretendradio.txt -o pretendradio.sorted.txt</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="1-4：Change-Detection"   >
+          <a href="#1-4：Change-Detection" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-4：Change-Detection" class="headerlink" title="1.4：Change Detection"></a>1.4：Change Detection</h2>
+      <blockquote>
+<p>网址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/dgtlmoon/changedetection.io" >https://github.com/dgtlmoon/changedetection.io</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p><strong>简介</strong>：用于监测网站的变化。它是本地安装的，仅供自己使用。</p>
+<blockquote>
+<p>当有一个敏感的 URL 不想与在线服务共享，或者一个非常微小变化的网站，免费服务无法检测到这些变化。此时 Change Detection 就排上了用场。</p>
+</blockquote>
+<p><strong>示例</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --restart always -p <span class="string">&quot;127.0.0.1:5000:5000&quot;</span> -v datastore-volume:/datastore dgtlmoon/changedetection.io</span><br></pre></td></tr></table></div></figure>
+
+
+        <h2 id="1-5：Archive-Box"   >
+          <a href="#1-5：Archive-Box" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-5：Archive-Box" class="headerlink" title="1.5：Archive Box"></a>1.5：Archive Box</h2>
+      <blockquote>
+<p>网址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/ArchiveBox/ArchiveBox" >https://github.com/ArchiveBox/ArchiveBox</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p><strong>简介</strong>：用于创建属于自己的互联网存档。</p>
+
+        <h2 id="1-6：SpiderFoot"   >
+          <a href="#1-6：SpiderFoot" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-6：SpiderFoot" class="headerlink" title="1.6：SpiderFoot"></a>1.6：SpiderFoot</h2>
+      <blockquote>
+<p>网址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/smicallef/spiderfoot" >https://github.com/smicallef/spiderfoot</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p><strong>简介</strong>：SpiderFoot 是一个 OSINT 自动化工具。它与几乎所有可用的数据源集成，以获取威胁情报并绘制攻击面图。并利用一系列数据分析方法，使数据易于导航。</p>
+
+        <h2 id="1-7：Recon-ng"   >
+          <a href="#1-7：Recon-ng" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-7：Recon-ng" class="headerlink" title="1.7：Recon-ng"></a>1.7：Recon-ng</h2>
+      <blockquote>
+<p>网址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/lanmaster53/recon-ng" >https://github.com/lanmaster53/recon-ng</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p><strong>简介</strong>：Recon-ng 是一个功能齐全的侦察框架，旨在提供一个强大的环境来快速、彻底地进行基于开源网络的侦察。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight bash"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看工作区</span></span><br><span class="line">workspaces list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建工作区</span></span><br><span class="line">workspaces create OSINT</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换工作区</span></span><br><span class="line">workspaces load OSINT</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看已安装模块</span></span><br><span class="line">modules search</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看可安装模块列表</span></span><br><span class="line">marketplace search</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装模块</span></span><br><span class="line">marketplace install recon/profiles-profiles/profiler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载模块</span></span><br><span class="line">modules load recon/profiles-profiles/profiler</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看模块信息</span></span><br><span class="line">info</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置参数</span></span><br><span class="line">options <span class="built_in">set</span> SOURCE cesign</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行</span></span><br><span class="line">run</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看结果</span></span><br><span class="line">show profiles</span><br></pre></td></tr></table></div></figure>
+
+
+
+        <h2 id="1-8：Maltego"   >
+          <a href="#1-8：Maltego" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-8：Maltego" class="headerlink" title="1.8：Maltego"></a>1.8：Maltego</h2>
+      <blockquote>
+<p>网址：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.maltego.com/" >https://www.maltego.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+</blockquote>
+<p><strong>简介</strong>：Maltego 是一个开源的情报和数据关联分析工具，专注于网络情报收集和图形化分析。</p>
+
+        <h1 id="2：浏览器插件"   >
+          <a href="#2：浏览器插件" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：浏览器插件" class="headerlink" title="2：浏览器插件"></a>2：浏览器插件</h1>
+      
+        <h2 id="2-1：Multi-Account-Containers"   >
+          <a href="#2-1：Multi-Account-Containers" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1：Multi-Account-Containers" class="headerlink" title="2.1：Multi-Account Containers"></a>2.1：Multi-Account Containers</h2>
+      <blockquote>
+<p>Multi-Account Containers 扩展程序可以分配不同的容器网页，每一个容器网页的会话信息都是唯一的，可以实现在同一个浏览器中登录同一个平台的不同账号。</p>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-13-23-39-21.png"  alt="Alt text">
+      </p>
+
+        <h2 id="2-2：One-Tab"   >
+          <a href="#2-2：One-Tab" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2：One-Tab" class="headerlink" title="2.2：One Tab"></a>2.2：One Tab</h2>
+      <blockquote>
+<p>这个扩展提供了简单有效的浏览器标签管理，允许用户将任何打开的页面折叠成一个书签列表。</p>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-13-23-46-09.png"  alt="Alt text">
+      </p>
+
+        <h2 id="2-3：DownThemAll"   >
+          <a href="#2-3：DownThemAll" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3：DownThemAll" class="headerlink" title="2.3：DownThemAll"></a>2.3：DownThemAll</h2>
+      <blockquote>
+<p>DownThemAll 简化了从网页中批量提取数据的过程。<br>它尝试识别站点内链接的视频、图像、文档或任何其他类型的文件。然后可以让用户一次性下载所有内容。</p>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-13-23-52-55.png"  alt="Alt text">
+      </p>
+
+        <h2 id="2-4：Copy-Selected-Links"   >
+          <a href="#2-4：Copy-Selected-Links" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4：Copy-Selected-Links" class="headerlink" title="2.4：Copy Selected Links"></a>2.4：Copy Selected Links</h2>
+      <blockquote>
+<p>该扩展可以识别单个网页文本中的任何超链接。<br>使用方法为选中携带超链接的文本，右键使用该插件。</p>
+</blockquote>
+<blockquote>
+<p>使用案例：</p>
+<ul>
+<li>查看 Facebook 好友列表时，快速记录指向个人资料的每个超链接。然后粘贴到 Excel 中以供以后分析。</li>
+<li>查看 Twitter 个人资料时，捕获所有指向外部网站和照片的链接。</li>
+</ul>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-20-51-59.png"  alt="Alt text">
+      </p>
+
+        <h2 id="2-5：FireShot"   >
+          <a href="#2-5：FireShot" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-5：FireShot" class="headerlink" title="2.5：FireShot"></a>2.5：FireShot</h2>
+      <blockquote>
+<p>FireShot（Full Web Page Screenshots）可以创建完整的网页截图。截图与浏览器中显示的完全相同。</p>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-00-01-06.png"  alt="Alt text">
+      </p>
+
+        <h2 id="2-6：User-Agent-Switcher-and-Manager"   >
+          <a href="#2-6：User-Agent-Switcher-and-Manager" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-6：User-Agent-Switcher-and-Manager" class="headerlink" title="2.6：User-Agent Switcher and Manager"></a>2.6：User-Agent Switcher and Manager</h2>
+      <blockquote>
+<p>该扩展主要提供了不同浏览器、不同操作系统的 User-agent 信息，可以伪装成不同操作系统或浏览器去访问有特定要求的网页。</p>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-00-07-59.png"  alt="Alt text">
+      </p>
+
+        <h2 id="2-7：Resurrect-Pages"   >
+          <a href="#2-7：Resurrect-Pages" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-7：Resurrect-Pages" class="headerlink" title="2.7：Resurrect Pages"></a>2.7：Resurrect Pages</h2>
+      <blockquote>
+<p>Resurrect Pages 主要功能是帮助用户访问和恢复不可用的网页（寻找网页缓存）。<br>当访问某个网址时，可能会遇到网页不存在、已被删除或者无法访问的情况。<br>Resurrect Pages 的工作原理是通过访问存档网站（如 Wayback Machine）来查找和提供已存档的网页副本。</p>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-20-56-51.png"  alt="Alt text">
+      </p>
+
+        <h2 id="2-8：Web-Archives"   >
+          <a href="#2-8：Web-Archives" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-8：Web-Archives" class="headerlink" title="2.8：Web Archives"></a>2.8：Web Archives</h2>
+      <blockquote>
+<p>该扩展与 Resurrect Pages 扩展类似，也是用于查找网页存档信息。<br>相比 Resurrect Pages 扩展而言，Web Archives 扩展维护比较完善，运行比较稳健。</p>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-01-23.png"  alt="Alt text">
+      </p>
+
+        <h2 id="2-9：SingleFile"   >
+          <a href="#2-9：SingleFile" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-9：SingleFile" class="headerlink" title="2.9：SingleFile"></a>2.9：SingleFile</h2>
+      <blockquote>
+<p>SingleFile 可以将任何页面保存为 HTML 文件。</p>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-07-08.png"  alt="Alt text">
+      </p>
+
+        <h2 id="2-10：Exif-Viewer"   >
+          <a href="#2-10：Exif-Viewer" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-10：Exif-Viewer" class="headerlink" title="2.10：Exif Viewer"></a>2.10：Exif Viewer</h2>
+      <blockquote>
+<p>这个扩展可以通过右键访问嵌入图像的 Exif 数据。</p>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-09-00.png"  alt="Alt text">
+      </p>
+
+        <h2 id="2-11：Search-By-Image"   >
+          <a href="#2-11：Search-By-Image" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-11：Search-By-Image" class="headerlink" title="2.11：Search By Image"></a>2.11：Search By Image</h2>
+      <blockquote>
+<p>该扩展可以通过右键利用不同的搜索引擎进行反向图片检索。</p>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-50-37.png"  alt="Alt text">
+      </p>
+
+        <h2 id="2-12：Image-Search-Options"   >
+          <a href="#2-12：Image-Search-Options" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-12：Image-Search-Options" class="headerlink" title="2.12：Image Search Options"></a>2.12：Image Search Options</h2>
+      <blockquote>
+<p>与 Search By Image 类似，也是用于反向图片检索。</p>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-54-55.png"  alt="Alt text">
+      </p>
+
+        <h2 id="2-13：Proxy-SwitchyOmega"   >
+          <a href="#2-13：Proxy-SwitchyOmega" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-13：Proxy-SwitchyOmega" class="headerlink" title="2.13：Proxy SwitchyOmega"></a>2.13：Proxy SwitchyOmega</h2>
+      <blockquote>
+<p>Proxy SwitchyOmega 可以让用户轻松地管理代理服务器，并根据需要切换不同的代理配置。</p>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-59-47.png"  alt="Alt text">
+      </p>
+
+        <h2 id="2-14：沉浸式翻译"   >
+          <a href="#2-14：沉浸式翻译" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-14：沉浸式翻译" class="headerlink" title="2.14：沉浸式翻译"></a>2.14：沉浸式翻译</h2>
+      <blockquote>
+<p>免费的双语对照网页翻译插件。</p>
+</blockquote>
+<p>
+        <img   class="lazyload lazyload-gif"
+          src="/images/loading.svg" data-src="/../../../assets/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04/2024-12-14-21-56-18.png"  alt="Alt text">
+      </p>
+
+        <h1 id="3：其他"   >
+          <a href="#3：其他" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：其他" class="headerlink" title="3：其他"></a>3：其他</h1>
+      
+        <h2 id="3-1：相关工具"   >
+          <a href="#3-1：相关工具" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1：相关工具" class="headerlink" title="3.1：相关工具"></a>3.1：相关工具</h2>
+      <blockquote>
+<p>上述提到过的链接这里不再列出。</p>
+</blockquote>
+
+        <h2 id="3-2：参考资料"   >
+          <a href="#3-2：参考资料" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2：参考资料" class="headerlink" title="3.2：参考资料"></a>3.2：参考资料</h2>
+      <p>《如何制作自己的互联网存档》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://iyouport.substack.com/p/e0a" >https://iyouport.substack.com/p/e0a</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《spiderfoot自动化开源网络情报搜集工具》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.ddosi.org/spiderfoot/" >https://www.ddosi.org/spiderfoot/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《情报搜集神器：Spiderfoot 保姆级教程》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/2302_82189125/article/details/135980664" >https://blog.csdn.net/2302_82189125/article/details/135980664</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《情报收集神器：Maltego 保姆级教程》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/2302_82189125/article/details/135910618" >https://blog.csdn.net/2302_82189125/article/details/135910618</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<hr>
+<hr>
+<hr>
+<p><font color="#FF6347">
+芙蓉落尽天涵水，日暮沧波起。
+</font></p>
+<p align="right"><font color="#FF6347">
+——《虞美人·寄公度》（宋）舒亶
+</font></p>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://blog.lens-shrine.top">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://blog.lens-shrine.top/2024/12/19/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04.%20%E7%9B%B8%E5%85%B3%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/">https://blog.lens-shrine.top/2024/12/19/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/04.%20%E7%9B%B8%E5%85%B3%E5%B7%A5%E5%85%B7%E6%B1%87%E6%80%BB/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2024/12/20/SkillSummary%EF%BC%9A%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%E5%BD%95/%E5%B7%A5%E5%85%B7%E8%AE%B0%E5%BD%95/04.%20Docker%20%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">《工具记录》Docker 入门基础</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2024/12/10/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/03.%20%E5%9C%A8%E7%BA%BF%E7%A4%BE%E5%8C%BA%E6%A3%80%E7%B4%A2/"><span class="paginator-prev__text">《OSINT分析》03. 在线社区检索</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9A%E5%B7%A5%E5%85%B7"><span class="toc-text">
+          1：工具</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%EF%BC%9AExifTool"><span class="toc-text">
+          1.1：ExifTool</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%EF%BC%9AMetagoofil"><span class="toc-text">
+          1.2：Metagoofil</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3%EF%BC%9AWaybackpy"><span class="toc-text">
+          1.3：Waybackpy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4%EF%BC%9AChange-Detection"><span class="toc-text">
+          1.4：Change Detection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5%EF%BC%9AArchive-Box"><span class="toc-text">
+          1.5：Archive Box</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6%EF%BC%9ASpiderFoot"><span class="toc-text">
+          1.6：SpiderFoot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-7%EF%BC%9ARecon-ng"><span class="toc-text">
+          1.7：Recon-ng</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-8%EF%BC%9AMaltego"><span class="toc-text">
+          1.8：Maltego</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9A%E6%B5%8F%E8%A7%88%E5%99%A8%E6%8F%92%E4%BB%B6"><span class="toc-text">
+          2：浏览器插件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%EF%BC%9AMulti-Account-Containers"><span class="toc-text">
+          2.1：Multi-Account Containers</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%EF%BC%9AOne-Tab"><span class="toc-text">
+          2.2：One Tab</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3%EF%BC%9ADownThemAll"><span class="toc-text">
+          2.3：DownThemAll</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4%EF%BC%9ACopy-Selected-Links"><span class="toc-text">
+          2.4：Copy Selected Links</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5%EF%BC%9AFireShot"><span class="toc-text">
+          2.5：FireShot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6%EF%BC%9AUser-Agent-Switcher-and-Manager"><span class="toc-text">
+          2.6：User-Agent Switcher and Manager</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-7%EF%BC%9AResurrect-Pages"><span class="toc-text">
+          2.7：Resurrect Pages</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-8%EF%BC%9AWeb-Archives"><span class="toc-text">
+          2.8：Web Archives</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-9%EF%BC%9ASingleFile"><span class="toc-text">
+          2.9：SingleFile</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-10%EF%BC%9AExif-Viewer"><span class="toc-text">
+          2.10：Exif Viewer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-11%EF%BC%9ASearch-By-Image"><span class="toc-text">
+          2.11：Search By Image</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-12%EF%BC%9AImage-Search-Options"><span class="toc-text">
+          2.12：Image Search Options</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-13%EF%BC%9AProxy-SwitchyOmega"><span class="toc-text">
+          2.13：Proxy SwitchyOmega</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-14%EF%BC%9A%E6%B2%89%E6%B5%B8%E5%BC%8F%E7%BF%BB%E8%AF%91"><span class="toc-text">
+          2.14：沉浸式翻译</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9A%E5%85%B6%E4%BB%96"><span class="toc-text">
+          3：其他</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1%EF%BC%9A%E7%9B%B8%E5%85%B3%E5%B7%A5%E5%85%B7"><span class="toc-text">
+          3.1：相关工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%EF%BC%9A%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">
+          3.2：参考资料</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">58</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
