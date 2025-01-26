@@ -1,0 +1,531 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="通用搜索引擎；专用搜索引擎；其他搜索引擎；在线社区；补充知识（元搜索引擎、FTP 检索、暗网站点）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《OSINT分析》05. 信息检索平台汇总">
+<meta property="og:url" content="https://blog.lens-shrine.top/2024/12/24/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/05.%20%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E5%B9%B3%E5%8F%B0%E6%B1%87%E6%80%BB/index.html">
+<meta property="og:site_name" content="镜坛">
+<meta property="og:description" content="通用搜索引擎；专用搜索引擎；其他搜索引擎；在线社区；补充知识（元搜索引擎、FTP 检索、暗网站点）。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-12-24T09:46:00.000Z">
+<meta property="article:modified_time" content="2025-01-26T10:33:00.000Z">
+<meta property="article:author" content="镜坛主">
+<meta name="twitter:card" content="summary"><title>《OSINT分析》05. 信息检索平台汇总 | 镜坛</title><link ref="canonical" href="https://blog.lens-shrine.top/2024/12/24/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/05.%20%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E5%B9%B3%E5%8F%B0%E6%B1%87%E6%80%BB/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":2},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":true},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"dark","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: true,
+  pjax: {"avoidBanner":true},
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/categories/"><span class="header-nav-menu-item__icon"><i class="fas fa-layer-group"></i></span><span class="header-nav-menu-item__text">分类</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/archives/"><span class="header-nav-menu-item__icon"><i class="fas fa-folder-open"></i></span><span class="header-nav-menu-item__text">归档</span></a></div><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/about/"><span class="header-nav-menu-item__icon"><i class="fas fa-thumbtack"></i></span><span class="header-nav-menu-item__text">关于</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner" style="background: url(/images/backimg/SunsetClimbing.png) no-repeat center/cover;"><div class="header-banner-info"><div class="header-banner-info__title">镜 坛</div><div class="header-banner-info__subtitle">烛明香暗画楼深，满鬓青霜残雪思难任。</div></div><div class="header-banner-arrow"><div class="header-banner-arrow__icon"><i class="fas fa-angle-down"></i></div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">《OSINT分析》05. 信息检索平台汇总</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2024-12-24</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2025-01-26</span></span></div></header><div class="post-body"><blockquote>
+<p>本系列侧重方法论，各工具只是实现目标的载体。<br>命令与工具只做简单介绍，其使用另见《软件工具录》。</p>
+</blockquote>
+
+        <h1 id="1：通用搜索引擎"   >
+          <a href="#1：通用搜索引擎" class="heading-link"><i class="fas fa-link"></i></a><a href="#1：通用搜索引擎" class="headerlink" title="1：通用搜索引擎"></a>1：通用搜索引擎</h1>
+      <p>常见的通用搜索引擎包括 Google、Yandex、Bing、雅虎、百度、Qwant、Ask 和 AOL 等。</p>
+
+        <h2 id="1-1：Google"   >
+          <a href="#1-1：Google" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-1：Google" class="headerlink" title="1.1：Google"></a>1.1：Google</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.google.com/" >https://www.google.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="1-2：Bing"   >
+          <a href="#1-2：Bing" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-2：Bing" class="headerlink" title="1.2：Bing"></a>1.2：Bing</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.bing.com/" >https://www.bing.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="1-3：Yandex"   >
+          <a href="#1-3：Yandex" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-3：Yandex" class="headerlink" title="1.3：Yandex"></a>1.3：Yandex</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://yandex.com/" >https://yandex.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="1-4：Qwant"   >
+          <a href="#1-4：Qwant" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-4：Qwant" class="headerlink" title="1.4：Qwant"></a>1.4：Qwant</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.qwant.com/" >https://www.qwant.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Qwant 于 2013 年正式投入使用。具备谷歌风格。</p>
+</blockquote>
+
+        <h2 id="1-5：AOL"   >
+          <a href="#1-5：AOL" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-5：AOL" class="headerlink" title="1.5：AOL"></a>1.5：AOL</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://search.aol.com/" >https://search.aol.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>美国在线（American Online），是一家知名互联网服务提供商。</p>
+</blockquote>
+
+        <h2 id="1-6：DuckDuckGo"   >
+          <a href="#1-6：DuckDuckGo" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-6：DuckDuckGo" class="headerlink" title="1.6：DuckDuckGo"></a>1.6：DuckDuckGo</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://duckduckgo.com/" >https://duckduckgo.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>DuckDuckGo 有独特的隐私保护机制。不会保存用户的搜索记录和访问记录。<br>该搜索引擎还整合了维基百科等网站的信息，以丰富传统搜索结果，提高搜索的相关性。<br>尽管在搜索结果数量上可能不及其他热门搜索引擎，但在准确性方面却表现出色。</p>
+</blockquote>
+
+        <h2 id="1-7：Mojeek"   >
+          <a href="#1-7：Mojeek" class="heading-link"><i class="fas fa-link"></i></a><a href="#1-7：Mojeek" class="headerlink" title="1.7：Mojeek"></a>1.7：Mojeek</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.mojeek.com/" >https://www.mojeek.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>一个不断发展的独立搜索引擎，不会跟踪用户。</p>
+</blockquote>
+
+        <h1 id="2：专用搜索引擎"   >
+          <a href="#2：专用搜索引擎" class="heading-link"><i class="fas fa-link"></i></a><a href="#2：专用搜索引擎" class="headerlink" title="2：专用搜索引擎"></a>2：专用搜索引擎</h1>
+      <p>专用搜索引擎用于检索特定领域或特定类型的结果。</p>
+<ul>
+<li>特定内容：科学、艺术等</li>
+<li>特定环境：图书馆、音频&#x2F;视频共享群组、在线社交媒体等</li>
+</ul>
+<p>常见的专用搜索引擎包括 Google Scholar、Microsoft Academy、WolframAlpha、Smithsonian Research Online、Artcyclopedia 以及 WorldWideScience。</p>
+
+        <h2 id="2-1：Google-Scholar"   >
+          <a href="#2-1：Google-Scholar" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-1：Google-Scholar" class="headerlink" title="2.1：Google Scholar"></a>2.1：Google Scholar</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://scholar.google.com/" >https://scholar.google.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Google Scholar（谷歌学术）可对多种出版格式的学术文献进行索引。包括期刊、书籍、法庭记录等。</p>
+</blockquote>
+
+        <h2 id="2-2：Anna’s-Archive"   >
+          <a href="#2-2：Anna’s-Archive" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-2：Anna’s-Archive" class="headerlink" title="2.2：Anna’s Archive"></a>2.2：Anna’s Archive</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://annas-archive.org/" >https://annas-archive.org/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Anna’s Archive（安娜的档案）是最大的完全开放图书馆，建立了 Sci-Hub 和 LibGen 的镜像站。</p>
+</blockquote>
+<p>Anna’s Archive 是一个非盈利性项目，有两个目标：</p>
+<ul>
+<li>保存：备份人类所有的知识和文化</li>
+<li>开放获取：让世界上的任何人都可访问并获取这些知识和文化</li>
+</ul>
+
+        <h2 id="2-3：Sci-Hub"   >
+          <a href="#2-3：Sci-Hub" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3：Sci-Hub" class="headerlink" title="2.3：Sci-Hub"></a>2.3：Sci-Hub</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://sci-hub.se/" >https://sci-hub.se/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Sci-Hub 是当今科学界最具争议性的项目。Sci-hub 的目标是免费并且不受限制地提供所有科学知识。</p>
+</blockquote>
+
+        <h2 id="2-4：WolframAlpha"   >
+          <a href="#2-4：WolframAlpha" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4：WolframAlpha" class="headerlink" title="2.4：WolframAlpha"></a>2.4：WolframAlpha</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.wolframalpha.com/" >https://www.wolframalpha.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Wolfram Alpha 是由 Wolfram Alpha 公司开发的计算知识引擎（Computational Knowledge Engine，答案引擎）。<br>旨在通过自然语言查询为用户提供各种数据分析、计算和知识解答服务。<br>该引擎通过运用突破性的算法、丰富的知识库以及人工智能技术，为用户提供专业级别的解答。</p>
+</blockquote>
+
+        <h3 id="2-4-1：示例"   >
+          <a href="#2-4-1：示例" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-4-1：示例" class="headerlink" title="2.4.1：示例"></a>2.4.1：示例</h3>
+      <p>数学问题：</p>
+<ul>
+<li>输入 <code>solve x^2 + 3x + 2 = 0</code>，返回方程的解：x &#x3D; -1 和 x &#x3D; -2</li>
+</ul>
+<p>科学问题：</p>
+<ul>
+<li>输入 <code>speed of light</code>，返回光速的精确值及单位转换</li>
+</ul>
+<p>数据分析：</p>
+<ul>
+<li>输入 <code>population of China in 2023</code>，返回中国 2023 年人口及相关统计数据</li>
+</ul>
+
+        <h2 id="2-5：中国专利检索"   >
+          <a href="#2-5：中国专利检索" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-5：中国专利检索" class="headerlink" title="2.5：中国专利检索"></a>2.5：中国专利检索</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="http://epub.cnipa.gov.cn/" >http://epub.cnipa.gov.cn/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="2-6：谷歌专利检索"   >
+          <a href="#2-6：谷歌专利检索" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-6：谷歌专利检索" class="headerlink" title="2.6：谷歌专利检索"></a>2.6：谷歌专利检索</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://patents.google.com/" >https://patents.google.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+
+        <h2 id="2-7：Social-Searcher"   >
+          <a href="#2-7：Social-Searcher" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-7：Social-Searcher" class="headerlink" title="2.7：Social Searcher"></a>2.7：Social Searcher</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.social-searcher.com/" >https://www.social-searcher.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Social Searcher 主要用于社交媒体分析。可以根据关键词检索各种社交媒体平台上的公开内容（如帖子、评论、图片等）。</p>
+</blockquote>
+
+        <h2 id="2-8：Board-Reader"   >
+          <a href="#2-8：Board-Reader" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-8：Board-Reader" class="headerlink" title="2.8：Board Reader"></a>2.8：Board Reader</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://boardreader.com/" >https://boardreader.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Board Reader 是一个专注于搜索和发现在线论坛内容的工具。它允许用户搜索各种网络论坛社区上的帖子和讨论。</p>
+</blockquote>
+
+        <h1 id="3：其他搜索引擎"   >
+          <a href="#3：其他搜索引擎" class="heading-link"><i class="fas fa-link"></i></a><a href="#3：其他搜索引擎" class="headerlink" title="3：其他搜索引擎"></a>3：其他搜索引擎</h1>
+      
+        <h2 id="3-1：Searx"   >
+          <a href="#3-1：Searx" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1：Searx" class="headerlink" title="3.1：Searx"></a>3.1：Searx</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://searx.be/" >https://searx.be/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Searx 是一款免费开源的元搜索引擎，汇集了 70 多种搜索引擎的结果，用户既不被跟踪也不被分析。</p>
+</blockquote>
+
+        <h2 id="3-2：Start-Page"   >
+          <a href="#3-2：Start-Page" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2：Start-Page" class="headerlink" title="3.2：Start Page"></a>3.2：Start Page</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.startpage.com/" >https://www.startpage.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Start Page 是一款元搜索引擎，不会透露用户的连接信息。<br>Start Page 仅呈现 Google 搜索结果，此举优势在于可以运用 Google 的高级搜索功能，同时确保身份隐私得到保护。</p>
+</blockquote>
+
+        <h2 id="3-3：Million-Short"   >
+          <a href="#3-3：Million-Short" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-3：Million-Short" class="headerlink" title="3.3：Million Short"></a>3.3：Million Short</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://millionshort.com/" >https://millionshort.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>该搜索引擎提供一个独特功能：可以选择删除最受欢迎的网站或搜索结果。这将消除流行的结果并专注于不太知名的网站。<br>该网站仅提供 100 次免费检索，可以通过创建不同的账户进行检索。</p>
+</blockquote>
+
+        <h2 id="3-4：Cylect"   >
+          <a href="#3-4：Cylect" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-4：Cylect" class="headerlink" title="3.4：Cylect"></a>3.4：Cylect</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://cylect.io/" >https://cylect.io/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Cylect 是一款高级 AI OSINT 搜索工具聚合器，集成了多个数据库并将其搜索功能简化为易于导航的界面，提供全面的解决方案来帮助满足特定的数据需求。</p>
+</blockquote>
+
+        <h2 id="3-5：Mamoht"   >
+          <a href="#3-5：Mamoht" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-5：Mamoht" class="headerlink" title="3.5：Mamoht"></a>3.5：Mamoht</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.mmnt.ru/" >https://www.mmnt.ru/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Mamoht 是一款俄罗斯搜索引擎，可以按照不同国家&#x2F;地区展示 FTP 服务器托管的内容。</p>
+</blockquote>
+
+        <h2 id="3-6：FreewareWeb"   >
+          <a href="#3-6：FreewareWeb" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-6：FreewareWeb" class="headerlink" title="3.6：FreewareWeb"></a>3.6：FreewareWeb</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.freewareweb.com/ftpsearch.shtml" >https://www.freewareweb.com/ftpsearch.shtml</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>FreewareWeb 可以检索网络上的 FTP 服务器与相关文件。</p>
+</blockquote>
+
+        <h2 id="3-7：Ahmia"   >
+          <a href="#3-7：Ahmia" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-7：Ahmia" class="headerlink" title="3.7：Ahmia"></a>3.7：Ahmia</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://ahmia.fi/" >https://ahmia.fi/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Ahmia 是一个非常强大的 Tor 网络搜索引擎。<br>Ahmia 是最理想的搜索引擎，虽然没有任何引擎可以索引和定位每个 Tor 网站。</p>
+</blockquote>
+
+        <h2 id="3-8：TorLink"   >
+          <a href="#3-8：TorLink" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-8：TorLink" class="headerlink" title="3.8：TorLink"></a>3.8：TorLink</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://tor.link/" >https://tor.link/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>这款搜索引擎于 2022 年出现，似乎很好地索引了 Tor 站点。</p>
+</blockquote>
+
+        <h1 id="4：在线社区"   >
+          <a href="#4：在线社区" class="heading-link"><i class="fas fa-link"></i></a><a href="#4：在线社区" class="headerlink" title="4：在线社区"></a>4：在线社区</h1>
+      
+        <h2 id="4-1：Twitter"   >
+          <a href="#4-1：Twitter" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1：Twitter" class="headerlink" title="4.1：Twitter"></a>4.1：Twitter</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://x.com/" >https://x.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Twitter 在 2023 年改名为 “ X ”。但在讨论中仍然习惯称其为 Twitter。<br>推特作为一个比较火的国外社交媒体平台，每天发布的帖子超过 5 亿条。具备很强的实时性。</p>
+</blockquote>
+
+        <h2 id="4-2：LinkedIn"   >
+          <a href="#4-2：LinkedIn" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-2：LinkedIn" class="headerlink" title="4.2：LinkedIn"></a>4.2：LinkedIn</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.linkedin.com/" >https://www.linkedin.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>LinkedIn（领英），建立于 2003 年 5 月，是一个面向职场的社交平台。</p>
+</blockquote>
+
+        <h2 id="4-3：Telegram"   >
+          <a href="#4-3：Telegram" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-3：Telegram" class="headerlink" title="4.3：Telegram"></a>4.3：Telegram</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://telegram.org/" >https://telegram.org/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Telegram 上存在大量开放群组和频道，覆盖新闻、技术、暗网等领域。通过这些资源可以收集实时情报。</p>
+</blockquote>
+
+        <h2 id="4-4：Reddit"   >
+          <a href="#4-4：Reddit" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-4：Reddit" class="headerlink" title="4.4：Reddit"></a>4.4：Reddit</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.reddit.com/" >https://www.reddit.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Reddit 是一个娱乐、社交及新闻网站。<br>Reddit 包含众多子版块（subreddit），每个子版块都专注于特定主题。</p>
+</blockquote>
+
+        <h2 id="4-5：4chan"   >
+          <a href="#4-5：4chan" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-5：4chan" class="headerlink" title="4.5：4chan"></a>4.5：4chan</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.4chan.org/" >https://www.4chan.org/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>4chan 是一个完全匿名的实时消息论坛，它被认为是互联网上最简陋也最有创意的网站之一。<br>该网站充斥着欺凌、色情、威胁等非法行为。它也成了许多调查的焦点。<br>该网站与互联网亚文化和行动主义团体有关联，其中最著名的是匿名者（Anonymous）。</p>
+</blockquote>
+<blockquote>
+<p>4chan 分为不同的版块，每个版块都有自己特定的内容和规则。<br>网站的 “ Random ” 版块，也被称为 “ &#x2F;b&#x2F; ”，是第一个被创建的版块，也是流量最大的版块。</p>
+</blockquote>
+<p>4chan 平台没有搜索功能。在这种情况下，可以使用 4chansearch 平台进行搜索。</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://4chansearch.com/" >https://4chansearch.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h2 id="4-6：Hacker-News"   >
+          <a href="#4-6：Hacker-News" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-6：Hacker-News" class="headerlink" title="4.6：Hacker News"></a>4.6：Hacker News</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://news.ycombinator.com/" >https://news.ycombinator.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Hacker News 是一个社会化新闻网站。<br>尽管该网站面向精通科技的社区，但每天仍有数百万用户参与一般性的话题讨论。</p>
+</blockquote>
+
+        <h2 id="4-7：TikTok"   >
+          <a href="#4-7：TikTok" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-7：TikTok" class="headerlink" title="4.7：TikTok"></a>4.7：TikTok</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.tiktok.com/" >https://www.tiktok.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>TikTok 是一个短视频社交平台。</p>
+</blockquote>
+
+        <h2 id="4-8：Nextdoor"   >
+          <a href="#4-8：Nextdoor" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-8：Nextdoor" class="headerlink" title="4.8：Nextdoor"></a>4.8：Nextdoor</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://nextdoor.com/" >https://nextdoor.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>这个在线社区允许特定社区或地理区域内的人们在一个受控的网络空间内进行私密交流。</p>
+</blockquote>
+
+        <h2 id="4-9：Meetup"   >
+          <a href="#4-9：Meetup" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-9：Meetup" class="headerlink" title="4.9：Meetup"></a>4.9：Meetup</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.meetup.com/" >https://www.meetup.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Meetup 网站允许成员找到并加入共同利益的群体，如书籍、游戏、电影、宠物、职业或爱好。<br>用户只要输入所在的邮政编码或城市和他们想见面的话题，网站就可以帮助他们安排一个时间和地点见面。</p>
+</blockquote>
+
+        <h2 id="4-10：Discord"   >
+          <a href="#4-10：Discord" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-10：Discord" class="headerlink" title="4.10：Discord"></a>4.10：Discord</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://discord.com/" >https://discord.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>Discord 是一个免费的语音、视频和文本聊天平台，最初设计用于游戏社区。<br>如今，它已经发展成为一个远不止于此的平台，涵盖了不同兴趣的受众。</p>
+</blockquote>
+
+        <h2 id="4-11：V2EX"   >
+          <a href="#4-11：V2EX" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-11：V2EX" class="headerlink" title="4.11：V2EX"></a>4.11：V2EX</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.v2ex.com/" >https://www.v2ex.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>V2EX（way to explore）是一个网络论坛，内容比较混乱，充满主观性。</p>
+</blockquote>
+
+        <h2 id="4-12：Pushshift"   >
+          <a href="#4-12：Pushshift" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-12：Pushshift" class="headerlink" title="4.12：Pushshift"></a>4.12：Pushshift</h2>
+      <p>链接：<span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://api.pushshift.io/signup" >https://api.pushshift.io/signup</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<blockquote>
+<p>该档案涵盖了自 2005 年以来在 Reddit 平台上发布的绝大多数内容，其中包括众多已删除的帖子。</p>
+</blockquote>
+<p>一些 API 检索示例：</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://api.pushshift.io/reddit/search/comment/?author=username&sort=asc&size=1000" >https://api.pushshift.io/reddit/search/comment/?author=username&amp;sort=asc&amp;size=1000</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://api.pushshift.io/reddit/search/comment/?author=username&after=30d&before=5d" >https://api.pushshift.io/reddit/search/comment/?author=username&amp;after=30d&amp;before=5d</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h1 id="5：补充知识"   >
+          <a href="#5：补充知识" class="heading-link"><i class="fas fa-link"></i></a><a href="#5：补充知识" class="headerlink" title="5：补充知识"></a>5：补充知识</h1>
+      
+        <h2 id="5-1：元搜索引擎简介"   >
+          <a href="#5-1：元搜索引擎简介" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-1：元搜索引擎简介" class="headerlink" title="5.1：元搜索引擎简介"></a>5.1：元搜索引擎简介</h2>
+      <p>元搜索引擎（Meta Search Engine）是一种调用其他独立搜索引擎的引擎，就是对多个独立搜索引擎的整合、调用、控制和优化利用。</p>
+<ul>
+<li>涵盖较多的搜索资源，可随意选择和调用源搜索引擎</li>
+<li>具备尽可能多的可选择功能，如资源类型（网站、网页、新闻、软件、FTP、MP3、图像等）选择、返回结果数量控制等</li>
+<li>详细的检索结果信息描述（如网页名称、URL、源搜索引擎、结果与需求的相关度等）</li>
+</ul>
+
+        <h2 id="5-2：FTP-检索"   >
+          <a href="#5-2：FTP-检索" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-2：FTP-检索" class="headerlink" title="5.2：FTP 检索"></a>5.2：FTP 检索</h2>
+      <blockquote>
+<p>FTP 服务器是具有公共 IP 地址的计算机，用于存储文件。<br>在互联网领域，对于 FTP 服务器的检索被大多数网络研究人员所忽略。<br>可能由此找到由公司、政府机构和军队托管的极其敏感的文件。</p>
+</blockquote>
+<p>FTP 服务器虽然可以使用强制访问凭据来保护文件内容，但这种情况很少发生，大多数都是公开的。</p>
+<p>Google、Bing 等搜索引擎都会对 FTP 服务器公开的数据建立索引。可以采用以下 Google 检索语法进行搜索：</p>
+<ul>
+<li><code>&quot;confidential&quot; inurl:ftp -inurl:http -inurl:https</code></li>
+<li><code>&quot;OSINT&quot; filetype:pdf inurl:ftp -inurl:http -inurl:https</code></li>
+</ul>
+<blockquote>
+<p>通过搜索引擎手动检索，可以得到 FTP 服务器上的大量可用的文档。<br>FTP 服务器已被 Google 索引，但还有其他专门的 FTP 检索网站值得探索。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>对于公开的 FTP 服务器，可以通过 <code>ftp</code> 命令匿名登录（用户名：anonymous），某些可以通过 HTTP 协议从浏览器中直接访问。</p>
+</blockquote>
+<p><code>ftp</code> 命令简单示例，以 <code>ftp://ftp.fcc.gov/pub/Bureaus/Common_Carrier/Orders/2001/da011953.doc</code> 为例。</p>
+<p>连接服务器：</p>
+<ul>
+<li><code>ftp ftp.fcc.gov</code></li>
+</ul>
+<p>输入用户名与密码：</p>
+<ul>
+<li>用户名：<code>anonymous</code>，密码为空</li>
+</ul>
+<p>切换目录：</p>
+<ul>
+<li><code>cd /pub/Bureaus/Common_Carrier/Orders/2001/</code></li>
+</ul>
+<p>下载文件：</p>
+<ul>
+<li><code>get da011953.doc</code></li>
+</ul>
+
+        <h2 id="5-3：暗网站点"   >
+          <a href="#5-3：暗网站点" class="heading-link"><i class="fas fa-link"></i></a><a href="#5-3：暗网站点" class="headerlink" title="5.3：暗网站点"></a>5.3：暗网站点</h2>
+      <p>暗网站点不会出现在常规搜索引擎中，但一些在暗网（如 Tor 网络）内运行的特殊搜索工具可以对意隐藏在表层网络之外的网站进行索引。</p>
+<ul>
+<li>暗网只能使用专为匿名和隐私设计的特定软件（例如 Tor 浏览器）访问</li>
+<li>大多数暗网站点都在 Tor 网络上托管，并且可以使用 Tor 自己的顶级域名 “ .onion ” 进行识别</li>
+</ul>
+<blockquote>
+<p>Tor 由全球志愿者免费组成的 6000 多个中继网络引导互联网流量，以隐藏用户的位置和使用情况。<br>基于 Tor 搜索引擎和代理有助于发现暗网网站。</p>
+</blockquote>
+
+        <h1 id="6：其他"   >
+          <a href="#6：其他" class="heading-link"><i class="fas fa-link"></i></a><a href="#6：其他" class="headerlink" title="6：其他"></a>6：其他</h1>
+      
+        <h2 id="6-1：相关平台"   >
+          <a href="#6-1：相关平台" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-1：相关平台" class="headerlink" title="6.1：相关平台"></a>6.1：相关平台</h2>
+      <blockquote>
+<p>上述提到过的链接这里不再列出。</p>
+</blockquote>
+<p>浏览器主页优化平台：</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://about.start.me/" >https://about.start.me/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<p>威胁数据追踪平台（不要下载分析该平台内容）：</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://dash.falconfeeds.io/" >https://dash.falconfeeds.io/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+<p>BugMeNot（用于分享各个网站上的登录凭证）：</p>
+<ul>
+<li><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://bugmenot.com/" >https://bugmenot.com/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></li>
+</ul>
+
+        <h2 id="6-2：参考资料"   >
+          <a href="#6-2：参考资料" class="heading-link"><i class="fas fa-link"></i></a><a href="#6-2：参考资料" class="headerlink" title="6.2：参考资料"></a>6.2：参考资料</h2>
+      <p>《元搜索引擎》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://wiki.mbalib.com/wiki/%E5%85%83%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E" >https://wiki.mbalib.com/wiki/%E5%85%83%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《4chan-外国综合型讨论区》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://baike.baidu.com/item/4chan/9453682" >https://baike.baidu.com/item/4chan/9453682</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《6 Tips for Gathering OSINT on TikTok》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://liferaftlabs.com/blog/six-tips-for-gathering-osint-on-tiktok" >https://liferaftlabs.com/blog/six-tips-for-gathering-osint-on-tiktok</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《一文看懂Discord的前世今生！》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.easemob.com/news/9448" >https://www.easemob.com/news/9448</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《V2EX到底是什么网站？》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.zhihu.com/question/323359961" >https://www.zhihu.com/question/323359961</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《Pushshift Reddit API Documentation》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/pushshift/api" >https://github.com/pushshift/api</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《Pinterest是啥，该怎么玩》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.xiaohongshu.com/explore/66e6a9f0000000001201106e?xsec_token=AB_8pFrmUHjCWFrI7RJoIQGXRS2S0PXDhZYosWPQO5x8Y=" >https://www.xiaohongshu.com/explore/66e6a9f0000000001201106e?xsec_token=AB_8pFrmUHjCWFrI7RJoIQGXRS2S0PXDhZYosWPQO5x8Y=</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<hr>
+<hr>
+<hr>
+<p><font color="#8B8682">
+不可吃尽，不可穿尽，不可说尽；又要洞得，又要做得，又要耐得。
+</font></p>
+<p align="right"><font color="#8B8682">
+——《格言联璧》（清）金缨
+</font></p>
+
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="https://blog.lens-shrine.top">镜坛主</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="https://blog.lens-shrine.top/2024/12/24/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/05.%20%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E5%B9%B3%E5%8F%B0%E6%B1%87%E6%80%BB/">https://blog.lens-shrine.top/2024/12/24/SkillSummary%EF%BC%9A%E6%8A%80%E8%83%BD%E6%A0%88%E6%97%A5%E5%BF%97/OSINT%E5%88%86%E6%9E%90/05.%20%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E5%B9%B3%E5%8F%B0%E6%B1%87%E6%80%BB/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2024/12/22/SkillSummary%EF%BC%9A%E8%BD%AF%E4%BB%B6%E5%B7%A5%E5%85%B7%E5%BD%95/%E5%B7%A5%E5%85%B7%E8%AE%B0%E5%BD%95/05.%20Python-venv%20%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E5%B7%A5%E5%85%B7/"><span class="paginator-prev__text">《工具记录》Python-venv 虚拟环境工具</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><div class="sidebar-nav"><span class="sidebar-nav-toc current">文章目录</span><span class="sidebar-nav-ov">站点概览</span></div><section class="sidebar-toc"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%EF%BC%9A%E9%80%9A%E7%94%A8%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E"><span class="toc-text">
+          1：通用搜索引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%EF%BC%9AGoogle"><span class="toc-text">
+          1.1：Google</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%EF%BC%9ABing"><span class="toc-text">
+          1.2：Bing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3%EF%BC%9AYandex"><span class="toc-text">
+          1.3：Yandex</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4%EF%BC%9AQwant"><span class="toc-text">
+          1.4：Qwant</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-5%EF%BC%9AAOL"><span class="toc-text">
+          1.5：AOL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-6%EF%BC%9ADuckDuckGo"><span class="toc-text">
+          1.6：DuckDuckGo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-7%EF%BC%9AMojeek"><span class="toc-text">
+          1.7：Mojeek</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%EF%BC%9A%E4%B8%93%E7%94%A8%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E"><span class="toc-text">
+          2：专用搜索引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%EF%BC%9AGoogle-Scholar"><span class="toc-text">
+          2.1：Google Scholar</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%EF%BC%9AAnna%E2%80%99s-Archive"><span class="toc-text">
+          2.2：Anna’s Archive</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3%EF%BC%9ASci-Hub"><span class="toc-text">
+          2.3：Sci-Hub</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4%EF%BC%9AWolframAlpha"><span class="toc-text">
+          2.4：WolframAlpha</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-5%EF%BC%9A%E4%B8%AD%E5%9B%BD%E4%B8%93%E5%88%A9%E6%A3%80%E7%B4%A2"><span class="toc-text">
+          2.5：中国专利检索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-6%EF%BC%9A%E8%B0%B7%E6%AD%8C%E4%B8%93%E5%88%A9%E6%A3%80%E7%B4%A2"><span class="toc-text">
+          2.6：谷歌专利检索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-7%EF%BC%9ASocial-Searcher"><span class="toc-text">
+          2.7：Social Searcher</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-8%EF%BC%9ABoard-Reader"><span class="toc-text">
+          2.8：Board Reader</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9A%E5%85%B6%E4%BB%96%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E"><span class="toc-text">
+          3：其他搜索引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1%EF%BC%9ASearx"><span class="toc-text">
+          3.1：Searx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%EF%BC%9AStart-Page"><span class="toc-text">
+          3.2：Start Page</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-3%EF%BC%9AMillion-Short"><span class="toc-text">
+          3.3：Million Short</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-4%EF%BC%9ACylect"><span class="toc-text">
+          3.4：Cylect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-5%EF%BC%9AMamoht"><span class="toc-text">
+          3.5：Mamoht</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-6%EF%BC%9AFreewareWeb"><span class="toc-text">
+          3.6：FreewareWeb</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-7%EF%BC%9AAhmia"><span class="toc-text">
+          3.7：Ahmia</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-8%EF%BC%9ATorLink"><span class="toc-text">
+          3.8：TorLink</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EF%BC%9A%E5%9C%A8%E7%BA%BF%E7%A4%BE%E5%8C%BA"><span class="toc-text">
+          4：在线社区</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1%EF%BC%9ATwitter"><span class="toc-text">
+          4.1：Twitter</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2%EF%BC%9ALinkedIn"><span class="toc-text">
+          4.2：LinkedIn</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-3%EF%BC%9ATelegram"><span class="toc-text">
+          4.3：Telegram</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-4%EF%BC%9AReddit"><span class="toc-text">
+          4.4：Reddit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-5%EF%BC%9A4chan"><span class="toc-text">
+          4.5：4chan</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-6%EF%BC%9AHacker-News"><span class="toc-text">
+          4.6：Hacker News</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-7%EF%BC%9ATikTok"><span class="toc-text">
+          4.7：TikTok</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-8%EF%BC%9ANextdoor"><span class="toc-text">
+          4.8：Nextdoor</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-9%EF%BC%9AMeetup"><span class="toc-text">
+          4.9：Meetup</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-10%EF%BC%9ADiscord"><span class="toc-text">
+          4.10：Discord</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-11%EF%BC%9AV2EX"><span class="toc-text">
+          4.11：V2EX</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-12%EF%BC%9APushshift"><span class="toc-text">
+          4.12：Pushshift</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%EF%BC%9A%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86"><span class="toc-text">
+          5：补充知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1%EF%BC%9A%E5%85%83%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E%E7%AE%80%E4%BB%8B"><span class="toc-text">
+          5.1：元搜索引擎简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2%EF%BC%9AFTP-%E6%A3%80%E7%B4%A2"><span class="toc-text">
+          5.2：FTP 检索</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-3%EF%BC%9A%E6%9A%97%E7%BD%91%E7%AB%99%E7%82%B9"><span class="toc-text">
+          5.3：暗网站点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6%EF%BC%9A%E5%85%B6%E4%BB%96"><span class="toc-text">
+          6：其他</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1%EF%BC%9A%E7%9B%B8%E5%85%B3%E5%B9%B3%E5%8F%B0"><span class="toc-text">
+          6.1：相关平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2%EF%BC%9A%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">
+          6.2：参考资料</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">59</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+  var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
+  // 加载进度条的计时器
+  var loadingTimer = null;
+
+  // 重置页面 Y 方向上的滚动偏移量
+  document.addEventListener('pjax:send', function () {
+    $('.header-nav-menu').removeClass('show');
+    if (CONFIG.pjax && CONFIG.pjax.avoidBanner) {
+      $('html').velocity('scroll', {
+        duration: 500,
+        offset: $('#header').height(),
+        easing: 'easeInOutCubic'
+      });
+    }
+
+    var loadingBarWidth = 20;
+    var MAX_LOADING_WIDTH = 95;
+
+    $('.loading-bar').addClass('loading');
+    $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    clearInterval(loadingTimer);
+    loadingTimer = setInterval(function () {
+      loadingBarWidth += 3;
+      if (loadingBarWidth > MAX_LOADING_WIDTH) {
+        loadingBarWidth = MAX_LOADING_WIDTH;
+      }
+      $('.loading-bar__progress').css('width', loadingBarWidth + '%');
+    }, 500);
+  }, false);
+
+  window.addEventListener('pjax:complete', function () {
+    clearInterval(loadingTimer);
+    $('.loading-bar__progress').css('width', '100%');
+    $('.loading-bar').removeClass('loading');
+    setTimeout(function () {
+      $('.loading-bar__progress').css('width', '0');
+    }, 400);
+    $('link[rel=prefetch], script[data-pjax-rm]').each(function () {
+      $(this).remove();
+    });
+    $('script[data-pjax], #pjax-reload script').each(function () {
+      $(this).parent().append($(this).remove());
+    });
+
+    if (Stun.utils.pjaxReloadBoot) {
+      Stun.utils.pjaxReloadBoot();
+    }
+    if (Stun.utils.pjaxReloadScroll) {
+      Stun.utils.pjaxReloadScroll();
+    }
+    if (Stun.utils.pjaxReloadSidebar) {
+      Stun.utils.pjaxReloadSidebar();
+    }
+    if (false) {
+      if (Stun.utils.pjaxReloadHeader) {
+        Stun.utils.pjaxReloadHeader();
+      }
+      if (Stun.utils.pjaxReloadScrollIcon) {
+        Stun.utils.pjaxReloadScrollIcon();
+      }
+      if (Stun.utils.pjaxReloadLocalSearch) {
+        Stun.utils.pjaxReloadLocalSearch();
+      }
+    }
+  }, false);
+}, false);</script><div id="pjax-reload"></div><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/web-effect-click.js?v=2.8.0"></script><script src="/js/web-effect-flower.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
