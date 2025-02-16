@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="主机发现、目标信息扫描、漏洞扫描、网站指纹信息识别、网站目录扫描、drupal CMS 漏洞利用（CVE 2014-3704）、Metasploit 渗透、获取可交互式 shell、进一步搜集信息、查看用户 sudo 权限、查找具有 Setuid 权限位的可执行文件、提权。">
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="主机发现、目标信息扫描、漏洞扫描、网站指纹信息识别、网站目录扫描、drupal CMS 漏洞利用（CVE 2014-3704）、Metasploit 渗透、获取可交互式 shell、进一步搜集信息、查看用户 sudo 权限、查找具有 SUID 权限位的可执行文件、提权。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="《VulnHub》DC：1">
 <meta property="og:url" content="https://blog.lens-shrine.top/2024/01/01/WriteUp%EF%BC%9ACyber-Range/VulnHub/03.%20DC%EF%BC%9A1/index.html">
 <meta property="og:site_name" content="镜坛">
-<meta property="og:description" content="主机发现、目标信息扫描、漏洞扫描、网站指纹信息识别、网站目录扫描、drupal CMS 漏洞利用（CVE 2014-3704）、Metasploit 渗透、获取可交互式 shell、进一步搜集信息、查看用户 sudo 权限、查找具有 Setuid 权限位的可执行文件、提权。">
+<meta property="og:description" content="主机发现、目标信息扫描、漏洞扫描、网站指纹信息识别、网站目录扫描、drupal CMS 漏洞利用（CVE 2014-3704）、Metasploit 渗透、获取可交互式 shell、进一步搜集信息、查看用户 sudo 权限、查找具有 SUID 权限位的可执行文件、提权。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/7de52147067b4e3fba05f10e77c91529.png">
 <meta property="og:image" content="https://blog.lens-shrine.top/assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/619ea755a7954eeeb933b9b02a0d356e.png">
@@ -266,12 +266,13 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           <a href="#2-3：后渗透" class="heading-link"><i class="fas fa-link"></i></a><a href="#2-3：后渗透" class="headerlink" title="2.3：后渗透"></a>2.3：后渗透</h2>
       <p>尝试提权。</p>
 <p>可以使用 <code>sudo -l</code> 查看用户可在系统上具有的 sudo 权限，以及可以运行的特权命令与文件。不过当前用户无法使用 <code>sudo</code> 命令。</p>
-<p>使用 <code>find</code> 命令查找有 suid 属性权限的文件。</p>
-<p><strong>查找 suid 属性权限文件</strong>：<br><code>find / -perm -u=s -type f 2&gt;/dev/null</code></p>
+<p>使用 <code>find</code> 命令查找有 SUID 权限的文件。</p>
+<p><strong>查找 SUID 权限文件</strong>：<br><code>find / -perm -u=s -type f 2&gt;/dev/null</code></p>
 <p>
         <img   class="lazyload lazyload-gif"
           src="/images/loading.svg" data-src="/../../../assets/WriteUp%EF%BC%9ACyber-Range/VulnHub/DC%EF%BC%9A1/1917d98c65f74a7dbd0821d0de5d3392.png"  alt="在这里插入图片描述">
       </p>
+<p>发现 <code>find</code> 命令被赋予了 SUID 权限，且文件所有者为 root。因此可尝试借助 <code>find</code> 命令进行 SUID 提权。</p>
 <p><strong>提权</strong>：<br><code>find /usr/bin/passwd -exec &#39;/bin/sh&#39; \;</code></p>
 <p>
         <img   class="lazyload lazyload-gif"
@@ -374,21 +375,18 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 
         <h3 id="3-1-4：find"   >
           <a href="#3-1-4：find" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-1-4：find" class="headerlink" title="3.1.4：find"></a>3.1.4：find</h3>
-      <p><strong>查找具有 Setuid 权限位的可执行文件</strong>：<br><code>find / -perm -u=s -type f 2&gt;/dev/null</code></p>
+      <p><strong>查找具有 SUID 权限的可执行文件</strong>：<br><code>find / -perm -u=s -type f 2&gt;/dev/null</code></p>
 <ul>
 <li><code>find</code>：查找。</li>
 <li><code>/</code>：指定查找的起始目录为根目录。</li>
-<li><code>-perm -u=s</code>：用于匹配具有 Setuid 权限位的文件。</li>
+<li><code>-perm -u=s</code>：用于匹配具有 SUID 权限的文件。</li>
 <li><code>-type f</code>：限制查找结果只包括普通文件，而不包括目录或其他类型的文件。</li>
 <li><code>2&gt;/dev/null</code>：将错误输出重定向到 <code>/dev/null</code>。可以使输出更加清晰。</li>
 </ul>
 <blockquote>
-<p>Setuid 权限位允许一个程序在执行时暂时具有文件所有者的权限。</p>
+<p>SUID（Set UID）是Linux中的一种特殊权限。允许一个程序在执行时暂时具有文件所有者的权限。</p>
 </blockquote>
 <p><strong>提权</strong>：<br><code>find /usr/bin/passwd -exec &#39;/bin/sh&#39; \;</code></p>
-<blockquote>
-<p>《find 命令提权》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/aaak/p/15718561.html" >https://www.cnblogs.com/aaak/p/15718561.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-</blockquote>
 
         <h2 id="3-2：关键技术"   >
           <a href="#3-2：关键技术" class="heading-link"><i class="fas fa-link"></i></a><a href="#3-2：关键技术" class="headerlink" title="3.2：关键技术"></a>3.2：关键技术</h2>
@@ -420,6 +418,14 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
 <li><p><strong>提权</strong>：<br><code>find &lt;file&gt; -exec &#39;/bin/sh&#39; \;</code></p>
 </li>
 </ul>
+
+        <h1 id="4：其他"   >
+          <a href="#4：其他" class="heading-link"><i class="fas fa-link"></i></a><a href="#4：其他" class="headerlink" title="4：其他"></a>4：其他</h1>
+      
+        <h2 id="4-1：参考资料"   >
+          <a href="#4-1：参考资料" class="heading-link"><i class="fas fa-link"></i></a><a href="#4-1：参考资料" class="headerlink" title="4.1：参考资料"></a>4.1：参考资料</h2>
+      <p>《2022蓝帽杯遇见的 SUID 提权 总结篇》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://tttang.com/archive/1793/" >https://tttang.com/archive/1793/</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>《find 命令提权》：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.cnblogs.com/aaak/p/15718561.html" >https://www.cnblogs.com/aaak/p/15718561.html</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
 <hr>
 <p><font color="#778899">
 人生到处知何似，应似飞鸿踏雪泥。
@@ -436,7 +442,9 @@ window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></he
           2.3：后渗透</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%EF%BC%9A%E6%80%BB%E7%BB%93"><span class="toc-text">
           3：总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1%EF%BC%9A%E5%91%BD%E4%BB%A4-%E5%B7%A5%E5%85%B7"><span class="toc-text">
           3.1：命令 &amp; 工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2%EF%BC%9A%E5%85%B3%E9%94%AE%E6%8A%80%E6%9C%AF"><span class="toc-text">
-          3.2：关键技术</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">59</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
+          3.2：关键技术</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%EF%BC%9A%E5%85%B6%E4%BB%96"><span class="toc-text">
+          4：其他</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1%EF%BC%9A%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-text">
+          4.1：参考资料</span></a></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov hide"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/images/icons/notAlone.png" alt="avatar"></div><p class="sidebar-ov-author__text">但愿五湖明月在。</p></div><div class="sidebar-ov-state"><a class="sidebar-ov-state-item sidebar-ov-state-item--posts" href="/archives/"><div class="sidebar-ov-state-item__count">59</div><div class="sidebar-ov-state-item__name">归档</div></a><a class="sidebar-ov-state-item sidebar-ov-state-item--categories" href="/categories/"><div class="sidebar-ov-state-item__count">23</div><div class="sidebar-ov-state-item__name">分类</div></a></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div><span>Copyright © 2022~2025</span><span class="footer__icon"><i class="fas fa-heart"></i></span><span>镜坛主</span></div><div>欢迎来到 —— 镜坛！</div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-rc.2/lazyload.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@latest/pjax.min.js"></script><script>window.addEventListener('DOMContentLoaded', function () {
   var pjax = new Pjax({"selectors":["head title","#main",".pjax-reload",".header-banner"],"history":true,"scrollTo":false,"scrollRestoration":false,"cacheBust":false,"debug":false,"currentUrlFullReload":false,"timeout":0});
   // 加载进度条的计时器
   var loadingTimer = null;
